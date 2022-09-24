@@ -1,21 +1,47 @@
 package com.poly.jztr.ecommerce.controller.publics;
 
+import com.poly.jztr.ecommerce.common.Constant;
+import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
+import com.poly.jztr.ecommerce.dto.UserDto;
+import com.poly.jztr.ecommerce.expectionhandler.Validation;
+import com.poly.jztr.ecommerce.model.User;
+import com.poly.jztr.ecommerce.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("public/user")
+@RestControllerAdvice("public/user")
 @CrossOrigin("localhost:3000")
-@RequestMapping("api/v1/public")
+@RequestMapping("api/v1/public/users")
 public class UsersController {
     @Autowired
     JwtProvider jwtProvider;
 
-    @GetMapping("/login")
+    @Autowired
+    UserService service;
+
+    @PostMapping("/login")
     public String login(){
-        return jwtProvider.generateTokenLogin("A");
+        return "A";
+        //return jwtProvider.generateTokenLogin("A");
+    }
+
+    @GetMapping("/login")
+    public String login2(){
+        return "A";
+        //return jwtProvider.generateTokenLogin("A");
+    }
+
+    @PostMapping("/register")
+    @ExceptionHandler(Validation.class)
+    public ResponseEntity<ResponseObject> register(@RequestBody @Validated UserDto userDto){
+        User user = new User();
+        BeanUtils.copyProperties(userDto, user);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"",service.save(user)));
     }
 }
