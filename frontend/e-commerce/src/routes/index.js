@@ -1,3 +1,6 @@
+// Layouts
+
+// Pages
 import Home from '~/pages/Home';
 
 // Not requires login
