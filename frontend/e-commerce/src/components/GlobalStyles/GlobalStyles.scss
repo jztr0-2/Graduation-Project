@@ -3,12 +3,31 @@
     margin: 0;
     box-sizing: border-box;
 }
+:root {
+    --primary: #ea4335;
+    --dark-theme: rgb(53, 53, 53);
+    --light-theme: #fff;
+    --text-color: #333;
+}
 html {
     font-size: 62.5%;
 }
 body {
     font-size: 1.6rem;
+    color: var(--dark-theme);
 }
-:root {
-    --primary: #ea4335;
+
+a[href] {
+    color: var(--text-color);
+    text-decoration: none;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+button,
+input,
+[tabindex] {
+    outline: none;
+    border: none;
 }
