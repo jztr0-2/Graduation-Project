@@ -26,6 +26,7 @@ public class ApplicationSecurity{
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors().disable();
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/api/v1/users/**").hasAuthority("USER")

@@ -12,13 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -26,7 +23,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
-import java.util.Arrays;
 
 @RestControllerAdvice("public/user")
 @CrossOrigin("localhost:3000")
@@ -53,21 +49,17 @@ public class UsersController {
         return "A";
         //return jwtProvider.generateTokenLogin("A");
     }
-    @PostMapping (value = "/register", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE
-    , MediaType.APPLICATION_OCTET_STREAM_VALUE})
-    public ResponseEntity<ResponseObject> register(@RequestPart(value = "user", required = false) @Validated UserDto dto,
-                                                   @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
-        UserDto userDto = dto;
-
+    @PostMapping ("/register")
+    public ResponseEntity<ResponseObject> register(@RequestBody() @Validated UserDto dto){
         User user = new User();
-        BeanUtils.copyProperties(userDto,user);
+        BeanUtils.copyProperties(dto,user);
         user.setStatus(Constant.USER_STATUS_ACTIVATED);
-        if(image!= null) {
-            Path path= Paths.get("uploads");
-            InputStream inputStream = image.getInputStream();
-            String fileName = "image_"+ Instant.now().getEpochSecond()+".jpg";
-            Files.copy(inputStream,path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
-        }
+//        if(image!= null) {
+//            Path path= Paths.get("uploads");
+//            InputStream inputStream = image.getInputStream();
+//            String fileName = "image_"+ Instant.now().getEpochSecond()+".jpg";
+//            Files.copy(inputStream,path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+//        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return ResponseEntity.status(HttpStatus.OK).body(
