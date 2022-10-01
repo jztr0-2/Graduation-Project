@@ -1,5 +1,7 @@
 package com.poly.jztr.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.Instant;
 
@@ -9,6 +11,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @JsonIgnore
     private Long id;
 
     @Column(name = "last_name", nullable = false, length = 45)
@@ -21,18 +24,23 @@ public class User {
     private String email;
 
     @Column(name = "status", nullable = false)
+    @JsonIgnore
     private Integer status;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Column(name = "created_at", nullable = false)
+    @JsonIgnore
     private Instant createdAt;
 
     @Column(name = "updated_at", nullable = false)
+    @JsonIgnore
     private Instant updatedAt;
 
     @Column(name = "delete_at")
+    @JsonIgnore
     private Instant deleteAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
