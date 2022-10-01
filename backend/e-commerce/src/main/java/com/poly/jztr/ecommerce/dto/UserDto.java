@@ -21,9 +21,7 @@ public class UserDto {
     private String email;
     @NotNull
     private String phone;
-    @NotNull
     private String password;
-    @NotNull
     private String passwordConfirmation;
     @JsonIgnore
     private MultipartFile avatar;

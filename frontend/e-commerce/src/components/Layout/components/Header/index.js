@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import styles from './Header.module.scss';
+import * as request from '~/utils/http';
 
 const cx = classNames.bind(styles);
 
@@ -51,7 +52,6 @@ function Header() {
                         <FontAwesomeIcon icon={faTwitter} className={cx('icon-twitter', 'icon-item')} />
                         <FontAwesomeIcon icon={faLinkedinIn} className={cx('icon-in', 'icon-item')} />
                     </div>
-                    <div className={cx('left-pagination')}>1</div>
                 </div>
                 <div className={cx('right')}>
                     <div className={cx('right-pagination')}>2</div>
