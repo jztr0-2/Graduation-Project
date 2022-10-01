@@ -3,25 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import styles from './Header.module.scss';
 import * as request from '~/utils/http';
+import Form from '~/components/Form';
+import { type } from '@testing-library/user-event/dist/type';
 
 const cx = classNames.bind(styles);
 
 function Header() {
-    const registerHandler = () => {
-        request
-            .post('/public/users/register', {
-                firstName: 'AB',
-                lastName: 'Duc',
-                password: '123456',
-                passwordConfirmation: '123456',
-                email: 'emadasdasdil@gmail.com',
-                phone: '0123456789',
-            })
-            .then((res) => {
-                // them 1 rq co user_id
-                console.log(res);
-            });
-    };
     return (
         <header className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -67,13 +54,11 @@ function Header() {
                         <FontAwesomeIcon icon={faTwitter} className={cx('icon-twitter', 'icon-item')} />
                         <FontAwesomeIcon icon={faLinkedinIn} className={cx('icon-in', 'icon-item')} />
                     </div>
-                    <div className={cx('left-pagination')} onClick={registerHandler}>
-                        1
-                    </div>
                 </div>
                 <div className={cx('right')}>
                     <div className={cx('right-pagination')}>2</div>
                 </div>
+                <Form types="sign-in"></Form>
             </div>
         </header>
     );
