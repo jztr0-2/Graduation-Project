@@ -58,8 +58,11 @@ function Header() {
                 <div className={cx('right')}>
                     <div className={cx('right-pagination')}>2</div>
                 </div>
-                <Form types="sign-in"></Form>
+                
             </div>
+            <Form types="reg"></Form>
+            <Form types="log"></Form>
+
         </header>
     );
 }
