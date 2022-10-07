@@ -9,22 +9,30 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.poly.jztr.ecommerce.common.Constant;
+import com.poly.jztr.ecommerce.model.User;
+import com.poly.jztr.ecommerce.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
 public class JwtProvider {
-    public String generateTokenLogin(String username) {//username = column id in table accounts
+
+    @Autowired
+    UserService userService;
+    public String generateTokenLogin(String username) {
         String token = null;
         try {
+            User user = userService.findByEmail(username).get();
             JWSSigner signer = new MACSigner(generateShareSecret());
             JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
             builder.claim("Username", username);
             builder.expirationTime(generateExpirationTime());
             String[] roles = {"USER"};
             builder.claim("ROLES",roles);
+            builder.claim("firstName",user.getFirstName());
+            builder.claim("lastName",user.getLastName());
             JWTClaimsSet claimsSet = builder.build();
             SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
             signedJWT.sign(signer);
@@ -35,17 +43,6 @@ public class JwtProvider {
         return token;
     }
 
-//    private String[] getRolesFromUsername(String username) {
-//        Customer customer = customerService.findById(Integer.parseInt(username)).get();
-//        String [] arr = new String[2];
-//        if (customer.getAdmin()){
-//            arr[0] = "ROLE_ADMIN";
-//            arr[1] = "ROLE_USER";
-//        }else{
-//            arr[0] = "ROLE_USER";
-//        }
-//        return  arr;
-//    }
 
     public JWTClaimsSet getClaimsSetFromToken(String token) {
         JWTClaimsSet claimsSet = null;

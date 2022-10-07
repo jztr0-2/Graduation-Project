@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.poly.jztr.ecommerce.model.User;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
+    public Optional<User> findByEmail(String email);
 }

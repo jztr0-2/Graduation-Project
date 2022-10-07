@@ -15,12 +15,6 @@ public class ProductDetail {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(name = "color", nullable = false, length = 10)
-    private String color;
-
-    @Column(name = "color_text", nullable = false, length = 45)
-    private String colorText;
-
     @Lob
     @Column(name = "description")
     private String description;
@@ -58,23 +52,6 @@ public class ProductDetail {
     public void setProduct(Product product) {
         this.product = product;
     }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getColorText() {
-        return colorText;
-    }
-
-    public void setColorText(String colorText) {
-        this.colorText = colorText;
-    }
-
     public String getDescription() {
         return description;
     }
