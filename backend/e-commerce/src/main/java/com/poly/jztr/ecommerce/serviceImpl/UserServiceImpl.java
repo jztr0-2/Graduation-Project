@@ -12,6 +12,7 @@ import com.poly.jztr.ecommerce.repository.UserRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,4 +38,16 @@ public class UserServiceImpl implements UserService {
         }
         return dto;
     }
+
+    @Override
+    public Optional<User> findById(Long aLong) {
+        return repository.findById(aLong);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email){
+        return repository.findByEmail(email);
+    }
+
+
 }
