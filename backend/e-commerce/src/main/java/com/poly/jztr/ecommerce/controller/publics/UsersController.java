@@ -3,6 +3,7 @@ package com.poly.jztr.ecommerce.controller.publics;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
+import com.poly.jztr.ecommerce.dto.LoginDto;
 import com.poly.jztr.ecommerce.dto.UserDto;
 import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.service.UserService;
@@ -30,23 +31,30 @@ public class UsersController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public String login(){
-        return "A";
-        //return jwtProvider.generateTokenLogin("A");
+    public ResponseEntity<ResponseObject> login(@RequestBody LoginDto login) {
+        Optional<User> user = service.findByEmail(login.getEmail());
+        if (user.isPresent()) {
+            if (passwordEncoder.matches(login.getPassword(), user.get().getPassword()))
+                return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                        "login  successfully", jwtProvider.generateTokenLogin(login.getEmail())));
+
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                    new ResponseObject(422, "password is incorrect", "")
+            );
+        }
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                new ResponseObject(422, "email not found", "")
+        );
     }
 
-    @GetMapping("/login")
-    public String login2(){
-        return "A";
-        //return jwtProvider.generateTokenLogin("A");
-    }
-    @PostMapping ("/register")
-    public ResponseEntity<ResponseObject> register(@RequestBody() @Validated UserDto dto){
+    @PostMapping("/register")
+    public ResponseEntity<ResponseObject> register(@RequestBody() @Validated UserDto dto) {
         User user = new User();
-        BeanUtils.copyProperties(dto,user);
+        BeanUtils.copyProperties(dto, user);
         user.setStatus(Constant.USER_STATUS_ACTIVATED);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"",service.save(user)));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "", service.save(user)));
     }
 }

@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import styles from './Header.module.scss';
 import * as request from '~/utils/http';
+import Form from '~/components/Form';
+import { type } from '@testing-library/user-event/dist/type';
 
 const cx = classNames.bind(styles);
 
@@ -56,6 +58,7 @@ function Header() {
                 <div className={cx('right')}>
                     <div className={cx('right-pagination')}>2</div>
                 </div>
+                <Form types="sign-in"></Form>
             </div>
         </header>
     );

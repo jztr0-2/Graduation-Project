@@ -5,7 +5,6 @@ import com.poly.jztr.ecommerce.configuration.jwt.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,17 +27,14 @@ public class ApplicationSecurity{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().disable();
         http.csrf().disable();
-        // http.authorizeRequests()
-        //         .antMatchers("/api/v1/users/**").hasAuthority("USER")
-        //         .antMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
-        //         .antMatchers("/api/v1/public/**").permitAll()
-        //         .anyRequest().authenticated()
-        //         .and().exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
-        //         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        //         .and().addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        http.authorizeRequests().antMatchers("/**").permitAll();
-
+        http.authorizeRequests()
+                .antMatchers("/api/v1/users/**").hasAuthority("USER")
+                .antMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/api/v1/public/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .anyRequest().authenticated()
+                .and().exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
