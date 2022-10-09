@@ -1,31 +1,25 @@
 package com.poly.jztr.ecommerce.dto;
 
-import java.time.Instant;
-
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.poly.jztr.ecommerce.model.Category;
 
-import net.bytebuddy.utility.dispatcher.JavaDispatcher.Instance;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryDto {
-
-    @NotNull
-    private Long id;
-
-    @NotNull
-    private Category parent;
-
-    @NotNull
+    private Long parent_id;
+    @NotBlank
     private String name;
-
-    @NotNull
     
-    private Instant createdAt;
-
-    @NotNull
-    private Instant updatedAt;
-
-    @NotNull
-    private Instant deleteAt;
 }
