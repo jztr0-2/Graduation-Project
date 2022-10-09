@@ -1,6 +1,9 @@
 package com.poly.jztr.ecommerce.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.Instant;
 
 @Entity
@@ -12,6 +15,7 @@ public class Category {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "parent_id")
     private Category parent;
 

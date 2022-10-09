@@ -28,14 +28,17 @@ public class ApplicationSecurity{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().disable();
         http.csrf().disable();
-        http.authorizeRequests()
-                .antMatchers("/api/v1/users/**").hasAuthority("USER")
-                .antMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/api/v1/public/**").permitAll()
-                .anyRequest().authenticated()
-                .and().exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        // http.authorizeRequests()
+        //         .antMatchers("/api/v1/users/**").hasAuthority("USER")
+        //         .antMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
+        //         .antMatchers("/api/v1/public/**").permitAll()
+        //         .anyRequest().authenticated()
+        //         .and().exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
+        //         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        //         .and().addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.authorizeRequests().antMatchers("/**").permitAll();
+
         return http.build();
     }
 
