@@ -1,6 +1,11 @@
 package com.poly.jztr.ecommerce.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.poly.jztr.ecommerce.dto.CategoryDto;
+
 import java.time.Instant;
 
 @Entity
@@ -12,10 +17,12 @@ public class Category {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "parent_id")
     private Category parent;
 
     @Column(name = "name", length = 100)
+    @NotBlank
     private String name;
 
     @Column(name = "created_at")
@@ -27,12 +34,18 @@ public class Category {
     @Column(name = "delete_at")
     private Instant deleteAt;
 
+   public Category(){
+    this.createdAt = Instant.now();
+    this.updatedAt = Instant.now();
+   }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+        this.updatedAt = Instant.now();
     }
 
     public Category getParent() {
@@ -41,6 +54,7 @@ public class Category {
 
     public void setParent(Category parent) {
         this.parent = parent;
+        this.updatedAt = Instant.now();
     }
 
     public String getName() {
@@ -49,6 +63,7 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+        this.updatedAt = Instant.now();
     }
 
     public Instant getCreatedAt() {
@@ -57,6 +72,7 @@ public class Category {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+        
     }
 
     public Instant getUpdatedAt() {
@@ -74,5 +90,4 @@ public class Category {
     public void setDeleteAt(Instant deleteAt) {
         this.deleteAt = deleteAt;
     }
-
 }
