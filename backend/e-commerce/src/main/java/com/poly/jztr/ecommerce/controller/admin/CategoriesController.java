@@ -40,16 +40,19 @@ public class CategoriesController {
     CategoryService service;
     
     @GetMapping("")
-    public ResponseEntity<List<Category>> getAll(Model model){
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<ResponseObject> getAll(Model model){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.findAll()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getOne(Model model, @PathVariable("id") Long id){
+    public ResponseEntity<ResponseObject> getOne(Model model, @PathVariable("id") Long id){
         if(!service.existsById(id)){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
         }
-        return ResponseEntity.ok(service.findById(id).get());
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.findById(id).get()));
     }
 
     @PostMapping("")
@@ -61,20 +64,24 @@ public class CategoriesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> put(@Valid @PathVariable("id") Long id, @RequestBody Category category, Errors errors){
-        if(!service.existsById(category.getId())){
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<ResponseObject> put(@Valid @PathVariable("id") Long id, @RequestBody CategoryDto category){
+        if(!service.existsById(id)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
         }
-        service.save(category);
-        return ResponseEntity.ok(category);
+        Category cate = service.toCategory(category);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(cate)));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id, Model model){
+    public ResponseEntity<ResponseObject> delete(@PathVariable("id") Long id, Model model){
         if(!service.existsById(id)){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
         }
         service.deleteById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", null));
     }
 }

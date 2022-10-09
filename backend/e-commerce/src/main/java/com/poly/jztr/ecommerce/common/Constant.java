@@ -5,4 +5,6 @@ public class Constant {
     public static Integer USER_STATUS_ACTIVATED = 1;
     public static Integer RESPONSE_STATUS_SUCCESS = 200;
 
+    public static Integer RESPONSE_STATUS_NOTFOUND = 404;
+
 }
