@@ -9,9 +9,12 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.poly.jztr.ecommerce.model.Admin;
 import com.poly.jztr.ecommerce.model.User;
+import com.poly.jztr.ecommerce.service.AdminService;
 import com.poly.jztr.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -21,6 +24,12 @@ public class JwtProvider {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    AdminService adminService;
+
+    @Value("${jwt.secret_key}")
+    private String secretKey;
     public String generateTokenLogin(String username) {
         String token = null;
         try {
@@ -33,6 +42,26 @@ public class JwtProvider {
             builder.claim("ROLES",roles);
             builder.claim("firstName",user.getFirstName());
             builder.claim("lastName",user.getLastName());
+            JWTClaimsSet claimsSet = builder.build();
+            SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
+            signedJWT.sign(signer);
+            token = signedJWT.serialize();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return token;
+    }
+
+    public String generateTokenLoginAdmin(String username) {
+        String token = null;
+        try {
+            Admin admin = adminService.findByLoginName(username).get();
+            JWSSigner signer = new MACSigner(generateShareSecret());
+            JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
+            builder.claim("Username", username);
+            builder.expirationTime(generateExpirationTime());
+            String[] roles = {"ADMIN"};
+            builder.claim("ROLES",roles);
             JWTClaimsSet claimsSet = builder.build();
             SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
             signedJWT.sign(signer);
@@ -77,7 +106,6 @@ public class JwtProvider {
         try {
             JWTClaimsSet claimsSet = getClaimsSetFromToken(token);
             username = claimsSet.getStringClaim("Username");
-            System.out.println("line 83"+ username);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,7 +114,7 @@ public class JwtProvider {
 
     private byte[] generateShareSecret() {
         byte[] sharedSecret = new byte[32];
-        sharedSecret = "Constant.dasdsadsadasflkdsgjdsljflmteblilfgnkjdlvxcmgojflkdsjgkldsnfjkdnjkfddkdncdsmfndsjkdskfdsjksvdssjjvkUSERNAME".getBytes();
+        sharedSecret = secretKey.getBytes();
         return sharedSecret;
     }
 

@@ -5,7 +5,9 @@ import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
 import com.poly.jztr.ecommerce.dto.LoginDto;
 import com.poly.jztr.ecommerce.dto.UserDto;
+import com.poly.jztr.ecommerce.model.Admin;
 import com.poly.jztr.ecommerce.model.User;
+import com.poly.jztr.ecommerce.service.AdminService;
 import com.poly.jztr.ecommerce.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 
 @RestControllerAdvice("public/user")
@@ -30,6 +34,8 @@ public class UsersController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    AdminService adminService;
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> login(@RequestBody LoginDto login) {
         Optional<User> user = service.findByEmail(login.getEmail());
@@ -46,6 +52,21 @@ public class UsersController {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
                 new ResponseObject(422, "email not found", "")
         );
+    }
+
+    @PostMapping("admin-login")
+    public ResponseEntity<ResponseObject> adminLogin(@RequestBody LoginDto login){
+        Optional<Admin> admin = adminService.findByLoginName(login.getEmail());
+        if(admin.isPresent()){
+            if (passwordEncoder.matches(login.getPassword(), admin.get().getPassword()))
+                return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                        "login  successfully", jwtProvider.generateTokenLoginAdmin(login.getEmail())));
+
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                    new ResponseObject(422, "password is incorrect", ""));
+        }
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                new ResponseObject(422, "username not found", ""));
     }
 
     @PostMapping("/register")
