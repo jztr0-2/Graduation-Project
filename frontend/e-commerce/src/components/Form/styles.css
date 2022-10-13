@@ -6,27 +6,38 @@
     flex-direction: column;
     gap: 20px;
     height: 100vh;
-    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+    font-family: Arial, Helvetica, sans-serif;
     background-color: #f8f9fd;
+  }
+  .top{
+    background-color: black;
+    width: 600px; 
+    height: 70px;
+    margin-top: -70px;
+    margin-left: -20px;
+
   }
  label {
     display: inline-block;
     font-weight: 600;
     cursor: pointer;
-    margin-bottom: 10px;
-    color: #6a5af9;
+    margin-top: 10px;
+    color: rgb(47, 47, 47);
+    font-weight: 600;
   }
   input[type="text"],
   input[type="password"] {
     outline: none;
-    padding: 10px 0;
+    padding: 10px;
     display: block;
     width: 100%;
     color: #fff;
     font-size: 16px;
-    border-bottom: 1px solid #6a5af9;
-    background-color: transparent;
-    color: #6a5af9;
+    background-color: #eee;
+    color: rgb(0, 0, 0);
+    height: 50px;
+    letter-spacing: 2.0;
+    border-radius: 3px;
   }
   
   input[type="submit"] {
@@ -40,7 +51,9 @@
     position: relative;
     overflow: hidden;
     transition: color 1s;
-    background-color:  #6a5af9;;
+    background-color:  #0091ff;
+    border-radius: 3px;
+    margin-top: 15px;
   }
   
   input[type="submit"]:hover {

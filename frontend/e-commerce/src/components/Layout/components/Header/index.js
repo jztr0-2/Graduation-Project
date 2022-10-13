@@ -60,8 +60,6 @@ function Header() {
                 </div>
                 
             </div>
-            <Form types="reg"></Form>
-            <Form types="log"></Form>
 
         </header>
     );

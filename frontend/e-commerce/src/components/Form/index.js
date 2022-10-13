@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBox, faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import styles from './Form.module.scss';
 import "./styles.css";
 
@@ -58,49 +60,57 @@ function Form({ types }) {
       <div className="error">{errorMessages.message}</div>
     );
     const renderFormLogin = (
+     
         <div className="form">
+            <div className="top">
+            
+          </div>
           <form onSubmit={handleSubmit}>
             <div className="input-container">
-              <label>Username </label>
+          
+              <label><FontAwesomeIcon icon={ faUser} className={cx('icon-item')} />       USERNAME </label>
               <input type="text" name="uname" required />
               {renderErrorMessage("uname")}
             </div>
             <div className="input-container">
-              <label>Password </label>
+              <label><FontAwesomeIcon icon={ faLock} className={cx('icon-item')} />       PASSWORD </label>
               <input type="password" name="pass" required />
               {renderErrorMessage("pass")}
             </div>
             <div className="button-container">
-              <input type="submit" />
+              <input type="submit" value="LOGIN"/>
             </div>
           </form>
         </div>
       );
       const renderFormReg = (
         <div className="form">
+           <div className="top">
+            
+            </div>
           <form onSubmit={handleSubmit}>
           <div className="input-container">
-              <label>Email </label>
+              <label><FontAwesomeIcon icon={ faBox} className={cx('icon-item')} /> YOUR EMAIL </label>
               <input type="text" name="email" required />
               {renderErrorMessage("email")}
             </div>
             <div className="input-container">
-              <label>Username </label>
+              <label><FontAwesomeIcon icon={ faUser} className={cx('icon-item')} />  USERNAME </label>
               <input type="text" name="uname" required />
               {renderErrorMessage("uname")}
             </div>
             <div className="input-container">
-              <label>Password </label>
+              <label><FontAwesomeIcon icon={ faLock} className={cx('icon-item')} /> PASSWORD </label>
               <input type="password" name="pass" required />
               {renderErrorMessage("pass")}
             </div>
             <div className="input-container">
-              <label>Comfirm Password </label>
+              <label><FontAwesomeIcon icon={ faLock} className={cx('icon-item')} /> COMFIRM PASSWORD </label>
               <input type="password" name="cfpass" required />
               {renderErrorMessage("cfpass")}
             </div>
             <div className="button-container">
-              <input type="submit" />
+              <input type="submit" value="Đăng Ký"/>
             </div>
           </form>
         </div>
