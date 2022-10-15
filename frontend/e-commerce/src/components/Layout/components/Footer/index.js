@@ -2,7 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faDribbble, faFacebookF, faGooglePlusG, faPinterestP } from '@fortawesome/free-brands-svg-icons';
 import { faAt, faHomeLg, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+
 import Form from '~/components/Form';
+
 
 import classNames from 'classnames/bind';
 import styles from './Footer.module.scss';
@@ -147,5 +149,4 @@ function Footer() {
         <Form types="reg"></Form>
     </footer>
 }
-
 export default Footer;
