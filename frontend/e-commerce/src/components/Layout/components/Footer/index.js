@@ -9,6 +9,8 @@ import {
 import { faAt, faHomeLg, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 
+import Form from '~/components/Form';
+
 import classNames from 'classnames/bind';
 import styles from './Footer.module.scss';
 
@@ -167,5 +169,4 @@ function Footer() {
         </footer>
     );
 }
-
 export default Footer;
