@@ -12,9 +12,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/user/users")
 public class UsersController {
 
-
-    @GetMapping("")
-    public String test(){
-        return "A";
-    }
 }

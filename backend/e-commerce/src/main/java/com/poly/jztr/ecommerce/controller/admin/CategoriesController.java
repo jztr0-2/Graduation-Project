@@ -1,17 +1,13 @@
 package com.poly.jztr.ecommerce.controller.admin;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 import javax.validation.Valid;
 
 import com.poly.jztr.ecommerce.service.CategoryService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,9 +23,6 @@ import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.CategoryDto;
 import com.poly.jztr.ecommerce.model.Category;
-import com.poly.jztr.ecommerce.repository.CategoryRespository;
-
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
 
 @RestControllerAdvice("admin/categories") 
 @CrossOrigin("localhost:3000")
@@ -56,7 +49,7 @@ public class CategoriesController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseObject> post(@RequestBody @Validated CategoryDto category) throws IllegalAccessException, InvocationTargetException{
+    public ResponseEntity<ResponseObject> post(@RequestBody @Validated CategoryDto category){
         Category cate = service.toCategory(category);
         return ResponseEntity.status(HttpStatus.OK).body(
         new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(cate)));
