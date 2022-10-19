@@ -18,4 +18,8 @@ public class AdminServiceImpl implements AdminService {
         return repository.findByLoginName(name);
     }
 
+    @Override
+    public <S extends Admin> S save(S entity) {
+        return repository.save(entity);
+    }
 }
