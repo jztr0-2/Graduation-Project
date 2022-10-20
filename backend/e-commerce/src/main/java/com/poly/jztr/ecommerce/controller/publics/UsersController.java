@@ -46,12 +46,12 @@ public class UsersController {
                         "login  successfully", jwtProvider.generateTokenLogin(login.getEmail())));
 
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                    new ResponseObject(422, "password is incorrect", "")
+                    new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "password is incorrect", "")
             );
         }
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                new ResponseObject(422, "email not found", "")
+                new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "email not found", "")
         );
     }
 
@@ -64,10 +64,10 @@ public class UsersController {
                         "login  successfully", jwtProvider.generateTokenLoginAdmin(login.getEmail())));
 
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                    new ResponseObject(422, "password is incorrect", ""));
+                    new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "password is incorrect", ""));
         }
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                new ResponseObject(422, "username not found", ""));
+                new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "username not found", ""));
     }
 
     @PostMapping("/register")
