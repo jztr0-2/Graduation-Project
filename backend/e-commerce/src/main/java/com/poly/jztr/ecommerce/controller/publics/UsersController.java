@@ -5,6 +5,7 @@ import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
 import com.poly.jztr.ecommerce.dto.LoginDto;
 import com.poly.jztr.ecommerce.dto.UserDto;
+import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
 import com.poly.jztr.ecommerce.model.Admin;
 import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.service.AdminService;
@@ -16,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Instant;
 import java.util.Optional;
 
 
@@ -71,10 +70,17 @@ public class UsersController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseObject> register(@RequestBody() @Validated UserDto dto) {
+    public ResponseEntity<ResponseObject> register(@RequestBody() @Validated UserDto dto) throws DuplicateEntryException {
         User user = new User();
+        if(service.findByEmail(dto.getEmail()).isPresent()) {
+            throw new DuplicateEntryException("Email", "Email is already exits");
+        }
         BeanUtils.copyProperties(dto, user);
         user.setStatus(Constant.USER_STATUS_ACTIVATED);
+        if (!dto.getPassword().equals(dto.getPasswordConfirmation()))
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "Password not same", ""));
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "", service.save(user)));

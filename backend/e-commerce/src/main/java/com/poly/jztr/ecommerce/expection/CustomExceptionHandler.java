@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,14 @@ public class CustomExceptionHandler {
         exception.getBindingResult().getFieldErrors().forEach(err ->{
            errors.put(err.getField(),err.getDefaultMessage());
         });
+        return ResponseError.build(HttpStatus.UNPROCESSABLE_ENTITY,"Unprocessable entity", errors);
+    }
+
+    @ExceptionHandler(DuplicateEntryException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseError handleDuplicateEntry(DuplicateEntryException exception){
+        Map<String, String> errors = new HashMap<String, String>();
+        errors.put(exception.getField(),exception.getMessage());
         return ResponseError.build(HttpStatus.UNPROCESSABLE_ENTITY,"Unprocessable entity", errors);
     }
 }
