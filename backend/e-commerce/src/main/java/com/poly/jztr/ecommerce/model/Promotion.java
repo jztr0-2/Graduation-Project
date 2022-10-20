@@ -43,4 +43,10 @@ public class Promotion {
 
     @Column(name = "deleted_at")
     private Instant deletedAt;
+
+    @Column(name = "status")
+    private Boolean status;
+
+    @Column(name = "type")
+    private Long type;
 }
