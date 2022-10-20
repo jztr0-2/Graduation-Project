@@ -19,4 +19,6 @@ public interface CategoryService {
     List<Category> findAll();
 
     void deleteById(Long aLong);
+
+    Optional<Category> findByName(String name);
 }

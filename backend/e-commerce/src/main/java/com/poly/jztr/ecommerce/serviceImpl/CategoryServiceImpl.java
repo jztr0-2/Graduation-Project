@@ -46,4 +46,9 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteById(Long aLong) {
         respository.deleteById(aLong);
     }
+
+    @Override
+    public Optional<Category> findByName(String name) {
+        return respository.findByName(name);
+    }
 }
