@@ -12,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice("admin/product")
-@CrossOrigin("localhost:3000")
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/admin/products")
 public class ProductsController {
 
