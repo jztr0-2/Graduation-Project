@@ -21,7 +21,7 @@ import java.util.Optional;
 
 
 @RestControllerAdvice("public/user")
-@CrossOrigin("localhost:3000")
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/public/users")
 public class UsersController {
 

@@ -25,7 +25,7 @@ import com.poly.jztr.ecommerce.dto.CategoryDto;
 import com.poly.jztr.ecommerce.model.Category;
 
 @RestControllerAdvice("admin/categories") 
-@CrossOrigin("localhost:3000")
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/admin/categories")
 public class CategoriesController {
 
