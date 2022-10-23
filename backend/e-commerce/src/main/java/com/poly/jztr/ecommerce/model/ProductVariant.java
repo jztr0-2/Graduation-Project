@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "product_details")
-public class ProductDetail {
+@Table(name = "product_variant")
+public class ProductVariant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -36,6 +36,10 @@ public class ProductDetail {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     private Image image;
+
+    public ProductVariant(Long productVariantId) {
+        this.id = productVariantId;
+    }
 
     public Long getId() {
         return id;

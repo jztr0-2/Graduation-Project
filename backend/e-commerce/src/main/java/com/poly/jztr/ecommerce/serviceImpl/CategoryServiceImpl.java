@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findAll() {
-        return respository.findAll();
+        return respository.findByDeleteAt(null);
     }
 
     @Override
@@ -51,4 +51,5 @@ public class CategoryServiceImpl implements CategoryService {
     public Optional<Category> findByName(String name) {
         return respository.findByName(name);
     }
+
 }

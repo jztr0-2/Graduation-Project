@@ -8,6 +8,7 @@ import java.time.Instant;
 public class OrderItem {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -15,8 +16,8 @@ public class OrderItem {
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "product_detail_id", nullable = false)
-    private Order productDetail;
+    @JoinColumn(name = "product_variant_id", nullable = false)
+    private ProductVariant productVariant;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
@@ -49,12 +50,9 @@ public class OrderItem {
         this.order = order;
     }
 
-    public Order getProductDetail() {
-        return productDetail;
-    }
 
-    public void setProductDetail(Order productDetail) {
-        this.productDetail = productDetail;
+    public void setProductVariant(ProductVariant productVariant) {
+        this.productVariant = productVariant;
     }
 
     public Integer getQuantity() {

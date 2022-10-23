@@ -34,12 +34,8 @@ public class CategoriesController {
 
     @Autowired
     CategoryService service;
-    
-    @GetMapping("")
-    public ResponseEntity<ResponseObject> getAll(Model model){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.findAll()));
-    }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getOne(Model model, @PathVariable("id") Long id){
