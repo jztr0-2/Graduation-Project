@@ -3,58 +3,13 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBox, faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import styles from './Form.module.scss';
+import { createNewProduct, resetProduct } from './handleProducts';
 import "./styles.css";
-import * as request from '~/utils/http';
+import Category from './Category';
 
 const cx = classNames.bind(styles);
 
 function Form({ types }) {
-
-  function getCategory(){
-    request.get("admin/categories")
-      .then((response) => {
-        const data = response.data;
-        const dataNew = ["laptop", "tv", "pin"];
-        console.log();
-
-        const jsx = (
-          <select name="selectCategory" id="" className={cx('products-category')}>
-              <option disabled selected>Select Category</option>
-              {dataNew.map((data) => {
-                <option value="1">${data}</option>
-              })}
-          </select>
-        );
-
-        ReactDOM.render(jsx, document.getElementById("productStatus"));
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }
-
-  getCategory();
-  const createNewProduct = (e) => {
-    e.preventDefault();
-    var { productName, selectStatus, selectCategory, description } = document.forms[1];
-
-    const product = {
-      name: productName.value,
-      status: Number(selectStatus.value),
-      description: description.value,
-      categoryId: Number(selectCategory.value),
-    }
-
-    console.log(product);
-    request.post("/admin/products", product)
-      .then(function (response) {
-        console.log(response)
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-  }
-
   // React States
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -176,16 +131,15 @@ function Form({ types }) {
             </div>
     
             <div className={cx('form-group')} id="productStatus">
-              
+              <select name="selectStatus" id="" className={cx('products-status')}>
+                  <option disabled selected>Select Status</option>
+                  <option value="0">Available</option>
+                  <option value="1">Sold Out</option>
+              </select>
             </div>
     
-            <div className={cx('form-group')}>
-              <select name="selectCategory" id="" className={cx('products-category')}>
-                <option disabled selected>Select Category</option>
-                <option value="1">B</option>
-                <option value="3">C</option>
-                <option value="4">D</option>
-              </select>
+            <div className={cx('form-group')} id="productCategory">
+              {<Category />}
             </div>
 
             <div className={cx('form-group')}>
@@ -205,7 +159,7 @@ function Form({ types }) {
           <button type="button" className={cx('btn', 'btn-create')} onClick={createNewProduct}>Create</button>
           <button type="button" className={cx('btn', 'btn-update')}>Update</button>
           <button type="button" className={cx('btn', 'btn-delete')}>Delete</button>
-          <button type="button" className={cx('btn', 'btn-reset')}>Reset</button>
+          <button type="button" className={cx('btn', 'btn-reset')} onClick={resetProduct}>Reset</button>
         </div>
       </form>
     );
