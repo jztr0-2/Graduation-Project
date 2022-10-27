@@ -18,6 +18,8 @@ public interface CategoryService {
 
     List<Category> findAll();
 
+    List<Category> findAllWithTree();
+
     void deleteById(Long aLong);
 
     Optional<Category> findByName(String name);

@@ -43,6 +43,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> findAllWithTree(){
+        return respository.findByParentId(null);
+    }
+
+    @Override
     public void deleteById(Long aLong) {
         respository.deleteById(aLong);
     }

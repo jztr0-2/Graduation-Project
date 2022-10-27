@@ -19,6 +19,8 @@ public class CategoriesController {
     @GetMapping("")
     public ResponseEntity<ResponseObject> getAll(){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.findAll()));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                        "Get category successfully",
+                        service.findAllWithTree()));
     }
 }
