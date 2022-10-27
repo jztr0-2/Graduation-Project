@@ -50,6 +50,10 @@ public class Category {
     this.updatedAt = Instant.now();
    }
 
+    public Category(Long id) {
+       this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
