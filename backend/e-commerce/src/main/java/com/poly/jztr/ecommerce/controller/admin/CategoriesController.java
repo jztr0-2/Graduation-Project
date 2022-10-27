@@ -1,8 +1,5 @@
 package com.poly.jztr.ecommerce.controller.admin;
 
-
-import javax.validation.Valid;
-
 import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
 import com.poly.jztr.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,12 +75,12 @@ public class CategoriesController {
         }
         Category cate = optionalCategory.get();
         Optional<Category> categoryOptionaName = service.findByName(category.getName());
-        if (categoryOptionaName.isPresent() && cate.getId() == category.getId()){
+        if (categoryOptionaName.isPresent() && cate.getId() == categoryOptionaName.get().getId()){
             throw new DuplicateEntryException("Name", "Category is exists");
         }
 
         cate.setName(category.getName());
-        cate.setParent(new Category(category.getParent_id()));
+        if(category.getParent_id() != null) cate.setParent(new Category(category.getParent_id()));
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(cate)));
