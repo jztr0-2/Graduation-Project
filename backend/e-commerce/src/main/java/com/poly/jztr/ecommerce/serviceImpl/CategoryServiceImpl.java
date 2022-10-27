@@ -17,11 +17,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public <S extends Category> S save(S entity) {
-        return respository.save(entity);
+        return respository.saveAndFlush(entity);
     }
     @Override
     public Optional<Category> findById(Long aLong) {
-        return respository.findById(aLong);
+        return respository.findByIdAndDeleteAt(aLong, null);
     }
 
     @Override

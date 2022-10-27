@@ -23,7 +23,7 @@ public class Category {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name = "parent_id")
     @JsonIgnore
     private Category parent;
@@ -44,6 +44,10 @@ public class Category {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
     @Fetch(FetchMode.SUBSELECT)
     private List<Category> childrent;
+
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    private List<Product> products;
 
    public Category(){
     this.createdAt = Instant.now();
