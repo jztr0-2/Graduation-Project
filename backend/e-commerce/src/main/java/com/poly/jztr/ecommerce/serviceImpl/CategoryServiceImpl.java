@@ -17,19 +17,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public <S extends Category> S save(S entity) {
-        return respository.save(entity);
+        return respository.saveAndFlush(entity);
     }
     @Override
     public Optional<Category> findById(Long aLong) {
-        return respository.findById(aLong);
+        return respository.findByIdAndDeleteAt(aLong, null);
     }
 
     @Override
     public  Category toCategory(CategoryDto dto){
         Category category = new Category();
         category.setName(dto.getName());
-        if(dto.getParent_id() != null)
-            category.setParent(respository.findById(dto.getParent_id()).get());
         return category;
     }
     @Override
@@ -42,10 +40,6 @@ public class CategoryServiceImpl implements CategoryService {
         return respository.findByDeleteAt(null);
     }
 
-    @Override
-    public List<Category> findAllWithTree(){
-        return respository.findByParentId(null);
-    }
 
     @Override
     public void deleteById(Long aLong) {
