@@ -21,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
     @Override
     public Optional<Category> findById(Long aLong) {
-        return respository.findByIdAndDeletedAt(aLong, null);
+        return respository.findByIdAndDeleteAt(aLong, null);
     }
 
     @Override
