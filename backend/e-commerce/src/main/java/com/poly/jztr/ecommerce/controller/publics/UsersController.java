@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Instant;
 import java.util.Optional;
 
 
@@ -85,4 +87,24 @@ public class UsersController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "", service.save(user)));
     }
+
+    @GetMapping("/init-admin")
+    public ResponseEntity<ResponseObject> initAdmin(){
+        Optional<Admin> admin = adminService.findByLoginName("admin");
+        if(admin.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                    "User name: admin, password: 123456", admin.get()));
+        }
+        Admin admin1 = new Admin();
+        admin1.setLoginName("admin");
+        admin1.setPassword(passwordEncoder.encode("123456"));
+        admin1.setSuperAdmin(true);
+        admin1.setStatus(1);
+        admin1.setUpdatedAt(Instant.now());
+        admin1.setCreatedAt(Instant.now());
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                "User name: admin, password: 123456", adminService.save(admin1)));
+    }
+
 }
