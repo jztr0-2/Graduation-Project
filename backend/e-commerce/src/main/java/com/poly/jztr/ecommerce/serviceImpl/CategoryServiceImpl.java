@@ -28,8 +28,6 @@ public class CategoryServiceImpl implements CategoryService {
     public  Category toCategory(CategoryDto dto){
         Category category = new Category();
         category.setName(dto.getName());
-        if(dto.getParent_id() != null)
-            category.setParent(respository.findById(dto.getParent_id()).get());
         return category;
     }
     @Override
@@ -42,10 +40,6 @@ public class CategoryServiceImpl implements CategoryService {
         return respository.findByDeleteAt(null);
     }
 
-    @Override
-    public List<Category> findAllWithTree(){
-        return respository.findByParentId(null);
-    }
 
     @Override
     public void deleteById(Long aLong) {

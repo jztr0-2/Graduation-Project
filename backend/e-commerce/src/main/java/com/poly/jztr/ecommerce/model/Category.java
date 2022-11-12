@@ -23,11 +23,6 @@ public class Category {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name = "parent_id")
-    @JsonIgnore
-    private Category parent;
-
     @Column(name = "name", length = 100)
     @NotBlank
     private String name;
@@ -40,10 +35,6 @@ public class Category {
 
     @Column(name = "delete_at")
     private Instant deleteAt;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
-    @Fetch(FetchMode.SUBSELECT)
-    private List<Category> childrent;
 
     @OneToMany(mappedBy = "category")
     @JsonIgnore
@@ -67,14 +58,6 @@ public class Category {
         this.updatedAt = Instant.now();
     }
 
-    public Category getParent() {
-        return parent;
-    }
-
-    public void setParent(Category parent) {
-        this.parent = parent;
-        this.updatedAt = Instant.now();
-    }
 
     public String getName() {
         return name;

@@ -21,6 +21,6 @@ public class CategoriesController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
                         "Get category successfully",
-                        service.findAllWithTree()));
+                        service.findAll()));
     }
 }

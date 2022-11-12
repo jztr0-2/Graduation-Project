@@ -80,7 +80,6 @@ public class CategoriesController {
         }
 
         cate.setName(category.getName());
-        if(category.getParent_id() != null) cate.setParent(new Category(category.getParent_id()));
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(cate)));

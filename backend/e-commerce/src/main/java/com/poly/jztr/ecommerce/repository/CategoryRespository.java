@@ -16,7 +16,5 @@ public interface CategoryRespository extends JpaRepository<Category, Long>{
     Optional<Category> findByName(String name);
     List<Category> findByDeleteAt(Instant deleted);
 
-    List<Category> findByParentId(Long id);
-
     Optional<Category> findByIdAndDeleteAt(Long aLong, Instant deleted);
 }
