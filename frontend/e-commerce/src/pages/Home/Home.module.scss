@@ -1,0 +1,200 @@
+// Faqs
+.faqs {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0 0 0;
+    .faq-item {
+        display: flex;
+        flex: 1;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 50px;
+        .faq-text {
+            p {
+                font-weight: 800;
+                font-size: 1.7rem;
+            }
+            span {
+                font-size: 1.4rem;
+            }
+        }
+        .faq-icon {
+            font-size: 3rem;
+        }
+    }
+    .faq-item + .faq-item {
+        border-left-style: groove;
+    }
+}
+// Cards
+.cards {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 50px;
+}
+/* best selling product */
+.best-selling-product-section {
+    position: relative;
+    padding: 60px 5vw;
+    .section-title {
+        text-transform: capitalize;
+        font-size: 30px;
+        margin-bottom: 30px;
+    }
+    .product-container {
+        display: flex;
+        justify-content: space-between;
+        .product-card {
+            border: 5px solid #d5be8b;
+            width: 230px;
+            height: 230px;
+            overflow: hidden;
+            position: relative;
+            background: #d5be8b;
+            .product-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: 0.5s;
+            }
+
+            .product-name {
+                position: absolute;
+                color: #fff;
+                text-transform: capitalize;
+                font-family: 'lato', sans-serif;
+                font-size: 25px;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 0;
+                transition: 0.5s;
+            }
+        }
+        .product-card:nth-child(even) {
+            border-color: #190c05;
+            background: #190c05;
+        }
+        .product-card:hover .product-name {
+            opacity: 1;
+        }
+        .product-card:hover .product-img {
+            opacity: 0.5;
+        }
+    }
+}
+
+/* image collage */
+
+.image-mid-section {
+    width: 100%;
+    height: 600px;
+    padding: 50px 5vw;
+    .image-collage {
+        width: 100%;
+        height: 100%;
+        background: url(https://images.unsplash.com/photo-1622473541207-c59995fa6b4c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8YWlyJTIwY29uZGl0aW9uZXJ8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60);
+        background-size: cover;
+        .image-collection {
+            position: relative;
+            display: block;
+            width: 50%;
+            height: 100%;
+            background: #fff;
+            margin: auto;
+            .collage-img {
+                position: absolute;
+                object-fit: cover;
+                transition: 0.5s;
+                border-radius: 4px;
+            }
+
+            .collage-img:nth-child(1) {
+                width: 350px;
+                height: 350px;
+                top: 20px;
+                left: 40px;
+            }
+
+            .collage-img:nth-child(2) {
+                width: 250px;
+                height: 250px;
+                top: 200px;
+                left: 200px;
+            }
+
+            .collage-img:nth-child(3) {
+                width: 250px;
+                height: 250px;
+                top: 100px;
+                left: 350px;
+            }
+
+            .collage-img:hover {
+                transform: translateY(-10px);
+            }
+        }
+    }
+}
+$blue: #29d9d5;
+$black: #111;
+$white: #fff;
+$bg-color: rgb(41, 41, 41);
+$light-color: #aaa;
+$border: 0.2rem solid $blue;
+
+@mixin grid($val) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax($val, 1fr));
+    gap: 1.5rem;
+}
+.heading {
+    margin: 0 0 2rem 4rem;
+
+    span {
+        color: $blue;
+        font-size: 2rem;
+    }
+
+    h1 {
+        font-size: 4rem;
+        color: $white;
+    }
+}
+.services {
+    padding: 3rem 4%;
+}
+.services .box-container {
+    text-transform: capitalize;
+    @include grid(28rem);
+
+    .box {
+        background: $bg-color;
+        border-radius: 1rem;
+        padding: 3rem;
+        text-align: center;
+        border: 0.2rem solid $bg-color;
+
+        &:hover {
+            border: $border;
+        }
+
+        svg {
+            font-size: 4rem;
+            color: $blue;
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            font-size: 2rem;
+            color: $white;
+        }
+
+        p {
+            padding: 1rem 0;
+            font-size: 1.4rem;
+            color: $light-color;
+            line-height: 2;
+        }
+    }
+}
