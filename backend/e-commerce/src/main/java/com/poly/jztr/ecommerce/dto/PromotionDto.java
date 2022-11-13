@@ -35,7 +35,5 @@ public class PromotionDto {
 
     @NotNull
     private Boolean status;
-
-    @NotNull
     private Long type;
 }

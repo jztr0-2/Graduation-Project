@@ -34,21 +34,22 @@ public class PromotionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseObject> getOne(Model model, @PathVariable("id") Long id){
+    public ResponseEntity<ResponseObject> getOne(@PathVariable("id") Long id){
         if(!service.existsById(id)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Data not found", null));
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.findById(id).get()));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully", service.findById(id).get()));
     }
 
     @PostMapping("")
     public ResponseEntity<ResponseObject> post(@RequestBody @Validated PromotionDto promotionDto) throws IllegalAccessException, InvocationTargetException{
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
+        promotion.setType(1L);
         return ResponseEntity.status(HttpStatus.OK).body(
-        new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(promotion)));
+        new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Crated promotion successfully", service.save(promotion)));
     
     }
 
