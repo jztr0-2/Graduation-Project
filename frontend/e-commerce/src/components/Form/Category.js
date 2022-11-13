@@ -9,8 +9,9 @@ function Category() {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        request.get("admin/categories")
+        request.get("public/categories")
             .then((response) => {
+                console.log(response.data);
                 setCategories(response.data);
             })
             .catch((error) => {
