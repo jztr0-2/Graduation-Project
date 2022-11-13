@@ -11,10 +11,11 @@ import java.time.Instant;
 @Entity
 @Table(name = "promotion")
 @Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Promotion {
+
+    public Promotion(){
+        this.createdAt = Instant.now();
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -43,4 +44,66 @@ public class Promotion {
 
     @Column(name = "deleted_at")
     private Instant deletedAt;
+
+    @Column(name = "status")
+    private Boolean status;
+
+    @Column(name = "type")
+
+    private Long type;
+
+    public void setId(Long id) {
+        this.id = id;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setPercent(Double percent) {
+        this.percent = percent;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setMaxAmount(Double maxAmount) {
+        this.maxAmount = maxAmount;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setExpire(Instant expire) {
+        this.expire = expire;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setDeletedAt(Instant deletedAt) {
+        this.deletedAt = deletedAt;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setType(Long type) {
+        this.type = type;
+        this.updatedAt = Instant.now();
+    }
 }
