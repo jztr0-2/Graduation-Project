@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBox, faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import styles from './Form.module.scss';
-import { createNewProduct, resetProduct } from './handleProducts';
+import { createNewProduct, resetProduct, checkRelated, addDetails, CreateDetailsElement } from './handleProducts';
 import "./styles.css";
 import Category from './Category';
 
@@ -142,8 +142,28 @@ function Form({ types }) {
               {<Category />}
             </div>
 
+
             <div className={cx('form-group')}>
               <textarea name="description" type="text" className={cx('products-description')} placeholder="Product's Description"/>
+            </div>
+
+            <div className={cx('form-group')}>
+              <div className={cx('checkbox-related')}>
+                <input onClick={checkRelated} type="checkbox" className={cx('products-related')} placeholder="Product's Description"/>
+                <span> No related products</span>
+              </div>
+            </div>
+
+            <div className={cx('form-group')}>
+              <div className={cx('group-details')}>
+                <div className={cx('list-details')}>
+                  {<CreateDetailsElement/>}
+                </div>
+                <div className={cx('products-details')}>
+                  <input type="text" onKeyDown={addDetails} name="detailsKey" className={cx('details-key')} placeholder="Key"/>
+                  <input type="text" onKeyDown={addDetails} name="detailsDescription" className={cx('details-value')} placeholder="Value"/>
+                </div>
+              </div>
             </div>
           </div>
 
