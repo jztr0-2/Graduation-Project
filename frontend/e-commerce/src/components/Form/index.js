@@ -3,9 +3,7 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBox, faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import styles from './Form.module.scss';
-import { createNewProduct, resetProduct, checkRelated, addDetails, CreateDetailsElement } from './handleProducts';
 import "./styles.css";
-import Category from './Category';
 
 const cx = classNames.bind(styles);
 
@@ -31,6 +29,17 @@ function Form({ types }) {
     uname: "invalid username",
     pass: "invalid password"
   };
+
+  const fields = [
+    {
+      type:'text',
+      name:'username',
+      payload: {
+        state: "",
+        setState: function() {}
+      }
+    }
+  ]
 
   const handleSubmit = (event) => {
     //Prevent page reload
@@ -121,76 +130,6 @@ function Form({ types }) {
         </form>
       </div>
     );
-
-    const renderFormAddProducts = (
-      <form action="" className={cx('form-products')}>
-        <div className={cx('form-information')}>
-          <div className={cx('form-content')}>
-            <div className={cx('form-group')}>
-              <input type="text" className={cx('products-name')} name="productName" placeholder="Product's Name"/>
-            </div>
-    
-            <div className={cx('form-group')} id="productStatus">
-              <select name="selectStatus" id="" className={cx('products-status')}>
-                  <option disabled selected>Select Status</option>
-                  <option value="0">Available</option>
-                  <option value="1">Sold Out</option>
-              </select>
-            </div>
-    
-            <div className={cx('form-group')} id="productCategory">
-              {<Category />}
-            </div>
-
-
-            <div className={cx('form-group')}>
-              <textarea name="description" type="text" className={cx('products-description')} placeholder="Product's Description"/>
-            </div>
-
-            <div className={cx('form-group')}>
-              <div className={cx('checkbox-related')}>
-                <input onClick={checkRelated} type="checkbox" className={cx('products-related')} placeholder="Product's Description"/>
-                <span> No related products</span>
-              </div>
-            </div>
-
-            <div className={cx('form-group')}>
-              <div className={cx('group-details')}>
-                <div className={cx('list-details')}>
-                  {<CreateDetailsElement/>}
-                </div>
-                <div className={cx('products-details')}>
-                  <input type="text" onKeyDown={addDetails} name="detailsKey" className={cx('details-key')} placeholder="Key"/>
-                  <input type="text" onKeyDown={addDetails} name="detailsDescription" className={cx('details-value')} placeholder="Value"/>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={cx('form-img')}>
-            <div className={cx('form-group')}>
-              <div className={cx('images')}></div>
-              <input name='image' type="file" className={cx('products-name')} />
-            </div>
-          </div>
-        </div>
-
-        <div className={cx('form-cta')}>
-          <button type="button" className={cx('btn', 'btn-create')} onClick={createNewProduct}>Create</button>
-          <button type="button" className={cx('btn', 'btn-update')}>Update</button>
-          <button type="button" className={cx('btn', 'btn-delete')}>Delete</button>
-          <button type="button" className={cx('btn', 'btn-reset')} onClick={resetProduct}>Reset</button>
-        </div>
-      </form>
-    );
-    
-    if (types === "addProducts") {
-      return <div className={cx('wrapper')}>
-                <div className="app">
-                  {renderFormAddProducts}
-                </div>
-              </div>
-    }
 
     if(types === "log") {    
       return  <div className={cx('wrapper')}>
