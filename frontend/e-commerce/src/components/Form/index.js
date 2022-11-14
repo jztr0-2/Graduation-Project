@@ -8,8 +8,7 @@ import "./styles.css";
 const cx = classNames.bind(styles);
 
 function Form({ types }) {
-
-     // React States
+  // React States
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -30,6 +29,17 @@ function Form({ types }) {
     uname: "invalid username",
     pass: "invalid password"
   };
+
+  const fields = [
+    {
+      type:'text',
+      name:'username',
+      payload: {
+        state: "",
+        setState: function() {}
+      }
+    }
+  ]
 
   const handleSubmit = (event) => {
     //Prevent page reload
@@ -59,85 +69,93 @@ function Form({ types }) {
     name === errorMessages.name && (
       <div className="error">{errorMessages.message}</div>
     );
+
     const renderFormLogin = (
-     
-        <div className="form">
-            <div className="top">
-            
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="input-container">
+      <div className="form">
+          <div className="top">
           
-              <label><FontAwesomeIcon icon={ faUser} className={cx('icon-item')} />       USERNAME </label>
-              <input type="text" name="uname" required />
-              {renderErrorMessage("uname")}
-            </div>
-            <div className="input-container">
-              <label><FontAwesomeIcon icon={ faLock} className={cx('icon-item')} />       PASSWORD </label>
-              <input type="password" name="pass" required />
-              {renderErrorMessage("pass")}
-            </div>
-            <div className="button-container">
-              <input type="submit" value="LOGIN"/>
-            </div>
-          </form>
         </div>
-      );
-      const renderFormReg = (
-        <div className="form">
-           <div className="top">
-            
-            </div>
-          <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="input-container">
-              <label><FontAwesomeIcon icon={ faBox} className={cx('icon-item')} /> YOUR EMAIL </label>
-              <input type="text" name="email" required />
-              {renderErrorMessage("email")}
-            </div>
-            <div className="input-container">
-              <label><FontAwesomeIcon icon={ faUser} className={cx('icon-item')} />  USERNAME </label>
-              <input type="text" name="uname" required />
-              {renderErrorMessage("uname")}
-            </div>
-            <div className="input-container">
-              <label><FontAwesomeIcon icon={ faLock} className={cx('icon-item')} /> PASSWORD </label>
-              <input type="password" name="pass" required />
-              {renderErrorMessage("pass")}
-            </div>
-            <div className="input-container">
-              <label><FontAwesomeIcon icon={ faLock} className={cx('icon-item')} /> COMFIRM PASSWORD </label>
-              <input type="password" name="cfpass" required />
-              {renderErrorMessage("cfpass")}
-            </div>
-            <div className="button-container">
-              <input type="submit" value="Đăng Ký"/>
-            </div>
-          </form>
+        
+            <label><FontAwesomeIcon icon={faUser} className={cx('icon-item')} />       USERNAME </label>
+            <input type="text" name="uname" required />
+            {renderErrorMessage("uname")}
+          </div>
+          <div className="input-container">
+            <label><FontAwesomeIcon icon={faLock} className={cx('icon-item')} />       PASSWORD </label>
+            <input type="password" name="pass" required />
+            {renderErrorMessage("pass")}
+          </div>
+          <div className="button-container">
+            <input type="submit" value="LOGIN"/>
+          </div>
+        </form>
+      </div>
+    );
+
+    const renderFormReg = (
+      <div className="form">
+        <div className="top">
+          
         </div>
-      );
+        <form onSubmit={handleSubmit}>
+          <div className="input-container">
+            <label><FontAwesomeIcon icon={faBox} className={cx('icon-item')} /> YOUR EMAIL </label>
+            <input type="text" name="email" required />
+            {renderErrorMessage("email")}
+          </div>
+
+          <div className="input-container">
+            <label><FontAwesomeIcon icon={faUser} className={cx('icon-item')} />  USERNAME </label>
+            <input type="text" name="uname" required />
+            {renderErrorMessage("uname")}
+          </div>
+
+          <div className="input-container">
+            <label><FontAwesomeIcon icon={faLock} className={cx('icon-item')} /> PASSWORD </label>
+            <input type="password" name="pass" required />
+            {renderErrorMessage("pass")}
+          </div>
+
+          <div className="input-container">
+            <label><FontAwesomeIcon icon={faLock} className={cx('icon-item')} /> COMFIRM PASSWORD </label>
+            <input type="password" name="cfpass" required />
+            {renderErrorMessage("cfpass")}
+          </div>
+
+          <div className="button-container">
+            <input type="submit" value="Đăng Ký"/>
+          </div>
+        </form>
+      </div>
+    );
+
     if(types === "log") {    
-        return <div className={cx('wrapper')}>
-            <div className="app">
-      <div className="login-form">
-        <div className="title">LogIn System</div>
-        {isSubmitted ? <div>Noti: Login is successfully!</div> : renderFormLogin}
-      </div>
-    </div>
-        </div>
-    } if(types === "reg"){
-        return <div className={cx('wrapper')}>
-               <div className="app">
-      <div className="login-form">
-        <div className="title">Reg Account</div>
-        {isSubmitted ? <div>Noti: Reg is successfully!</div> : renderFormReg}
-      </div>
-    </div>
-        </div>
+      return  <div className={cx('wrapper')}>
+                <div className="app">
+                  <div className="login-form">
+                    <div className="title">LogIn System</div>
+                    {isSubmitted ? <div>Noti: Login is successfully!</div> : renderFormLogin}
+                  </div>
+                </div>
+              </div>
+    } 
+    
+    if(types === "reg") {
+      return  <div className={cx('wrapper')}>
+                <div className="app">
+                  <div className="login-form">
+                    <div className="title">Reg Account</div>
+                    {isSubmitted ? <div>Noti: Reg is successfully!</div> : renderFormReg}
+                  </div>
+                </div>
+              </div>
     }
     else{
-return<div></div>
+      return<div></div>
     }
    
-}
+  }
 
 export default Form;
