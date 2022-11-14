@@ -28,6 +28,10 @@ public class Address {
     @Column(name = "phone", nullable = false, length = 15)
     private String phone;
 
+    public Address(Long addressId) {
+        this.id =addressId;
+    }
+
     public Long getId() {
         return id;
     }

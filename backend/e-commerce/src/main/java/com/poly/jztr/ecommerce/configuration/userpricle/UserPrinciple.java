@@ -30,7 +30,8 @@ public class UserPrinciple implements UserDetails {
 
 //        roleArr = (String[]) this.getAuthorities().toArray();
     }
-    public UserPrinciple(){
+
+    public UserPrinciple() {
     }
 
     private String viewName;
@@ -42,11 +43,12 @@ public class UserPrinciple implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> roles;
 
-    private String [] roleArr;
+    private String[] roleArr;
 
-    public String getViewName(){
-        return  this.viewName;
+    public String getViewName() {
+        return this.viewName;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -83,12 +85,19 @@ public class UserPrinciple implements UserDetails {
     }
 
     public static UserPrinciple build(User customer, Admin admin, Set<GrantedAuthority> roles) {
-        List<GrantedAuthority> lst = new ArrayList<>();
-            System.out.println("Here");
-            UserPrinciple u = new UserPrinciple(1, "Name",
-                    "Hide", lst);
-            u.setRoles(lst);
-            System.out.println("Role user");
-            return u;
+        Long id = 1L;
+        String name;
+        if (customer != null) {
+            id = customer.getId();
+            name = customer.getFirstName() + " " + customer.getLastName();
+        } else {
+            id = Long.valueOf(admin.getId());
+            name = admin.getLoginName();
         }
+
+        UserPrinciple u = new UserPrinciple(Math.toIntExact(id), name,
+                "Hide", roles);
+        u.setRoles(roles);
+        return u;
+    }
 }

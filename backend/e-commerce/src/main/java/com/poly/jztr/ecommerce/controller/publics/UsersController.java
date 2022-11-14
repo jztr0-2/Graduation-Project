@@ -5,6 +5,7 @@ import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
 import com.poly.jztr.ecommerce.dto.LoginDto;
 import com.poly.jztr.ecommerce.dto.UserDto;
+import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
 import com.poly.jztr.ecommerce.model.Admin;
 import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.service.AdminService;
@@ -17,11 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.Optional;
 
 
 @RestControllerAdvice("public/user")
-@CrossOrigin("localhost:3000")
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/public/users")
 public class UsersController {
 
@@ -45,12 +47,12 @@ public class UsersController {
                         "login  successfully", jwtProvider.generateTokenLogin(login.getEmail())));
 
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                    new ResponseObject(422, "password is incorrect", "")
+                    new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "password is incorrect", "")
             );
         }
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                new ResponseObject(422, "email not found", "")
+                new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "email not found", "")
         );
     }
 
@@ -63,19 +65,46 @@ public class UsersController {
                         "login  successfully", jwtProvider.generateTokenLoginAdmin(login.getEmail())));
 
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                    new ResponseObject(422, "password is incorrect", ""));
+                    new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "password is incorrect", ""));
         }
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                new ResponseObject(422, "username not found", ""));
+                new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "username not found", ""));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseObject> register(@RequestBody() @Validated UserDto dto) {
+    public ResponseEntity<ResponseObject> register(@RequestBody() @Validated UserDto dto) throws DuplicateEntryException {
         User user = new User();
+        if(service.findByEmail(dto.getEmail()).isPresent()) {
+            throw new DuplicateEntryException("Email", "Email is already exits");
+        }
         BeanUtils.copyProperties(dto, user);
         user.setStatus(Constant.USER_STATUS_ACTIVATED);
+        if (!dto.getPassword().equals(dto.getPasswordConfirmation()))
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "Password not same", ""));
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "", service.save(user)));
     }
+
+    @GetMapping("/init-admin")
+    public ResponseEntity<ResponseObject> initAdmin(){
+        Optional<Admin> admin = adminService.findByLoginName("admin");
+        if(admin.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                    "User name: admin, password: 123456", admin.get()));
+        }
+        Admin admin1 = new Admin();
+        admin1.setLoginName("admin");
+        admin1.setPassword(passwordEncoder.encode("123456"));
+        admin1.setSuperAdmin(true);
+        admin1.setStatus(1);
+        admin1.setUpdatedAt(Instant.now());
+        admin1.setCreatedAt(Instant.now());
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                "User name: admin, password: 123456", adminService.save(admin1)));
+    }
+
 }

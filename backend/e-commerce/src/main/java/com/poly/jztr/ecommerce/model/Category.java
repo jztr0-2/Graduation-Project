@@ -4,22 +4,24 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.poly.jztr.ecommerce.dto.CategoryDto;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.Instant;
+import java.util.List;
+
 
 @Entity
 @Table(name = "categories")
+@Setter
+@Getter
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
-    @JoinColumn(name = "parent_id")
-    private Category parent;
 
     @Column(name = "name", length = 100)
     @NotBlank
@@ -34,10 +36,18 @@ public class Category {
     @Column(name = "delete_at")
     private Instant deleteAt;
 
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    private List<Product> products;
+
    public Category(){
     this.createdAt = Instant.now();
     this.updatedAt = Instant.now();
    }
+
+    public Category(Long id) {
+       this.id = id;
+    }
 
     public Long getId() {
         return id;
@@ -48,14 +58,6 @@ public class Category {
         this.updatedAt = Instant.now();
     }
 
-    public Category getParent() {
-        return parent;
-    }
-
-    public void setParent(Category parent) {
-        this.parent = parent;
-        this.updatedAt = Instant.now();
-    }
 
     public String getName() {
         return name;
@@ -73,21 +75,5 @@ public class Category {
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
         
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Instant getDeleteAt() {
-        return deleteAt;
-    }
-
-    public void setDeleteAt(Instant deleteAt) {
-        this.deleteAt = deleteAt;
     }
 }
