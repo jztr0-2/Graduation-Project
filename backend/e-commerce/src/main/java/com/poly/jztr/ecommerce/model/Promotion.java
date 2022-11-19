@@ -45,9 +45,6 @@ public class Promotion {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
-    @Column(name = "status")
-    private Boolean status;
-
     @Column(name = "type")
 
     private Long type;
@@ -97,10 +94,7 @@ public class Promotion {
         this.updatedAt = Instant.now();
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
-        this.updatedAt = Instant.now();
-    }
+
 
     public void setType(Long type) {
         this.type = type;
