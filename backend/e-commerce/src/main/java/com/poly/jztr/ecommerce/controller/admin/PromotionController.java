@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 
 @RestControllerAdvice("admin/promotion")
-@CrossOrigin("localhost:3000")
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/admin/promotion")
 public class PromotionController {
 
