@@ -5,6 +5,8 @@ import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.repository.ProductRepository;
 import com.poly.jztr.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,5 +40,9 @@ public class ProductServiceImpl implements ProductService {
         product.setName(dto.getName());
         product.setStatus(dto.getStatus());
         return product;
+    }
+    @Override
+    public Page<Product> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 }
