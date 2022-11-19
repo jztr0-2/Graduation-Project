@@ -1,10 +1,18 @@
 package com.poly.jztr.ecommerce.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
+@Where(clause = "deleted_at is null")
+@Getter
+@Setter
 public class Product {
 
     public Product() {
@@ -44,6 +52,9 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "product")
+    public List<ProductVariant> productVariants;
+
     public Category getCategory() {
         return this.category;
     }
@@ -61,43 +72,28 @@ public class Product {
         this.updatedAt = Instant.now();
     }
 
-    public String getName() {
-        return name;
-    }
 
     public void setName(String name) {
         this.name = name;
         this.updatedAt = Instant.now();
     }
 
-    public Integer getStatus() {
-        return status;
-    }
 
     public void setStatus(Integer status) {
         this.status = status;
         this.updatedAt = Instant.now();
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public Instant getDeletedAt() {
-        return deletedAt;
-    }
 
     public void setDeletedAt(Instant deletedAt) {
         this.deletedAt = deletedAt;
@@ -110,10 +106,6 @@ public class Product {
     public void setDescription(String description) {
         this.description = description;
         this.updatedAt = Instant.now();
-    }
-
-    public Image getImage() {
-        return image;
     }
 
     public void setImage(Image image) {

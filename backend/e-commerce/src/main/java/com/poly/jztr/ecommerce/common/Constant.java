@@ -11,4 +11,8 @@ public class Constant {
     public static String RESPONSE_STATUS_NOTFOUND = "NOT_FOUND";
 
     public static String RESPONSE_STATUS_UNPROCESSABLE_ENTITY = "UNPROCESSABLE_ENTITY";
+
+    public static Integer SORT_ASC = 1;
+
+    public static Integer SORT_DESC = 2;
 }
