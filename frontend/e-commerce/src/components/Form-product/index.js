@@ -41,57 +41,54 @@ function FormProducts({fields}) {
   };
 
   return (
-    // <form action="" className={cx('form-products')}>
-    //   <div className={cx('form-information')}>
-    //     <div className={cx('form-content')}>
-    //       <div className={cx('form-group')}>
-    //         <input ref={ref} type="text" className={cx('products-name')} name="productName" placeholder="Product's Name"/>
-    //       </div>
+    <form action="" className={cx('form-products')}>
+      <div className={cx('form-information')}>
+        <div className={cx('form-content')}>
+          <div className={cx('form-group')}>
+            <input ref={ref} type="text" className={cx('products-name')} name="productName" placeholder="Product's Name"/>
+          </div>
   
-    //       <div className={cx('form-group')} id="productStatus">
-    //         <select name="selectStatus" id="" className={cx('products-status')}>
-    //             <option disabled selected>Select Status</option>
-    //             <option value="0" ref={ref}>Available</option>
-    //             <option value="1" ref={ref}>Sold Out</option>
-    //         </select>
-    //       </div>
+          <div className={cx('form-group')} id="productStatus">
+            <select name="selectStatus" id="" className={cx('products-status')}>
+                <option disabled selected>Select Status</option>
+                <option value="0" ref={ref}>Available</option>
+                <option value="1" ref={ref}>Sold Out</option>
+            </select>
+          </div>
   
-    //       <div className={cx('form-group')} id="productCategory">
-    //         {/* {<Category />} */}
-    //       </div>
+          <div className={cx('form-group')} id="productCategory">
+            {/* {<Category />} */}
+          </div>
 
           
-    //       <div className={cx('form-group')}>
-    //         <textarea name="description" ref={ref} type="text" className={cx('products-description')} placeholder="Product's Description"/>
-    //       </div>
+          <div className={cx('form-group')}>
+            <textarea name="description" ref={ref} type="text" className={cx('products-description')} placeholder="Product's Description"/>
+          </div>
 
-    //       <div className={cx('form-group')}>
-    //         <div className={cx('checkbox-related')}>
-    //           <input  type="checkbox" className={cx('products-related')} placeholder="Product's Description" onChange={onChange} checked={isCheck}/>
-    //           <span> No related products</span>
-    //         </div>
-    //       </div>
+          <div className={cx('form-group')}>
+            <div className={cx('checkbox-related')}>
+              <input  type="checkbox" className={cx('products-related')} placeholder="Product's Description" onChange={onChange} checked={isCheck}/>
+              <span> No related products</span>
+            </div>
+          </div>
 
-    //       {isCheck && <DetailsTable />}
-    //     </div>
+          {isCheck && <DetailsTable />}
+        </div>
 
-    //     <div className={cx('form-img')}>
-    //       <div className={cx('form-group')}>
-    //         <div className={cx('images')}></div>
-    //         <input name='image' type="file" className={cx('products-name')} />
-    //       </div>
-    //     </div>
-    //   </div>
+        <div className={cx('form-img')}>
+          <div className={cx('form-group')}>
+            <div className={cx('images')}></div>
+            <input name='image' type="file" className={cx('products-name')} />
+          </div>
+        </div>
+      </div>
 
-    //   <div className={cx('form-cta')}>
-    //     <button type="button" className={cx('btn', 'btn-create')} onClick={createNewProduct}>Create</button>
-    //     <button type="button" className={cx('btn', 'btn-update')}>Update</button>
-    //     <button type="button" className={cx('btn', 'btn-delete')}>Delete</button>
-    //     <button type="button" className={cx('btn', 'btn-reset')} onClick={resetProduct}>Reset</button>
-    //   </div>
-    // </form>
-    <form>
-      
+      <div className={cx('form-cta')}>
+        <button type="button" className={cx('btn', 'btn-create')} onClick={createNewProduct}>Create</button>
+        <button type="button" className={cx('btn', 'btn-update')}>Update</button>
+        <button type="button" className={cx('btn', 'btn-delete')}>Delete</button>
+        <button type="button" className={cx('btn', 'btn-reset')} onClick={resetProduct}>Reset</button>
+      </div>
     </form>
   );
 
