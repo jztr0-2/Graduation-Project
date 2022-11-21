@@ -20,13 +20,15 @@ import CategoryProdCard from '~/components/CategoryProdCard';
 import SessionComp from '~/components/SessionComp';
 import CategoryCard from '~/components/CategoryCard';
 import ProdCard from '~/components/ProdCard';
+import {get} from '~/utils/http'
+import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 function Home() {
+    const [products, setProduct] = useState([])
     useEffect(() => {
         const collageImages = [...document.getElementsByName('collage-img')];
-        console.log('Collage images: ', collageImages);
         collageImages.map((item, i) => {
             item.addEventListener('mouseover', () => {
                 collageImages.map((image, index) => {
@@ -44,6 +46,24 @@ function Home() {
             });
         });
     }, []);
+
+    useEffect(()=>{
+        get("public/products/index",{}).then(res=>{
+            setProduct(res.data)
+        })
+    }, [])
+
+    function renderProduct(){
+        if(products.length){
+            return products.map(product =>{
+                return <ProdCard key = {`key-${new Date().getTime()}`} name = {product?.name} description = {product?.description} price = {product.unitPrice} />
+            })
+        }else{
+            return [];
+        }
+    }
+
+
     /* Category cards*/
     const categoryCards = [
         <CategoryCard
@@ -72,7 +92,7 @@ function Home() {
         />,
     ];
     /* Product cards */
-    const productCards = [<ProdCard />, <ProdCard />, <ProdCard />, <ProdCard />];
+    const productCards = renderProduct()
     return (
         <div className={cx('wrapper')}>
             {/* <!--==================== CATEGORY CARD ====================--> */}

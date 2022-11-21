@@ -16,15 +16,11 @@ http.interceptors.request.use(function (config) {
 
 
 export const get = async (path, options = {}) => {
-    // options.put(headers)
-
-
     const response = await http.get(path, options);
     return response.data;
 };
 
 export const post = async (path, options = {}) => {
-    // options.put(headers)
     const response = await http.post(path, options);
     return response;
 };
