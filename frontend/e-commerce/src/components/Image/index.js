@@ -1,11 +1,11 @@
 import { useState, forwardRef } from 'react';
 import images from '~/assets/images';
 const Image = forwardRef(
-    ({ src, alt, fallback: custonFallback = images.noImage, ...props }, ref) => {
+    ({ src, alt, fallback: customFallback = images.noImage, name, ...props }, ref) => {
         const [fallback, setFallback] = useState('');
 
         const handleErrLoadingImg = () => {
-            setFallback(custonFallback);
+            setFallback(customFallback);
         };
 
         return (
@@ -13,6 +13,7 @@ const Image = forwardRef(
                 ref={ref}
                 src={fallback || src}
                 alt={alt}
+                name={name}
                 {...props}
                 onError={handleErrLoadingImg}
             />

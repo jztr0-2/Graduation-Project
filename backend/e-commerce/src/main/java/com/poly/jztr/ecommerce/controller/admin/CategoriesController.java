@@ -1,17 +1,11 @@
 package com.poly.jztr.ecommerce.controller.admin;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-import javax.validation.Valid;
-
+import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
 import com.poly.jztr.ecommerce.service.CategoryService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,26 +21,22 @@ import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.CategoryDto;
 import com.poly.jztr.ecommerce.model.Category;
-import com.poly.jztr.ecommerce.repository.CategoryRespository;
 
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
+import java.time.Instant;
+import java.util.Optional;
 
 @RestControllerAdvice("admin/categories") 
-@CrossOrigin("localhost:3000")
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/admin/categories")
 public class CategoriesController {
 
     @Autowired
     CategoryService service;
-    
-    @GetMapping("")
-    public ResponseEntity<ResponseObject> getAll(Model model){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.findAll()));
-    }
+
+
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseObject> getOne(Model model, @PathVariable("id") Long id){
+    public ResponseEntity<ResponseObject> getOne(@PathVariable("id") Long id){
         if(!service.existsById(id)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
@@ -56,31 +46,55 @@ public class CategoriesController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseObject> post(@RequestBody @Validated CategoryDto category) throws IllegalAccessException, InvocationTargetException{
+    public ResponseEntity<ResponseObject> post(@RequestBody @Validated CategoryDto category) throws DuplicateEntryException {
+        if(category.getId() != null) {
+            Optional<Category> categoryDb = service.findById(category.getId());
+            if(categoryDb.isPresent()) {
+                Category newCate = categoryDb.get();
+                newCate.setName(category.getName());
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Category Success", service.save(newCate)));
+            }
+        }
+        if(service.findByName(category.getName()).isPresent()) {
+            throw new DuplicateEntryException("Name", "Category is exists");
+        }
+
         Category cate = service.toCategory(category);
         return ResponseEntity.status(HttpStatus.OK).body(
-        new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(cate)));
-    
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(cate)));
+
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseObject> put(@Valid @PathVariable("id") Long id, @RequestBody CategoryDto category){
-        if(!service.existsById(id)){
+    public ResponseEntity<ResponseObject> put(@PathVariable("id") Long id,@RequestBody @Validated CategoryDto category) throws DuplicateEntryException {
+        Optional<Category> optionalCategory = service.findById(id);
+        if(optionalCategory.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Category not found", null));
         }
-        Category cate = service.toCategory(category);
+        Category cate = optionalCategory.get();
+        Optional<Category> categoryOptionaName = service.findByName(category.getName());
+        if (categoryOptionaName.isPresent() && cate.getId() == categoryOptionaName.get().getId()){
+            throw new DuplicateEntryException("Name", "Category is exists");
+        }
+
+        cate.setName(category.getName());
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(cate)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> delete(@PathVariable("id") Long id, Model model){
-        if(!service.existsById(id)){
+        Optional<Category> cate = service.findById(id);
+        if(cate.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
         }
-        service.deleteById(id);
+        Category category = cate.get();
+        category.setDeleteAt(Instant.now());
+        service.save(category);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", null));
     }

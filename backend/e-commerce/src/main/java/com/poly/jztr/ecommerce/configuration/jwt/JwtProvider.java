@@ -102,6 +102,8 @@ public class JwtProvider {
     }
 
     public String getUsernameFromToken(String token) {
+        if(token.startsWith("Bearer "))
+            token = token.replace("Bearer ", "");
         String username = null;
         try {
             JWTClaimsSet claimsSet = getClaimsSetFromToken(token);

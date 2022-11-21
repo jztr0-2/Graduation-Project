@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface AdminService {
     Optional<Admin> findByLoginName(String name);
+
+    <S extends Admin> S save(S entity);
 }

@@ -1,10 +1,18 @@
 package com.poly.jztr.ecommerce.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@Setter
+@Getter
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,12 +43,21 @@ public class Order {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<OrderItem> orderItems;
+
+    public Order(){
+        this.createdAt = Instant.now();
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+        this.updatedAt = Instant.now();
     }
 
     public User getUser() {
@@ -49,6 +66,7 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
+        this.updatedAt = Instant.now();
     }
 
     public Address getAddress() {
@@ -56,6 +74,7 @@ public class Order {
     }
 
     public void setAddress(Address address) {
+        this.updatedAt = Instant.now();
         this.address = address;
     }
 
@@ -64,6 +83,7 @@ public class Order {
     }
 
     public void setStatus(Integer status) {
+        this.updatedAt = Instant.now();
         this.status = status;
     }
 
@@ -72,31 +92,7 @@ public class Order {
     }
 
     public void setDescription(String description) {
+        this.updatedAt = Instant.now();
         this.description = description;
     }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Instant getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(Instant deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
 }
