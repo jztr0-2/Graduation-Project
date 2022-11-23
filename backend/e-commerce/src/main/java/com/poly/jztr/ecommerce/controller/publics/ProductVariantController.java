@@ -30,7 +30,7 @@ public class ProductVariantController {
 
     @GetMapping("index")
     public ResponseEntity<ResponseObject>getTopNewProduct(){
-        Pageable pageable = CustomPageable.getDefaultPage("updatedAt", Constant.SORT_DESC);
+        Pageable pageable = CustomPageable.getPage("updatedAt", Constant.SORT_DESC);
         Page<Product> products = service.findAll(pageable);
         List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
         return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,

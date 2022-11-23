@@ -33,8 +33,11 @@ public class Promotion {
     @Column(name = "max_reduction_amount")
     private Double maxAmount;
 
-    @Column(name = "promo_expire")
-    private Instant expire;
+    @Column(name = "start_date")
+    private Instant startDate;
+
+    @Column(name = "end_date")
+    private Instant endDate;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
