@@ -39,10 +39,10 @@ public class CategoriesController {
     public ResponseEntity<ResponseObject> getOne(@PathVariable("id") Long id){
         if(!service.existsById(id)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Category", null));
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.findById(id).get()));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Found Category", service.findById(id).get()));
     }
 
     @PostMapping("")
@@ -82,7 +82,7 @@ public class CategoriesController {
         cate.setName(category.getName());
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(cate)));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Category success", service.save(cate)));
     }
 
     @DeleteMapping("/{id}")
