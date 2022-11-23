@@ -15,4 +15,10 @@ public class Constant {
     public static Integer SORT_ASC = 1;
 
     public static Integer SORT_DESC = 2;
+
+    public static Integer IMAGE_TYPE_USER = 1;
+
+    public static Integer IMAGE_TYPE_PRODUCT_AVT = 2;
+
+    public static Integer IMAGE_TYPE_PRODUCT_MULTIPLE = 3;
 }
