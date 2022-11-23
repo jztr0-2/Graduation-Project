@@ -2,6 +2,7 @@ package com.poly.jztr.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,8 +11,12 @@ import java.time.Instant;
 @Entity
 @Table(name = "product_variant")
 @AllArgsConstructor
-@NoArgsConstructor
+@Getter
 public class ProductVariant {
+
+    public ProductVariant(){
+        this.createdAt = Instant.now();
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -48,78 +53,51 @@ public class ProductVariant {
         this.id = productVariantId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Product getProduct() {
-        return product;
+        this.updatedAt = Instant.now();
     }
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-    public String getDescription() {
-        return description;
+        this.updatedAt = Instant.now();
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Double getUnitPrice() {
-        return unitPrice;
+        this.updatedAt = Instant.now();
     }
 
     public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
+        this.updatedAt = Instant.now();
     }
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
+        this.updatedAt = Instant.now();
     }
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public Instant getDeletedAt() {
-        return deletedAt;
+        this.updatedAt = Instant.now();
     }
 
     public void setDeletedAt(Instant deletedAt) {
         this.deletedAt = deletedAt;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
+        this.updatedAt = Instant.now();
     }
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public Image getImage() {
-        return image;
+        this.updatedAt = Instant.now();
     }
 
     public void setImage(Image image) {
         this.image = image;
+        this.updatedAt = Instant.now();
     }
-
-/*
+    /*
   TODO [JPA Buddy] create field to map the 'details' column
    Available actions: Define target Java type | Uncomment as is | Remove column mapping
   @Column(name = "details", columnDefinition = "JSON(1073741824) not null")

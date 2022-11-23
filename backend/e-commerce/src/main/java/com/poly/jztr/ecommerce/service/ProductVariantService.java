@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ProductVariantService {
     List<ProductVariant> toProductVariant(List<Product> products);
+
+    <S extends ProductVariant> S save(S entity);
 }
