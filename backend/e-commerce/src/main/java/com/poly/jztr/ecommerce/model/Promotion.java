@@ -77,8 +77,13 @@ public class Promotion {
         this.updatedAt = Instant.now();
     }
 
-    public void setExpire(Instant expire) {
-        this.expire = expire;
+    public void setStartDate(Instant expire) {
+        this.startDate = expire;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setEndDate(Instant expire) {
+        this.endDate = expire;
         this.updatedAt = Instant.now();
     }
 
