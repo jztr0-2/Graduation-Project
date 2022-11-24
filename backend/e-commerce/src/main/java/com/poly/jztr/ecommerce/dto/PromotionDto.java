@@ -16,7 +16,6 @@ import java.time.Instant;
 @NoArgsConstructor
 public class PromotionDto {
 
-    @NotNull
     private Long id;
 
     @NotNull
