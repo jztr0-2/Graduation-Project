@@ -11,7 +11,6 @@ import java.time.Instant;
 @Entity
 @Table(name = "product_variant")
 @AllArgsConstructor
-@Getter
 public class ProductVariant {
 
     public ProductVariant(){
@@ -20,7 +19,7 @@ public class ProductVariant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    public Long id;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -97,6 +96,43 @@ public class ProductVariant {
         this.image = image;
         this.updatedAt = Instant.now();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Instant getDeletedAt() {
+        return deletedAt;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
     /*
   TODO [JPA Buddy] create field to map the 'details' column
    Available actions: Define target Java type | Uncomment as is | Remove column mapping

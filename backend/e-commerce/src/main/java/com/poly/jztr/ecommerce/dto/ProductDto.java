@@ -1,6 +1,7 @@
 package com.poly.jztr.ecommerce.dto;
 
 
+import com.poly.jztr.ecommerce.model.ProductVariant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,4 +24,8 @@ public class ProductDto {
     private String description;
     @NotNull
     private Long categoryId;
+
+    private boolean isOnly;
+
+    private List<ProductVariantDto> productVariantDtoList;
 }

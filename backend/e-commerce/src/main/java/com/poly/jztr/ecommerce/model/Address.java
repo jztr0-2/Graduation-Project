@@ -1,9 +1,11 @@
 package com.poly.jztr.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "addresses")
@@ -39,4 +41,8 @@ public class Address {
 
     public Address(){
     }
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "address")
+    List<Order> order;
 }

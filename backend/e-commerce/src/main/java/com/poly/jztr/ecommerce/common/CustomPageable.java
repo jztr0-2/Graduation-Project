@@ -22,10 +22,10 @@ public class CustomPageable {
         }else{
             sort = Sort.by(Sort.Direction.DESC,sortBy);
         }
-        return PageRequest.of(page,perPage,sort);
+        return PageRequest.of(page - 1 ,perPage,sort);
     }
 
     public static Pageable getPage(Integer page, Integer perPage){
-        return PageRequest.of(page,perPage);
+        return PageRequest.of(page - 1,perPage);
     }
 }
