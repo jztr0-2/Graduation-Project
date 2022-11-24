@@ -31,7 +31,11 @@ public class PromotionDto {
     private Double maxAmount;
 
     @NotNull
-    private Instant expire;
+    private Instant endDate;
+
+    @NotNull
+    private Instant startDate;
+
 
     @NotNull
     private Boolean status;

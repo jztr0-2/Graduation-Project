@@ -33,8 +33,11 @@ public class Promotion {
     @Column(name = "max_reduction_amount")
     private Double maxAmount;
 
-    @Column(name = "promo_expire")
-    private Instant expire;
+    @Column(name = "start_date")
+    private Instant startDate;
+
+    @Column(name = "end_date")
+    private Instant endDate;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -74,8 +77,13 @@ public class Promotion {
         this.updatedAt = Instant.now();
     }
 
-    public void setExpire(Instant expire) {
-        this.expire = expire;
+    public void setStartDate(Instant expire) {
+        this.startDate = expire;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setEndDate(Instant expire) {
+        this.endDate = expire;
         this.updatedAt = Instant.now();
     }
 
