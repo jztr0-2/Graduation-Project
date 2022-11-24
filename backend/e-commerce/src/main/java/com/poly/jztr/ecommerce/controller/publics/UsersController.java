@@ -17,7 +17,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 
 @RestControllerAdvice("public/user")
@@ -45,6 +48,16 @@ public class UsersController {
 
     @Autowired
     ProductVariantService productVariantService;
+
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    OrderItemService orderItemService;
+
+    @Autowired
+    AddressService addressService;
+
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> login(@RequestBody LoginDto login) {
         Optional<User> user = service.findByEmail(login.getEmail());
@@ -155,6 +168,38 @@ public class UsersController {
                 productVariant.setUnitPrice(Double.valueOf(100+ i + j));
                 productVariantService.save(productVariant);
             }
+        }
+
+        // init order
+        Random random = new Random();
+
+        Address address = new Address();
+        address.setCommune("Hoa Minh");
+        address.setDistrict("Lien Chieu");
+        address.setProvince("Da Nang");
+        address.setAppartmentNo("137");
+        address.setWard("Nguyen Thi Thap");
+        address.setPhone("0973588761");
+        address = addressService.save(address);
+
+        for(int i = 0; i < 10000; i ++){
+            User user= service.findById(random.nextLong(100)).get();
+            Order order = new Order();
+            order.setUser(user);
+            order.setStatus(Constant.ORDER_STATUS_SUCCESS);
+            order.setDescription("Fake order" + i);
+            List<OrderItem> orderItemList = new ArrayList<>();
+            order.setAddress(address);
+            for(int j = 0; j < 5; j ++){
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrder(order);
+                orderItem.setQuantity(random.nextInt(10));
+                orderItem.setUnitPrice(random.nextDouble(1500));
+                orderItem.setProductVariant(new ProductVariant(random.nextLong(190)));
+                orderItemList.add(orderItem);
+            }
+            order.setOrderItems(orderItemList);
+            orderService.save(order);
         }
         return "INIT SUCCESSFULLY";
     }

@@ -18,4 +18,6 @@ public interface ProductService {
     Product toProduct(ProductDto dto);
 
     Page<Product> findAll(Pageable pageable);
+
+    Page<Product> findTopSaleByCategory(Long categoryId, Pageable page);
 }

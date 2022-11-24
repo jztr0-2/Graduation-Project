@@ -24,4 +24,8 @@ public class CustomPageable {
         }
         return PageRequest.of(page,perPage,sort);
     }
+
+    public static Pageable getPage(Integer page, Integer perPage){
+        return PageRequest.of(page,perPage);
+    }
 }
