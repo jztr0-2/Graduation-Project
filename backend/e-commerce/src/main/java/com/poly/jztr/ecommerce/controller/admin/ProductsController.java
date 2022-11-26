@@ -37,7 +37,7 @@ public class ProductsController {
                             "Category not found", null));
         }
         Product p = service.toProduct(dto);
-        service.save(p);
+        p = service.save(p);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Create product successfully", service.save(p)));
 

@@ -2,8 +2,10 @@ package com.poly.jztr.ecommerce.serviceImpl;
 
 import com.poly.jztr.ecommerce.dto.ProductDto;
 import com.poly.jztr.ecommerce.model.Product;
+import com.poly.jztr.ecommerce.model.ProductVariant;
 import com.poly.jztr.ecommerce.repository.ProductRepository;
 import com.poly.jztr.ecommerce.service.ProductService;
+import com.poly.jztr.ecommerce.service.ProductVariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,9 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository repository;
+
+    @Autowired
+    ProductVariantService productVariantService;
 
     @Override
     public <S extends Product> S save(S entity) {
@@ -39,6 +44,9 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(dto.getDescription());
         product.setName(dto.getName());
         product.setStatus(dto.getStatus());
+        List<ProductVariant> productVariants = productVariantService.
+                toProductVariantFromDto(dto.getProductVariantList());
+        product.setProductVariants(productVariants);
         return product;
     }
     @Override
