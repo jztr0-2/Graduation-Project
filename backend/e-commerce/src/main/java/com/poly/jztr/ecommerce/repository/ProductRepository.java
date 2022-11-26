@@ -20,7 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "product_variant.id = order_items.product_variant_id " +
             "join products on products.id = product_variant.product_id " +
             "join categories on products.category_id = categories.id " +
-            "where categories.id = ?1" +
+            "where categories.id = ?1 " +
             "group by products.id " +
             "order by (order_items.quantity) desc ", nativeQuery = true )
     Page<Product> findTopSaleByCategory(Long categoryId, Pageable page);
