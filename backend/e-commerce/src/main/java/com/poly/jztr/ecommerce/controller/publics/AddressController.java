@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @RestController("public/address")
@@ -26,30 +27,31 @@ public class AddressController {
     @Autowired
     AddressService service;
 
-    @GetMapping("")
-    public ResponseEntity<ResponseObject> getAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get Address success", service.findAll()));
-    }
+//    @GetMapping("")
+//    public ResponseEntity<ResponseObject> getAll() {
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get Address success", service.findAll()));
+//    }
 
-    @GetMapping("{phone}")
-    public ResponseEntity<ResponseObject> getByPhone(@PathVariable("phone") String phone) {
-        Optional<Address> optAss = service.finByPhone(phone);
-        if(optAss.isEmpty()) {
+    @GetMapping("")
+    public ResponseEntity<ResponseObject> getByPhone(@RequestParam(defaultValue = "") String phone) {
+        List<Address> listAdr = service.finByPhoneContains(phone);
+        if(listAdr.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found address by phone ", null));
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Found address ", service.finByPhone(phone)));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Found address ", service.finByPhoneContains(phone)));
     }
 
     @PostMapping("")
     public ResponseEntity<ResponseObject> post(@RequestBody @Validated AddressDto addressDto)   {
         if(addressDto.getId() != null) {
-            Optional<Address> phone = service.finByPhone(addressDto.getPhone());
-            if(phone.isPresent()) {
+            Optional<Address> id = service.findById(addressDto.getId());
+            if(id.isPresent()) {
                 Address newAdre = new Address();
                 BeanUtils.copyProperties(addressDto, newAdre);
+                newAdre.setId(addressDto.getId());
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Address Success", service.save(newAdre)));
             }
@@ -60,9 +62,9 @@ public class AddressController {
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Insert address success", service.save(address)));
     }
 
-    @PutMapping("{phone}")
-    public ResponseEntity<ResponseObject> put(@RequestBody @Validated AddressDto addressDto, @PathVariable("phone") String phone)   {
-        Optional<Address> addressDb = service.findById(addressDto.getId());
+    @PutMapping("{id}")
+    public ResponseEntity<ResponseObject> put(@RequestBody @Validated AddressDto addressDto, @PathVariable("id") Long id)   {
+        Optional<Address> addressDb = service.findById(id);
         if(addressDb.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Address not found", null));
