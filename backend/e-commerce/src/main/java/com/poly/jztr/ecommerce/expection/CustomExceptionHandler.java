@@ -5,6 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
@@ -29,4 +30,12 @@ public class CustomExceptionHandler {
         errors.put(exception.getField(),exception.getMessage());
         return ResponseError.build(HttpStatus.UNPROCESSABLE_ENTITY,"Unprocessable entity", errors);
     }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseError handleTypeMismatch(){
+        Map<String, String> errors = new HashMap<String, String>();
+        return ResponseError.build(HttpStatus.UNPROCESSABLE_ENTITY,"Data not match", errors);
+    }
+
 }
