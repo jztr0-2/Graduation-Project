@@ -40,6 +40,12 @@ public class PromotionDto {
     private Boolean status;
     private Long type;
 
-    public void setStartDate(String date)G
+    public void setStartDate(String date){
+        this.startDate = DateHelper.toDate(date, "dd-MM-yyyy");
+    }
+
+    public void setEndDate(String date){
+        this.endDate = DateHelper.toDate(date, "dd-MM-yyyy");
+    }
 
 }
