@@ -4,6 +4,8 @@ import com.poly.jztr.ecommerce.model.Promotion;
 import com.poly.jztr.ecommerce.repository.PromotionRepository;
 import com.poly.jztr.ecommerce.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,5 +38,10 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public void deleteById(Long id) {
         respository.deleteById(id);
+    }
+
+    @Override
+    public Page<Promotion> findByCodeLContains(String code, Pageable pageable) {
+        return respository.findByCodeContains(code, pageable);
     }
 }
