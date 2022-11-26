@@ -58,4 +58,9 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> findTopSaleByCategory(Long categoryId, Pageable page) {
         return repository.findTopSaleByCategory(categoryId, page);
     }
+
+    @Override
+    public Optional<Product> findById(Long id) {
+        return repository.findById(id);
+    }
 }

@@ -1,6 +1,7 @@
 package com.poly.jztr.ecommerce.controller.admin;
 
 import com.poly.jztr.ecommerce.common.Constant;
+import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.ProductDto;
 import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
@@ -8,6 +9,7 @@ import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -39,7 +41,16 @@ public class ProductsController {
         Product p = service.toProduct(dto);
         p = service.save(p);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Create product successfully", service.save(p)));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                        "Create product successfully", service.save(p)));
+    }
 
+    @GetMapping
+    public ResponseEntity<ResponseObject> index(@RequestParam(defaultValue = "1") Integer page,
+                                                @RequestParam (defaultValue = "10") Integer perPage){
+        Pageable pageable = CustomPageable.getPage(page,perPage,"updatedAt", Constant.SORT_DESC);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                        "Create product successfully", service.findAll(pageable)));
     }
 }

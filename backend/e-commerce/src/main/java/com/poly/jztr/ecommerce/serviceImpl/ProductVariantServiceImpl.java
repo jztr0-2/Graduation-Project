@@ -18,7 +18,11 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     ProductVariantRepository repository;
     @Override
     public List<ProductVariant> toProductVariant(List<Product> products){
-      return products.stream().map(product -> product.getProductVariants().get(0)).collect(Collectors.toList());
+      return products.stream().map(product -> {
+          if(product.getProductVariants().size() > 0)
+                return product.getProductVariants().get(0);
+          return null;
+      }).collect(Collectors.toList());
     }
 
     @Override
