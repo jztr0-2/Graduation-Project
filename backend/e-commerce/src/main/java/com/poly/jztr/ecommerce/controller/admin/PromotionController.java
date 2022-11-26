@@ -3,13 +3,11 @@ package com.poly.jztr.ecommerce.controller.admin;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
-import com.poly.jztr.ecommerce.dto.CategoryDto;
 import com.poly.jztr.ecommerce.dto.PromotionDto;
-import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Promotion;
-import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.PromotionService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -43,6 +41,17 @@ public class PromotionController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
                         service.findByCodeLContains(code, pageable)));
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ResponseObject> findByID(@PathVariable("id") Long id) throws TypeMismatchException {
+        if(service.findById(id).isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Promotion", null));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Find Promotion",
+                        service.findById(id)));
     }
 
     @PostMapping("")
