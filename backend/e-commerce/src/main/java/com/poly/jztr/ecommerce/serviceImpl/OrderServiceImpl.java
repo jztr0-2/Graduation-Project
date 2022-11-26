@@ -70,4 +70,14 @@ public class OrderServiceImpl implements OrderService {
     public Page<Order> findByUser(Pageable page, User user){
         return repository.findByUser(user, page);
     }
+
+    @Override
+    public Page<Order> findByStatusIs(Integer status, Pageable pageable) {
+        return repository.findByStatusIs(status, pageable);
+    }
+
+    @Override
+    public Page<Order> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
 }

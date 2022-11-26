@@ -19,4 +19,8 @@ public interface OrderService {
     <S extends Order> S save(S entity);
 
     Page<Order> findByUser(Pageable page, User user);
+
+    Page<Order> findByStatusIs(Integer status, Pageable pageable);
+
+    Page<Order> findAll(Pageable pageable);
 }
