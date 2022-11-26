@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderService {
     List<Order> findByDate(Instant start, Instant end);
@@ -19,4 +20,10 @@ public interface OrderService {
     <S extends Order> S save(S entity);
 
     Page<Order> findByUser(Pageable page, User user);
+
+    Page<Order> findByStatusIs(Integer status, Pageable pageable);
+
+    Page<Order> findAll(Pageable pageable);
+
+    Optional<Order> findById(Long id);
 }

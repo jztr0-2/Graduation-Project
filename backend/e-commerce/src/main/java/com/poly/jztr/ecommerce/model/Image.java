@@ -1,11 +1,17 @@
 package com.poly.jztr.ecommerce.model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
 @Table(name = "images")
+@Getter
 public class Image {
+    public Image(){
+        this.createdAt = Instant.now();
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -29,60 +35,34 @@ public class Image {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Integer getType() {
-        return type;
+        this.updatedAt = Instant.now();
     }
 
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    public String getUrl() {
-        return url;
+        this.updatedAt = Instant.now();
     }
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
+        this.updatedAt = Instant.now();
     }
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public Instant getDeletedAt() {
-        return deletedAt;
     }
 
     public void setDeletedAt(Instant deletedAt) {
         this.deletedAt = deletedAt;
     }
-
 }

@@ -74,17 +74,17 @@ public class PromotionController {
         BeanUtils.copyProperties(promotionDto, promotion);
         promotion.setId(id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(promotion)));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Promotion Success", service.save(promotion)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> delete(@PathVariable("id") Long id, Model model){
         if(!service.existsById(id)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Promotion", null));
         }
         service.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", null));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Delete Promotion Success", null));
     }
 }

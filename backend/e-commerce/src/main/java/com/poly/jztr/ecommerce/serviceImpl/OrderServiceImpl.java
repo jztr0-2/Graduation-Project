@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,4 +71,20 @@ public class OrderServiceImpl implements OrderService {
     public Page<Order> findByUser(Pageable page, User user){
         return repository.findByUser(user, page);
     }
+
+    @Override
+    public Page<Order> findByStatusIs(Integer status, Pageable pageable) {
+        return repository.findByStatusIs(status, pageable);
+    }
+
+    @Override
+    public Page<Order> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Optional<Order> findById(Long id) {
+        return repository.findById(id);
+    }
+
 }

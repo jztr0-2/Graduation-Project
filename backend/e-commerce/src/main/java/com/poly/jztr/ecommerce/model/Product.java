@@ -2,6 +2,8 @@ package com.poly.jztr.ecommerce.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -52,7 +54,8 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     public List<ProductVariant> productVariants;
 
     public Category getCategory() {

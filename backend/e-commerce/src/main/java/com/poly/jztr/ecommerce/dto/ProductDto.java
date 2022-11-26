@@ -24,8 +24,5 @@ public class ProductDto {
     private String description;
     @NotNull
     private Long categoryId;
-
-    private boolean isOnly;
-
-    private List<ProductVariantDto> productVariantDtoList;
+    private List<ProductVariantDto> productVariantList;
 }

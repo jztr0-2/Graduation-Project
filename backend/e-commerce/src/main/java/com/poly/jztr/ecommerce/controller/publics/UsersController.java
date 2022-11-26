@@ -129,6 +129,7 @@ public class UsersController {
 
     @GetMapping("/init-data")
     public String initData(){
+        Random random = new Random();
         if(service.findById(1L).isPresent()){
             return "INIT SUCCESSFULLY";
         }
@@ -159,6 +160,7 @@ public class UsersController {
             product.setDescription("PRODUCT" + i + "description");
             product.setStatus(1);
             product.setName("PRODUCT NAME" + i);
+            product.setCategory(new Category(random.nextLong(9)));
             product = productService.save(product);
             for (int j = 1; j < 3; j++){
                 ProductVariant productVariant = new ProductVariant();
@@ -171,7 +173,6 @@ public class UsersController {
         }
 
         // init order
-        Random random = new Random();
 
         Address address = new Address();
         address.setCommune("Hoa Minh");

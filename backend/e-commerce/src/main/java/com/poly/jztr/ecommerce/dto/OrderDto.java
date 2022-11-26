@@ -17,4 +17,5 @@ public class OrderDto {
     private Long addressId;
     private Long promoId;
     private List<OrderItemDto> items;
+    private Integer status;
 }

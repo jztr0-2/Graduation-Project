@@ -15,4 +15,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByCreatedAtGreaterThanEqualAndCreatedAtLessThanEqual(Instant start, Instant end);
 
     Page<Order> findByUser(User user, Pageable page);
+
+    Page<Order> findByStatusIs(Integer status, Pageable pageable);
 }
