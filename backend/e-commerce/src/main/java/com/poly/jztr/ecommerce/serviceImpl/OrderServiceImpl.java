@@ -68,6 +68,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Order> findByUser(Pageable page, User user){
-        return repository.findByUser(page,user);
+        return repository.findByUser(user, page);
     }
 }

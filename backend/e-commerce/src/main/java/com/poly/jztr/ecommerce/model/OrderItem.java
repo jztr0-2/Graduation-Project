@@ -1,10 +1,14 @@
 package com.poly.jztr.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
 @Table(name = "order_items")
+@Getter
 public class OrderItem {
     @Id
     @Column(name = "id", nullable = false)
@@ -13,9 +17,10 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonIgnore
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "product_variant_id", nullable = false)
     private ProductVariant productVariant;
 
@@ -33,66 +38,41 @@ public class OrderItem {
 
     @Column(name = "deleted_at")
     private Instant deletedAt;
-
-    public Long getId() {
-        return id;
+    public void setProductVariant(ProductVariant productVariant) {
+        this.productVariant = productVariant;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
     public void setOrder(Order order) {
         this.order = order;
-    }
-
-
-    public void setProductVariant(ProductVariant productVariant) {
-        this.productVariant = productVariant;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
+        this.updatedAt = Instant.now();
     }
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public Double getUnitPrice() {
-        return unitPrice;
+        this.updatedAt = Instant.now();
     }
 
     public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
+        this.updatedAt = Instant.now();
     }
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
+        this.updatedAt = Instant.now();
     }
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public Instant getDeletedAt() {
-        return deletedAt;
+        this.updatedAt = Instant.now();
     }
 
     public void setDeletedAt(Instant deletedAt) {
         this.deletedAt = deletedAt;
+        this.updatedAt = Instant.now();
     }
-
 }

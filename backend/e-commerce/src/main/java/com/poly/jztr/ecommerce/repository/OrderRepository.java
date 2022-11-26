@@ -14,5 +14,5 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByCreatedAtGreaterThanEqualAndCreatedAtLessThanEqual(Instant start, Instant end);
 
-    Page<Order> findByUser(Pageable page, User user);
+    Page<Order> findByUser(User user, Pageable page);
 }
