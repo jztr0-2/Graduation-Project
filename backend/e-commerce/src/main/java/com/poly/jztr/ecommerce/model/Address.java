@@ -39,10 +39,6 @@ public class Address {
         this.id =addressId;
     }
 
-    public Address() {
-
-    }
-
     public Long getId() {
         return id;
     }
