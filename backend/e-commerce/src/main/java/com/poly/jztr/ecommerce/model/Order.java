@@ -21,6 +21,7 @@ public class Order {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

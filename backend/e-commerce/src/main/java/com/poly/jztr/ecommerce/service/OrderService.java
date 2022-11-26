@@ -20,5 +20,7 @@ public interface OrderService {
 
     Page<Order> findByUser(Pageable page, User user);
 
-    Page<Order> findByStatus(Integer status, Pageable pageable);
+    Page<Order> findByStatusIs(Integer status, Pageable pageable);
+
+    Page<Order> findAll(Pageable pageable);
 }
