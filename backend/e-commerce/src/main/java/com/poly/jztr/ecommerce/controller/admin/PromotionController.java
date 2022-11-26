@@ -1,6 +1,7 @@
 package com.poly.jztr.ecommerce.controller.admin;
 
 import com.poly.jztr.ecommerce.common.Constant;
+import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.CategoryDto;
 import com.poly.jztr.ecommerce.dto.PromotionDto;
@@ -10,6 +11,7 @@ import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.PromotionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -27,20 +29,20 @@ public class PromotionController {
     @Autowired
     PromotionService service;
     
-    @GetMapping("")
-    public ResponseEntity<ResponseObject> getAll(Model model){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.findAll()));
-    }
+//    @GetMapping("")
+//    public ResponseEntity<ResponseObject> getAll(Model model){
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get All Promotion Success", service.findAll()));
+//    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseObject> getOne(@PathVariable("id") Long id){
-        if(!service.existsById(id)){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Data not found", null));
-        }
+    @GetMapping("")
+    public ResponseEntity<ResponseObject> findByCode(@RequestParam(defaultValue = "") String code,
+                                                     @RequestParam(defaultValue = "1") Integer page,
+                                                     @RequestParam(defaultValue = "10") Integer perPage){
+        Pageable pageable = CustomPageable.getPage(page, perPage);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully", service.findById(id).get()));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
+                        service.findByCodeLContains(code, pageable)));
     }
 
     @PostMapping("")
@@ -57,10 +59,11 @@ public class PromotionController {
     public ResponseEntity<ResponseObject> put(@Valid @PathVariable("id") Long id, @RequestBody PromotionDto promotionDto){
         if(!service.existsById(id)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Promotion", null));
         }
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
+        promotion.setId(id);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(promotion)));
     }
