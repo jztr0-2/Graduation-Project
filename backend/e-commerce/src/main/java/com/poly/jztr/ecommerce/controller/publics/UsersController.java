@@ -6,10 +6,8 @@ import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
 import com.poly.jztr.ecommerce.dto.LoginDto;
 import com.poly.jztr.ecommerce.dto.UserDto;
 import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
-import com.poly.jztr.ecommerce.model.Admin;
-import com.poly.jztr.ecommerce.model.User;
-import com.poly.jztr.ecommerce.service.AdminService;
-import com.poly.jztr.ecommerce.service.UserService;
+import com.poly.jztr.ecommerce.model.*;
+import com.poly.jztr.ecommerce.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 
 @RestControllerAdvice("public/user")
@@ -37,7 +38,26 @@ public class UsersController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
     AdminService adminService;
+
+    @Autowired
+    ProductService productService;
+
+    @Autowired
+    ProductVariantService productVariantService;
+
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    OrderItemService orderItemService;
+
+    @Autowired
+    AddressService addressService;
+
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> login(@RequestBody LoginDto login) {
         Optional<User> user = service.findByEmail(login.getEmail());
@@ -105,6 +125,83 @@ public class UsersController {
 
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
                 "User name: admin, password: 123456", adminService.save(admin1)));
+    }
+
+    @GetMapping("/init-data")
+    public String initData(){
+        if(service.findById(1L).isPresent()){
+            return "INIT SUCCESSFULLY";
+        }
+        // Init user
+        for(int i = 0; i < 100; i ++){
+            User user = new User();
+            user.setStatus(1);
+            user.setPassword(passwordEncoder.encode("123456"));
+            user.setEmail("user_demo"+i + "@gmail.com");
+            user.setFirstName("Demo" +i);
+            user.setLastName("User");
+
+            service.save(user);
+        }
+
+
+        // Init category
+        for(int i = 1; i<11; i ++){
+            Category category = new Category();
+            category.setName("CATEGORY" + i);
+            categoryService.save(category);
+        }
+
+        // Init product, each product have 2 product variant
+
+        for(int i = 1; i < 100; i ++){
+            Product product = new Product();
+            product.setDescription("PRODUCT" + i + "description");
+            product.setStatus(1);
+            product.setName("PRODUCT NAME" + i);
+            product = productService.save(product);
+            for (int j = 1; j < 3; j++){
+                ProductVariant productVariant = new ProductVariant();
+                productVariant.setProduct(product);
+                productVariant.setDescription("{\"key1\": \"val1\", \"key2\": \"val2\"}");
+                productVariant.setQuantity(100);
+                productVariant.setUnitPrice(Double.valueOf(100+ i + j));
+                productVariantService.save(productVariant);
+            }
+        }
+
+        // init order
+        Random random = new Random();
+
+        Address address = new Address();
+        address.setCommune("Hoa Minh");
+        address.setDistrict("Lien Chieu");
+        address.setProvince("Da Nang");
+        address.setAppartmentNo("137");
+        address.setWard("Nguyen Thi Thap");
+        address.setPhone("0973588761");
+        address = addressService.save(address);
+
+        for(int i = 0; i < 10000; i ++){
+            User user= service.findById(random.nextLong(100)).get();
+            Order order = new Order();
+            order.setUser(user);
+            order.setStatus(Constant.ORDER_STATUS_SUCCESS);
+            order.setDescription("Fake order" + i);
+            List<OrderItem> orderItemList = new ArrayList<>();
+            order.setAddress(address);
+            for(int j = 0; j < 5; j ++){
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrder(order);
+                orderItem.setQuantity(random.nextInt(10));
+                orderItem.setUnitPrice(random.nextDouble(1500));
+                orderItem.setProductVariant(new ProductVariant(random.nextLong(190)));
+                orderItemList.add(orderItem);
+            }
+            order.setOrderItems(orderItemList);
+            orderService.save(order);
+        }
+        return "INIT SUCCESSFULLY";
     }
 
 }

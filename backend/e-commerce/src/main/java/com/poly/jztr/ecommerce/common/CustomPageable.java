@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 public class CustomPageable {
-    public static Pageable getDefaultPage(String sortBy, int order){
+    public static Pageable getPage(String sortBy, int order){
         Sort sort = null;
         if(order == 1){
             sort = Sort.by(Sort.Direction.ASC,sortBy);
@@ -13,5 +13,19 @@ public class CustomPageable {
             sort = Sort.by(Sort.Direction.DESC,sortBy);
         }
         return PageRequest.of(0,10,sort);
+    }
+
+    public static Pageable getPage(Integer page, Integer perPage, String sortBy, int order){
+        Sort sort = null;
+        if(order == 1){
+            sort = Sort.by(Sort.Direction.ASC,sortBy);
+        }else{
+            sort = Sort.by(Sort.Direction.DESC,sortBy);
+        }
+        return PageRequest.of(page - 1 ,perPage,sort);
+    }
+
+    public static Pageable getPage(Integer page, Integer perPage){
+        return PageRequest.of(page - 1,perPage);
     }
 }

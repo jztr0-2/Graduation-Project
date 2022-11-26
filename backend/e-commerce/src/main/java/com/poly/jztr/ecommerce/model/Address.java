@@ -1,9 +1,16 @@
 package com.poly.jztr.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "addresses")
+@Getter
+@Setter
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -91,5 +98,12 @@ public class Address {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+    
+    public Address(){
 
+    }
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "address")
+    List<Order> order;
 }

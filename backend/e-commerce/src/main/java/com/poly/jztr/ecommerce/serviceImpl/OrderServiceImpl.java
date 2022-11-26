@@ -5,11 +5,14 @@ import com.poly.jztr.ecommerce.dto.OrderDto;
 import com.poly.jztr.ecommerce.model.Address;
 import com.poly.jztr.ecommerce.model.Order;
 import com.poly.jztr.ecommerce.model.OrderItem;
+import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.repository.OrderItemRepository;
 import com.poly.jztr.ecommerce.repository.OrderRepository;
 import com.poly.jztr.ecommerce.service.OrderItemService;
 import com.poly.jztr.ecommerce.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -61,5 +64,10 @@ public class OrderServiceImpl implements OrderService {
                 }).collect(Collectors.toList());
         orderItemRepository.saveAll(orderItems);
         return null;
+    }
+
+    @Override
+    public Page<Order> findByUser(Pageable page, User user){
+        return repository.findByUser(user, page);
     }
 }
