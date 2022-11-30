@@ -22,4 +22,6 @@ public interface ProductService {
     Page<Product> findTopSaleByCategory(Long categoryId, Pageable page);
 
     Optional<Product> findById(Long id);
+
+    Page<Product> getProductsByCategoryId(Long categoryId, Pageable page);
 }

@@ -24,4 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "group by products.id " +
             "order by (order_items.quantity) desc ", nativeQuery = true )
     Page<Product> findTopSaleByCategory(Long categoryId, Pageable page);
+
+    @Query(name = "Product.getProductsByCategoryId")
+    Page<Product> getProductsByCategoryId(Long categoryId, Pageable page);
 }
