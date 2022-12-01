@@ -57,8 +57,9 @@ public class Product {
     @JoinColumn(name = "image_id")
     private Image image;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
+    @Fetch(FetchMode.JOIN)
     private Category category;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)

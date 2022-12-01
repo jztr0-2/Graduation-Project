@@ -10,6 +10,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
@@ -36,6 +37,13 @@ public class CustomExceptionHandler {
     public ResponseError handleTypeMismatch(){
         Map<String, String> errors = new HashMap<String, String>();
         return ResponseError.build(HttpStatus.UNPROCESSABLE_ENTITY,"Data not match", errors);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseError handleNoSuchElement(){
+        Map<String, String> errors = new HashMap<String, String>();
+        return ResponseError.build(HttpStatus.NOT_FOUND,"Data not found", errors);
     }
 
 }

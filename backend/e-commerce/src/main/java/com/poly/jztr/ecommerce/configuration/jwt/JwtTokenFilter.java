@@ -26,6 +26,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         try {
             String token = getJwt(request);
             token= token+"";
+            System.out.println("Line 29 JwtTokenFilter");
             System.out.println(token);
             if (!token.equals("null")) {
                // System.out.println(jwtProvider.validateTokenLogin(token));
