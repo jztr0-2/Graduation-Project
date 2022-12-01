@@ -157,30 +157,6 @@ function Home() {
             </section>
 
             {/* <!-- services section ends --> */}
-            {/* FAQ */}
-            <section className={cx('faqs', 'section-pad')}>
-                <div className={cx('faq-item')}>
-                    <FontAwesomeIcon icon={faTruckFast} className={cx('faq-icon')} />
-                    <div className={cx('faq-text')}>
-                        <p>Free Shipping</p>
-                        <span>On all orders over $200</span>
-                    </div>
-                </div>
-                <div className={cx('faq-item')}>
-                    <FontAwesomeIcon icon={faHeadset} className={cx('faq-icon')} />
-                    <div className={cx('faq-text')}>
-                        <p>Free Shipping</p>
-                        <span>On all orders over $200</span>
-                    </div>
-                </div>
-                <div className={cx('faq-item')}>
-                    <FontAwesomeIcon icon={faMoneyBillTransfer} className={cx('faq-icon')} />
-                    <div className={cx('faq-text')}>
-                        <p>Free Shipping</p>
-                        <span>On all orders over $200</span>
-                    </div>
-                </div>
-            </section>
 
             {/* image collage section */}
             <section className={cx('image-mid-section')}>
