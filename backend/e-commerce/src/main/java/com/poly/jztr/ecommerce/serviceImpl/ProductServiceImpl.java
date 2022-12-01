@@ -73,5 +73,9 @@ public class ProductServiceImpl implements ProductService {
         return lst.stream().map(pro ->
             new ProductStatic(pro[0]+"", Long.valueOf(pro[1]+""))
         ).collect(Collectors.toList());
+     }
+
+    public Page<Product> getProductsByCategoryId(Long categoryId, Pageable page) {
+        return repository.getProductsByCategoryId(categoryId, page);
     }
 }

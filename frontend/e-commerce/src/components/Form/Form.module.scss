@@ -1,205 +1,190 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
-$primary: #00fcd1;
-$secondary: #04dfbd;
-$lighter: #9596a2;
-$light: #3d4256;
-$dark: #1e2137;
-$bg1: #333342;
-$bg2: #4d4e63;
-$border-radius: 12px;
-
-//--- ## FORM #############
-.login {
-    width: 420px;
-    background: #ffffff;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-    border-radius: $border-radius;
-    overflow: hidden;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    &:before {
-        content: '';
-        position: absolute;
-        background: transparent;
-        bottom: 45px;
-        right: 40px;
-        width: 55px;
-        height: 55px;
-        z-index: 5;
-        transition: all 0.6s ease-in-out, background 0s ease;
-    }
-    .form {
-        display: block;
+.wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    .box {
         position: relative;
-        h2 {
-            background: #f5f5fa;
-            display: block;
-            box-sizing: border-box;
-            width: 100%;
-            margin: 0 0 30px 0;
-            padding: 40px;
-            font-weight: 200;
-            color: $lighter;
-            font-size: 19px;
+        width: 340px;
+        height: 380px;
+        background: #202020;
+        border-radius: var(--radius-8);
+        overflow: hidden;
+        animation: modalFadeIn ease 0.5s;
+        &::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 340px;
+            height: 380px;
+            background: linear-gradient(0deg, transparent, var(--main-color), var(--main-color));
+            transform-origin: bottom right;
+            animation: animate 6s linear infinite;
         }
-        .form-field {
+        &::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 340px;
+            height: 380px;
+            background: linear-gradient(0deg, transparent, var(--main-color), var(--main-color));
+            transform-origin: bottom right;
+            animation: animate 6s linear infinite;
+            animation-delay: -3s;
+        }
+        .form {
+            position: absolute;
+            inset: 2px;
+            border-radius: var(--radius-8);
+            background: #28292d;
+            z-index: 10;
+            padding: 40px 30px;
             display: flex;
-            align-items: center;
-            height: 55px;
-            margin: 0 40px 30px 40px;
-            border-bottom: 1px solid $lighter;
-            label {
-                width: 10px;
-                padding: 0 15px 0 0;
-                color: $lighter;
-            }
-            input {
-                width: 100%;
-                background: transparent;
-                color: $lighter;
-                padding: 15px;
-                border: 0;
-                margin: 0;
-                & + svg {
-                    width: 35px;
-                    width: 35px;
-                    fill: none;
-                    stroke: $primary;
-                    stroke-width: 7;
-                    stroke-linecap: round;
-                    stroke-dasharray: 1000;
-                    stroke-dashoffset: -100;
-                    transition: all 0.3s ease-in-out;
-                }
-                &:valid + svg {
-                    stroke-dashoffset: 0;
-                }
-                &:focus {
-                    outline: none;
-                }
-            }
-            *::placeholder {
-                color: $lighter;
-            }
-        }
-        .button {
-            width: 100%;
-            position: relative;
-            cursor: pointer;
-            box-sizing: border-box;
-            padding: 0 40px 45px 40px;
-            margin: 0;
-            border: 0;
-            background: transparent;
-            outline: none;
-            .arrow-wrapper {
-                transition: all 0.45s ease-in-out;
-                position: relative;
-                margin: 0;
-                width: 100%;
-                height: 55px;
-                right: 0;
-                float: right;
-                background: linear-gradient(90deg, $secondary, $primary);
-                box-shadow: 0 3px 20px rgba($primary, 0.4);
-                border-radius: $border-radius;
-                .arrow {
-                    position: absolute;
-                    top: 50%;
-                    margin: auto;
-                    transition: all 0.45s ease-in-out;
-                    right: 35px;
-                    width: 15px;
-                    height: 2px;
-                    background: none;
-                    transform: translateY(-50%);
-                    &:before {
-                        position: absolute;
-                        content: '';
-                        top: -4px;
-                        right: 0;
-                        width: 8px;
-                        height: 8px;
-                        border-top: 2px solid #fff;
-                        border-right: 2px solid #fff;
-                        transform: rotate(45deg);
-                    }
-                }
-            }
-            .button-text {
-                transition: all 0.45s ease-in-out;
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                padding: 0;
-                margin: 0;
-                color: #fff;
-                line-height: 55px;
+            flex-direction: column;
+            h2 {
+                color: var(--main-color);
+                font-weight: 500;
                 text-align: center;
-                text-transform: uppercase;
+                letter-spacing: 0.1em;
             }
-        }
-    }
-    .finished {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 7;
-        svg {
-            width: 100px;
-            width: 100px;
-            fill: none;
-            stroke: #fff;
-            stroke-width: 7;
-            stroke-linecap: round;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: -100;
-            transition: all 0.3s ease-in-out 0.5s;
-        }
-    }
-    &.loading {
-        .form {
-            .button {
-                .arrow-wrapper {
-                    width: 55px;
-                    animation: sk-rotateplane 1.2s infinite ease-in-out 0.5s;
-                    .arrow {
-                        background: #fff;
-                        transform: translate(15px, 0);
-                        opacity: 0;
-                        transition: opacity 0.3s ease-in-out 0.5s;
+            .input-box {
+                position: relative;
+                width: 100%;
+                margin-top: 30px;
+                input {
+                    position: relative;
+                    width: 100%;
+                    padding: 20px 10px 15px;
+                    background: transparent;
+                    border: none;
+                    outline: none;
+                    color: #23242a;
+                    letter-spacing: 0.04em;
+                    z-index: 10;
+                }
+                input:valid ~ span,
+                input:focus ~ span {
+                    color: var(--main-color);
+                    transform: translateX(0px) translateY(-34px);
+                    font-size: 0.9em;
+                }
+                span {
+                    position: absolute;
+                    left: 0;
+                    padding: 20px 0px 10px;
+                    color: #8f8f8f;
+                    pointer-events: none;
+                    letter-spacing: 0.05em;
+                    transition: 0.5s;
+                }
+                i {
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    height: 2px;
+                    background: var(--main-color);
+                    border-radius: 4px;
+                    transition: 0.5s;
+                    pointer-events: none;
+                    z-index: 9;
+                }
+                input:valid ~ i,
+                input:focus ~ i {
+                    height: 44px;
+                }
+            }
+            .links {
+                display: flex;
+                justify-content: space-between;
+                font-size: 1.6rem;
+                a {
+                    margin: 10px 0;
+                    font-size: 0.85em;
+                    color: #8f8f8f;
+                    &:hover,
+                    &:nth-child(2) {
+                        color: var(--main-color);
                     }
                 }
-                .button-text {
-                    color: $lighter;
-                }
+            }
+            input[type='submit'] {
+                border: none;
+                outline: none;
+                background: var(--main-color);
+                padding: 11px 25px;
+                width: 100px;
+                margin-top: 10px;
+                border-radius: 4px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+        }
+        .close {
+            position: absolute;
+            right: 10px;
+            z-index: 11;
+            padding: 20px 30px 0 30px;
+            font-size: 1.8rem;
+            color: #8f8f8f;
+            &:hover {
+                cursor: pointer;
+                color: var(--main-color);
             }
         }
     }
-    &.active {
-        &:before {
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(90deg, $secondary, $primary);
-            border-radius: $border-radius;
-            height: 100%;
-            width: 100%;
+}
+@keyframes animate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-140px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+// reponsive form
+@media screen and (max-width: 769px) {
+    .box {
+        width: 300px !important;
+        height: 320px !important;
+        transition: 0.3s ease-in;
+        &::before {
+            content: '';
+            width: 300px !important;
+            height: 320px !important;
+        }
+        &::after {
+            content: '';
+            width: 300px !important;
+            height: 320px !important;
         }
         .form {
-            .button {
-                .arrow-wrapper {
-                    animation-iteration-count: 1;
-                }
+            padding: 30px 20px !important;
+            .input-box {
+                width: 100% !important;
+                margin-top: 15px !important;
             }
         }
-        .finished {
-            svg {
-                stroke-dashoffset: 0;
-            }
+        .links {
+            font-size: 1.6rem !important;
         }
     }
 }

@@ -10,6 +10,13 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
 
+@NamedQueries({
+    @NamedQuery(
+        name = "Product.getProductsByCategoryId",
+        query = "SELECT p FROM Product p WHERE p.category.id = ?1"
+    )
+})
+
 @Entity
 @Table(name = "products")
 @Where(clause = "deleted_at is null")
