@@ -2,9 +2,11 @@ package com.poly.jztr.ecommerce.service;
 
 import com.poly.jztr.ecommerce.dto.ProductDto;
 import com.poly.jztr.ecommerce.model.Product;
+import com.poly.jztr.ecommerce.serializer.ProductStatic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,5 +25,8 @@ public interface ProductService {
 
     Optional<Product> findById(Long id);
 
+    List<ProductStatic> findStaticsProduct(String time);
+
     Page<Product> getProductsByCategoryId(Long categoryId, Pageable page);
+
 }
