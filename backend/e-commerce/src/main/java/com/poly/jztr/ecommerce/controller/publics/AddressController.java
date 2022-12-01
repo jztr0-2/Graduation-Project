@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController("public/address")
@@ -66,8 +67,9 @@ public class AddressController {
     public ResponseEntity<ResponseObject> put(@RequestBody @Validated AddressDto addressDto, @PathVariable("id") Long id)   {
         Optional<Address> addressDb = service.findById(id);
         if(addressDb.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Address not found", null));
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+//                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Address not found", null));
+            throw new NoSuchElementException();
         }
         Address address = new Address();
         BeanUtils.copyProperties(addressDto, address);
@@ -78,10 +80,6 @@ public class AddressController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> delete(@PathVariable("id") Long id){
         Optional<Address> optAdd = service.findById(id);
-        if(optAdd.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Address", null));
-        }
         Address add = optAdd.get();
         service.deleteById(add.getId());
         return ResponseEntity.status(HttpStatus.OK).body(

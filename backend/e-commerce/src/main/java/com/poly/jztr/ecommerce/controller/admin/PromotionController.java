@@ -45,10 +45,10 @@ public class PromotionController {
 
     @GetMapping("{id}")
     public ResponseEntity<ResponseObject> findByID(@PathVariable("id") Long id) throws TypeMismatchException {
-        if(service.findById(id).isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Promotion", null));
-        }
+//        if(service.findById(id).isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Promotion", null));
+//        }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Find Promotion",
                         service.findById(id)));
@@ -78,7 +78,7 @@ public class PromotionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseObject> delete(@PathVariable("id") Long id, Model model){
+    public ResponseEntity<ResponseObject> delete(@PathVariable("id") Long id){
         if(!service.existsById(id)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Promotion", null));

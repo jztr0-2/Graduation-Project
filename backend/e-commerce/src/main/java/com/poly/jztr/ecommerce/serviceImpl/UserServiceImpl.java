@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poly.jztr.ecommerce.dto.UserDto;
 import com.poly.jztr.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.poly.jztr.ecommerce.model.User;
@@ -49,5 +50,7 @@ public class UserServiceImpl implements UserService {
         return repository.findByEmail(email);
     }
 
-
+    public long count() {
+        return repository.count();
+    }
 }

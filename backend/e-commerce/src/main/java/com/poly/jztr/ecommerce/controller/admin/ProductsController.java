@@ -6,6 +6,7 @@ import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.ProductDto;
 import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
 import com.poly.jztr.ecommerce.model.Product;
+import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,6 @@ public class ProductsController {
         Pageable pageable = CustomPageable.getPage(page,perPage,"updatedAt", Constant.SORT_DESC);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
-                        "Create product successfully", service.findAll(pageable)));
+                        "Get products successfully", new PageableSerializer(service.findAll(pageable))));
     }
 }
