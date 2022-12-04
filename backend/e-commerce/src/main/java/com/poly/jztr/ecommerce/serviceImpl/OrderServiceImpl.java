@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -87,4 +88,19 @@ public class OrderServiceImpl implements OrderService {
         return repository.findById(id);
     }
 
+    @Override
+    public long count() {
+        return repository.count();
+    }
+
+    @Override
+    public Double totalRevenueThisMonth(){
+        String time = LocalDate.now().withDayOfMonth(1) + "";
+        return repository.totalRevenueInThisMonth(time);
+    }
+
+    @Override
+    public List<Object[]> totalRevenuePerMonth(){
+        return repository.totalRevenuePerMonth();
+    }
 }

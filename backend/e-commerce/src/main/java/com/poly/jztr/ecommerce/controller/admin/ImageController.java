@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
+import java.util.List;
 
 @RestController("users/image")
 @RequestMapping("api/v1/admin/images")
@@ -34,6 +35,16 @@ public class ImageController {
         saveFile(file,type,id);
         return ResponseEntity.ok().build();
     }
+
+
+    @PostMapping("upload-multiple")
+    public ResponseEntity<Void> uploadPolicyDocument(@RequestParam("images") List<MultipartFile> multipartFile,
+                                                     @RequestParam String id,
+                                                     @RequestParam("type") Integer type) {
+        multipartFile.stream().forEach(file -> saveFile(file,type,id));
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<ByteArrayResource> getImg(@PathVariable Long id) {
         Image image = service.findById(id).get();

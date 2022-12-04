@@ -12,8 +12,8 @@ import org.springframework.data.domain.Page;
 @NoArgsConstructor
 public class PageableSerializer {
     public PageableSerializer(Page page, Object content){
-        this.nextPage = page.getNumber() < page.getTotalPages();
-        this.prevPage = page.getNumber() > 0;
+        this.nextPage = page.hasNext();
+        this.prevPage = page.hasPrevious();
         this.totalItem = page.getTotalElements();
         this.totalPage = page.getTotalPages();
         this.currentPage = page.getNumber() + 1;
@@ -21,8 +21,8 @@ public class PageableSerializer {
     }
 
     public PageableSerializer(Page page){
-        this.nextPage = page.getNumber() < page.getTotalPages();
-        this.prevPage = page.getNumber() > 0;
+        this.nextPage = page.hasNext();
+        this.prevPage = page.hasPrevious();
         this.totalItem = page.getTotalElements();
         this.totalPage = page.getTotalPages();
         this.currentPage = page.getNumber() + 1;

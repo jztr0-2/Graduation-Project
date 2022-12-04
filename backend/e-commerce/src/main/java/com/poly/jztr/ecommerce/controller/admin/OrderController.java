@@ -78,13 +78,13 @@ public class OrderController {
     @GetMapping("statistical")
     public ResponseEntity<ResponseObject> getStatistical(){
         long userCount = userService.count();
-        long productSold = 0;
-        String time = LocalDate.now().withDayOfMonth(1) + "";
-        System.out.println(time);
-        List<ProductStatic> top = productService.findStaticsProduct(time);
-        top.stream().forEach(pro -> System.out.println(pro.getName()));
-
-//        OrderStatics orderStatics = new OrderStatics(userCount,productSold)
+        long productSold = productService.getProductSoldThisMonth();
+        long orderCount = service.count();
+        double totalRevenue = service.totalRevenueThisMonth();
+        List<ProductStatic> top = productService.findStaticsProductTop();
+        List<ProductStatic> bottom = productService.findStaticsProductsBot();
+        List<Object []> totalRevenuePerMonth = service.totalRevenuePerMonth();
+        OrderStatics orderStatics = new OrderStatics(userCount,productSold,orderCount,totalRevenue,totalRevenuePerMonth,top,bottom);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get order statistical successfully",
                         ""));

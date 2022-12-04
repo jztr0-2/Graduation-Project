@@ -25,8 +25,11 @@ public interface ProductService {
 
     Optional<Product> findById(Long id);
 
-    List<ProductStatic> findStaticsProduct(String time);
+    List<ProductStatic> findStaticsProductTop();
+
+    List<ProductStatic> findStaticsProductsBot();
 
     Page<Product> getProductsByCategoryId(Long categoryId, Pageable page);
 
+    Long getProductSoldThisMonth();
 }

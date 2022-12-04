@@ -5,16 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class OrderStatics {
-    private Long customer;
+    private Long customerCount;
     private Long productSold;
     private Long orderSold;
     private Double earning;
-    private Double [] totalRevenue;
-    private ProductStatic [] bestSelling;
-    private ProductStatic [] lowestSelling;
+    private List<Object []> totalRevenue;
+    private List<ProductStatic> bestSelling;
+    private List<ProductStatic> lowestSelling;
 }
