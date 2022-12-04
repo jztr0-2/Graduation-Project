@@ -56,6 +56,15 @@ public class ProductsController {
                         "Get products successfully", new PageableSerializer(service.findAll(pageable))));
     }
 
+    @GetMapping("{/id}")
+    public ResponseEntity<ResponseObject> getOne(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(
+                        Constant.RESPONSE_STATUS_SUCCESS, "Get product success",
+                        service.findById(id).get())
+        );
+    }
+
     @PutMapping("{id}")
     public ResponseEntity<ResponseObject> update(@PathVariable Long id, @RequestBody @Validated ProductDto dto ) throws DuplicateEntryException {
         Optional<Product> optionalProduct = service.findByName(dto.getName());

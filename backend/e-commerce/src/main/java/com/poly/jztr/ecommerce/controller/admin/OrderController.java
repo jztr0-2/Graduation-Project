@@ -22,9 +22,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@RestControllerAdvice("admin/order")
+@RestControllerAdvice("admin/orders")
 @CrossOrigin("http://localhost:3000")
-@RequestMapping("api/v1/admin/order")
+@RequestMapping("api/v1/admin/orders")
 public class OrderController {
     @Autowired
     OrderService service;
