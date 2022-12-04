@@ -26,4 +26,10 @@ public interface OrderService {
     Page<Order> findAll(Pageable pageable);
 
     Optional<Order> findById(Long id);
+
+    long count();
+
+    Double totalRevenueThisMonth();
+
+    List<Object[]> totalRevenuePerMonth();
 }

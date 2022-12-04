@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,14 +68,31 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductStatic> findStaticsProduct(String time) {
+    public List<ProductStatic> findStaticsProductTop() {
+        String time = LocalDate.now().withDayOfMonth(1) + "";
         List<Object[]> lst = repository.findStaticsProduct(time);
         return lst.stream().map(pro ->
             new ProductStatic(pro[0]+"", Long.valueOf(pro[1]+""))
         ).collect(Collectors.toList());
      }
 
+     @Override
+     public List<ProductStatic> findStaticsProductsBot(){
+         String time = LocalDate.now().withDayOfMonth(1) + "";
+         List<Object[]> lst = repository.findStaticsProduct(time,"bot");
+         return lst.stream().map(pro ->
+                 new ProductStatic(pro[0]+"", Long.valueOf(pro[1]+""))
+         ).collect(Collectors.toList());
+     }
+
     public Page<Product> getProductsByCategoryId(Long categoryId, Pageable page) {
         return repository.getProductsByCategoryId(categoryId, page);
     }
+
+    @Override
+    public Long getProductSoldThisMonth(){
+        return repository.totalProductSold("");
+    }
+
+
 }
