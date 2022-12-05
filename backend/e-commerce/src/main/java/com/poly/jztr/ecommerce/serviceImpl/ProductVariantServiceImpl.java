@@ -27,7 +27,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     public List<ProductVariant> toProductVariantFromDto(List<ProductVariantDto> list) {
-       return list.stream().map(dto -> new ProductVariant()).collect(Collectors.toList());
+       return list.stream().map(dto -> new ProductVariant(dto)).collect(Collectors.toList());
     }
 
 

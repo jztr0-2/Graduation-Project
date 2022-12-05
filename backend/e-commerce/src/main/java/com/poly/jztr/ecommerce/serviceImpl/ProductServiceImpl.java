@@ -27,7 +27,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public <S extends Product> S save(S entity) {
-        return repository.save(entity);
+        Product p =  repository.save(entity);
+        List<ProductVariant> productVariants = p.getProductVariants();
+        productVariants.stream().forEach(productVariant -> {
+            productVariant.setProduct(p);
+            productVariantService.save(productVariant);
+        });
+        return (S) p;
     }
 
     @Override

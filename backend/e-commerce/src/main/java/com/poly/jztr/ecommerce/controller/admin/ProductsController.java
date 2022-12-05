@@ -42,6 +42,7 @@ public class ProductsController {
         }
         Product p = service.toProduct(dto);
         p = service.save(p);
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
                         "Create product successfully", service.save(p)));

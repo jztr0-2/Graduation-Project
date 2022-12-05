@@ -1,6 +1,7 @@
 package com.poly.jztr.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.poly.jztr.ecommerce.dto.ProductVariantDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,13 @@ public class ProductVariant {
 
     public ProductVariant(){
         this.createdAt = Instant.now();
+    }
+    public ProductVariant(ProductVariantDto dto){
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+        this.setUnitPrice(dto.getUnitPrice());
+        this.setQuantity(dto.getQuantity());
+        this.setDescription(dto.getDescription());
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
