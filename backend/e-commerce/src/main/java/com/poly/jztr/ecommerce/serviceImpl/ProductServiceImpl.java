@@ -1,6 +1,7 @@
 package com.poly.jztr.ecommerce.serviceImpl;
 
 import com.poly.jztr.ecommerce.dto.ProductDto;
+import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.model.ProductVariant;
 import com.poly.jztr.ecommerce.repository.ProductRepository;
@@ -56,6 +57,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductVariant> productVariants = productVariantService.
                 toProductVariantFromDto(dto.getProductVariantList());
         product.setProductVariants(productVariants);
+        product.setCategory(new Category(dto.getCategoryId()));
         return product;
     }
     @Override
