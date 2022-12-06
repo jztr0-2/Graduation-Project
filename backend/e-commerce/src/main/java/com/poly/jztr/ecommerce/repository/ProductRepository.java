@@ -50,7 +50,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             " join products on product_variant.product_id = products.id where orders.status = 1 " +
             "and orders.created_at > ?" +
             "  order by SUM(order_items.quantity)", nativeQuery = true)
-    Long totalProductSold(String time);
+    Optional<Long> totalProductSold(String time);
 
     @Query(name = "Product.getProductsByCategoryId")
     Page<Product> getProductsByCategoryId(Long categoryId, Pageable page);

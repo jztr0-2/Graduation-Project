@@ -87,7 +87,7 @@ public class OrderController {
         OrderStatics orderStatics = new OrderStatics(userCount,productSold,orderCount,totalRevenue,totalRevenuePerMonth,top,bottom);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get order statistical successfully",
-                        ""));
+                        orderStatics));
     }
 
 }

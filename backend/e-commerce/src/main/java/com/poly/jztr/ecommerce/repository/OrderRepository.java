@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -23,7 +24,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             " join product_variant on order_items.product_variant_id = product_variant.id " +
             " join products on product_variant.product_id = products.id  where orders.status = 1 and orders.created_at > ?",
     nativeQuery = true)
-    Double totalRevenueInThisMonth(String time);
+    Optional<Double> totalRevenueInThisMonth(String time);
 
     @Query(value =
             "select SUM(order_items.unit_price * order_items.quantity), CONVERT(date_format(orders.created_at,\"%m-%Y\") ,char(7)) " +

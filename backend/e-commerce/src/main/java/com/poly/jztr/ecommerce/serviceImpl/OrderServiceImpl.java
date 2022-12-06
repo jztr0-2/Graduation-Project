@@ -96,7 +96,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Double totalRevenueThisMonth(){
         String time = LocalDate.now().withDayOfMonth(1) + "";
-        return repository.totalRevenueInThisMonth(time);
+        Optional<Double> optional = repository.totalRevenueInThisMonth(time);
+        if(optional.isPresent()) return optional.get();
+        return 0D;
     }
 
     @Override

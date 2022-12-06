@@ -99,7 +99,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Long getProductSoldThisMonth(){
-        return repository.totalProductSold("");
+        String time = LocalDate.now().withDayOfMonth(1) + "";
+        Optional<Long> optional = repository.totalProductSold(time);
+        if (optional.isPresent()) return optional.get();
+        return 0L;
     }
 
 
