@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -197,13 +198,17 @@ public class UsersController {
 
 
             String month = ((i%11) + 1) +"";
-            String stringDate = "09:15:30 PM, Sun" +month+"/09/2022";
+
+            month = month.length() == 1 ? "0" + month : month;
+            String stringDate = "09:15:30 PM, Sun "+month+"/09/2022";
             String pattern = "hh:mm:ss a, EEE M/d/uuuu";
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
             LocalDateTime localDateTime = LocalDateTime.parse(stringDate, dateTimeFormatter);
             ZoneId zoneId = ZoneId.of("America/Chicago");
             ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
             Instant instant = zonedDateTime.toInstant();
+
+
             order.setCreatedAt(instant);
             order.setCreatedAt(instant);
             List<OrderItem> orderItemList = new ArrayList<>();
