@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.List;
+import java.util.Random;
 
 @RestController("users/image")
 @RequestMapping("api/v1/admin/images")
@@ -65,6 +66,7 @@ public class ImageController {
     }
 
     private void saveFile(MultipartFile file, Integer type, String id){
+        Random random = new Random();
         InputStream inputStream = null;
         String fileName = "";
         if(type == Constant.IMAGE_TYPE_USER){
@@ -72,7 +74,7 @@ public class ImageController {
         }else if(type == Constant.IMAGE_TYPE_PRODUCT_AVT){
             fileName = "product_avatar" + id + ".jpg";
         }else{
-            fileName = "product_img_list" + id + +Instant.now().getEpochSecond()+ ".jpg";
+            fileName = "product_img_list" + id +"ran_" + random.nextInt() +Instant.now().getEpochSecond()+ ".jpg";
         }
 
         try {
