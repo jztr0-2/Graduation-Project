@@ -160,16 +160,20 @@ public class UsersController {
             product.setDescription("PRODUCT" + i + "description");
             product.setStatus(1);
             product.setName("PRODUCT NAME" + i);
-            product.setCategory(new Category(random.nextLong(9)));
-            product = productService.save(product);
+            product.setCategory(new Category(random.nextLong(7)+ 1));
+            System.out.println(product.getCategory().getId());
+            List<ProductVariant> productVariantList = new ArrayList<>();
             for (int j = 1; j < 3; j++){
                 ProductVariant productVariant = new ProductVariant();
                 productVariant.setProduct(product);
                 productVariant.setDescription("{\"key1\": \"val1\", \"key2\": \"val2\"}");
                 productVariant.setQuantity(100);
                 productVariant.setUnitPrice(Double.valueOf(100+ i + j));
-                productVariantService.save(productVariant);
+                productVariantList.add(productVariant);
+//                productVariantService.save(productVariant);
             }
+            product.setProductVariants(productVariantList);
+            productService.save(product);
         }
 
         // init order
@@ -183,12 +187,16 @@ public class UsersController {
         address.setPhone("0973588761");
         address = addressService.save(address);
 
-        for(int i = 0; i < 10000; i ++){
-            User user= service.findById(random.nextLong(100)).get();
+        for(int i = 0; i < 1000; i ++){
+            User user= service.findById(random.nextLong(90) + 1).get();
             Order order = new Order();
             order.setUser(user);
             order.setStatus(Constant.ORDER_STATUS_SUCCESS);
             order.setDescription("Fake order" + i);
+            String time = "2022-" + i% 12 + "-1" ;
+            Instant instant = Instant.parse(time);
+            order.setCreatedAt(Instant.now());
+            order.setCreatedAt(Instant.now());
             List<OrderItem> orderItemList = new ArrayList<>();
             order.setAddress(address);
             for(int j = 0; j < 5; j ++){
@@ -196,7 +204,7 @@ public class UsersController {
                 orderItem.setOrder(order);
                 orderItem.setQuantity(random.nextInt(10));
                 orderItem.setUnitPrice(random.nextDouble(1500));
-                orderItem.setProductVariant(new ProductVariant(random.nextLong(190)));
+                orderItem.setProductVariant(new ProductVariant(random.nextLong(190) + 1));
                 orderItemList.add(orderItem);
             }
             order.setOrderItems(orderItemList);
