@@ -193,7 +193,9 @@ public class UsersController {
             order.setUser(user);
             order.setStatus(Constant.ORDER_STATUS_SUCCESS);
             order.setDescription("Fake order" + i);
-            String time = "2022-" + (i% 11 + 1)  + "-1" ;
+            String month = (i% 11 + 1)+"";
+            month = month.length() == 1 ? month = "0" + month : month;
+            String time = "2022-" + month  + "-1" ;
             Instant instant = Instant.parse(time);
             order.setCreatedAt(Instant.now());
             order.setCreatedAt(Instant.now());
