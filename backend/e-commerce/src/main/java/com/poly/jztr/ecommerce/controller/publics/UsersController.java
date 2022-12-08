@@ -17,10 +17,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 
 @RestControllerAdvice("public/user")
@@ -193,12 +194,18 @@ public class UsersController {
             order.setUser(user);
             order.setStatus(Constant.ORDER_STATUS_SUCCESS);
             order.setDescription("Fake order" + i);
-            String month = (i% 11 + 1)+"";
-            month = month.length() == 1 ? month = "0" + month : month;
-            String time = "2022-" + month  + "-01" ;
-            Instant instant = Instant.parse(time);
-            order.setCreatedAt(Instant.now());
-            order.setCreatedAt(Instant.now());
+
+
+            String month = ((i%11) + 1) +"";
+            String stringDate = "09:15:30 PM, Sun" +month+"/09/2022";
+            String pattern = "hh:mm:ss a, EEE M/d/uuuu";
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
+            LocalDateTime localDateTime = LocalDateTime.parse(stringDate, dateTimeFormatter);
+            ZoneId zoneId = ZoneId.of("America/Chicago");
+            ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
+            Instant instant = zonedDateTime.toInstant();
+            order.setCreatedAt(instant);
+            order.setCreatedAt(instant);
             List<OrderItem> orderItemList = new ArrayList<>();
             order.setAddress(address);
             for(int j = 0; j < 5; j ++){
