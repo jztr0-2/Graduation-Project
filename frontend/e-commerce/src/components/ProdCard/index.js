@@ -29,15 +29,14 @@ function ProdCard({ name, description, price }) {
                 <div className={cx('product__item__content')}>
                     <div className={cx('product__details')}>
                         <a href="#" className={cx('product__name')}>
-                            Air Conditioner
+                            {name}
                         </a>
                         <div className={cx('rating')}>
                             <FontAwesomeIcon icon={faHeart} />
                         </div>
                     </div>
                     <p className={cx('desc')}>
-                        Etiam porta sem malesuada magna mollis euismod. Maecenas sed diam eget risus
-                        varius blandit sit amet non magna.
+                        {description}
                     </p>
                     <div className={cx('product__details')}>
                         <div className={cx('location')}>
@@ -46,7 +45,7 @@ function ProdCard({ name, description, price }) {
                         </div>
                         <div className={cx('price')}>
                             <FontAwesomeIcon icon={faMoneyCheck} />
-                            <p>150.000 đ{/* <span>/ package</span> */}</p>
+                            <p>{price}{/* <span>/ package</span> */}</p>
                         </div>
                     </div>
                 </div>
