@@ -38,8 +38,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByNameLike(String name) {
-        return repository.findByNameLike(name);
+    public Page<Product> findByNameLike(String name, Pageable pageable) {
+        return repository.findByNameLike(name, pageable);
     }
 
     @Override

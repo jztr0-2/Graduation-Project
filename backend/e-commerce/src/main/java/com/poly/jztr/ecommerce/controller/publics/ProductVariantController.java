@@ -41,6 +41,15 @@ public class ProductVariantController {
                 "Get list new product successfully", productVariantList));
     }
 
+    @GetMapping
+    public ResponseEntity<ResponseObject> findByName(@RequestParam String name){
+        Pageable pageable = CustomPageable.getPage("updatedAt", Constant.SORT_DESC);
+        Page<Product> products = service.findByNameLike(name, pageable);
+        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
+        return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                "Get list new product successfully", productVariantList));
+    }
+
     @GetMapping("/{id}/top_sale")
     public ResponseEntity<ResponseObject> getTopSaleByCategory(@PathVariable String id,
                                                                        @RequestParam(defaultValue = "1") Integer page,

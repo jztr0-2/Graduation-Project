@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface ProductService {
     <S extends Product> S save(S entity);
 
-    List<Product> findByNameLike(String name);
+    Page<Product> findByNameLike(String name, Pageable pageable);
 
     Optional<Product> findByName(String name);
 

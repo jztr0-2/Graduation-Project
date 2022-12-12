@@ -1,6 +1,7 @@
 package com.poly.jztr.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.json.JSONObject;
 import com.poly.jztr.ecommerce.dto.ProductVariantDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "product_variant")
@@ -113,8 +118,18 @@ public class ProductVariant {
         return product;
     }
 
-    public String getDescription() {
-        return description;
+    public Map<String, String> getDescription() {
+        description = description.substring(1, description.length() - 1);
+        List<String> items = Arrays.asList(description.split(","));
+        Map<String, String> map = new HashMap();
+        items.stream().forEach(item->{
+            int  position = item.indexOf(":");
+            System.out.println(item.substring(0,position).trim());
+            System.out.println(item.substring(position).trim());
+            map.put(item.substring(0,position).trim().replace("\"",""),
+                    item.substring(position+1).replace("\"",""));
+        });
+        return map;
     }
 
     public Double getUnitPrice() {
