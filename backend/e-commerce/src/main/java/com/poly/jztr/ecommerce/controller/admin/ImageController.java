@@ -2,7 +2,12 @@ package com.poly.jztr.ecommerce.controller.admin;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.model.Image;
+import com.poly.jztr.ecommerce.model.Product;
+import com.poly.jztr.ecommerce.model.ProductImage;
+import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.service.ImageService;
+import com.poly.jztr.ecommerce.service.ProductService;
+import com.poly.jztr.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
@@ -28,6 +33,12 @@ public class ImageController {
 
     @Autowired
     ImageService service;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    ProductService productService;
 
     @PostMapping
     public ResponseEntity<Void> addOneImage(@RequestParam("image")MultipartFile file,
@@ -67,16 +78,32 @@ public class ImageController {
 
     private void saveFile(MultipartFile file, Integer type, String id){
         Random random = new Random();
-        InputStream inputStream = null;
         String fileName = "";
         if(type == Constant.IMAGE_TYPE_USER){
             fileName = "user_avatar" + id + ".jpg";
+            Image img= saveImg(file,fileName,type);
+            User user = userService.findById(Long.valueOf(id)).get();
+            user.setImage(img);
+            userService.save(user);
         }else if(type == Constant.IMAGE_TYPE_PRODUCT_AVT){
             fileName = "product_avatar" + id + ".jpg";
+            Image img= saveImg(file,fileName,type);
+            Product product = productService.findById(Long.valueOf(id)).get();
+            product.setImage(img);
+            productService.save(product);
         }else{
             fileName = "product_img_list" + id +"ran_" + random.nextInt() +Instant.now().getEpochSecond()+ ".jpg";
+            Image img= saveImg(file,fileName,type);
+            ProductImage productImage = new ProductImage();
+            productImage.setImageId(img.getId());
+            productImage.setProduct(new Product(Long.valueOf(id)));
+            productImage.setCreatedAt(Instant.now());
+            productImage.setUpdatedAt(Instant.now());
         }
+    }
 
+    private Image saveImg(MultipartFile file, String fileName, Integer type){
+        InputStream inputStream = null;
         try {
             Path path= Paths.get("uploads");
             inputStream = file.getInputStream();
@@ -84,11 +111,9 @@ public class ImageController {
             Image image = new Image();
             image.setTitle(fileName);
             image.setType(type);
-            service.save(image);
-
+            return    service.save(image);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

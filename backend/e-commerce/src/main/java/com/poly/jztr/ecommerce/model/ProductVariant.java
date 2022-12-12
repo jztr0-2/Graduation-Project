@@ -124,8 +124,6 @@ public class ProductVariant {
         Map<String, String> map = new HashMap();
         items.stream().forEach(item->{
             int  position = item.indexOf(":");
-            System.out.println(item.substring(0,position).trim());
-            System.out.println(item.substring(position).trim());
             map.put(item.substring(0,position).trim().replace("\"",""),
                     item.substring(position+1).replace("\"",""));
         });

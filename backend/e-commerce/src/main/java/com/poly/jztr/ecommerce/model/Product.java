@@ -1,5 +1,6 @@
 package com.poly.jztr.ecommerce.model;
 
+import com.poly.jztr.ecommerce.common.Constant;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
@@ -27,6 +28,10 @@ public class Product {
     public Product() {
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
+    }
+
+    public Product(Long id) {
+        this.id = id;
     }
 
     @Id
@@ -122,6 +127,10 @@ public class Product {
     public void setImage(Image image) {
         this.image = image;
         this.updatedAt = Instant.now();
+    }
+
+    public String getImage(){
+        return image != null ? Constant.BASE_API_URL + "public/" + image.getTitle() : "";
     }
 
 }

@@ -23,4 +23,6 @@ public class Constant {
     public static Integer IMAGE_TYPE_PRODUCT_AVT = 2;
 
     public static Integer IMAGE_TYPE_PRODUCT_MULTIPLE = 3;
+
+    public static String BASE_API_URL = "http://localhost:8080/api/v1/";
 }

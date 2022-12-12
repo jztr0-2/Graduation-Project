@@ -23,9 +23,6 @@ public class Image {
     @Column(name = "type")
     private Integer type;
 
-    @Column(name = "url", length = 200)
-    private String url;
-
     @Column(name = "created_at")
     private Instant createdAt;
 
@@ -46,11 +43,6 @@ public class Image {
 
     public void setType(Integer type) {
         this.type = type;
-        this.updatedAt = Instant.now();
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
         this.updatedAt = Instant.now();
     }
 
