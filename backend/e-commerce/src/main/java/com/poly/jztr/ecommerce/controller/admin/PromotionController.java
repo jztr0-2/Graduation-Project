@@ -3,13 +3,11 @@ package com.poly.jztr.ecommerce.controller.admin;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
-import com.poly.jztr.ecommerce.dto.CategoryDto;
 import com.poly.jztr.ecommerce.dto.PromotionDto;
-import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Promotion;
-import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.PromotionService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -45,6 +43,17 @@ public class PromotionController {
                         service.findByCodeLContains(code, pageable)));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<ResponseObject> findByID(@PathVariable("id") Long id) throws TypeMismatchException {
+        if(service.findById(id).isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Promotion", null));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Find Promotion",
+                        service.findById(id)));
+    }
+
     @PostMapping("")
     public ResponseEntity<ResponseObject> post(@RequestBody @Validated PromotionDto promotionDto) throws IllegalAccessException, InvocationTargetException{
         Promotion promotion = new Promotion();
@@ -65,17 +74,17 @@ public class PromotionController {
         BeanUtils.copyProperties(promotionDto, promotion);
         promotion.setId(id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", service.save(promotion)));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Promotion Success", service.save(promotion)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> delete(@PathVariable("id") Long id, Model model){
         if(!service.existsById(id)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Promotion", null));
         }
         service.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", null));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Delete Promotion Success", null));
     }
 }
