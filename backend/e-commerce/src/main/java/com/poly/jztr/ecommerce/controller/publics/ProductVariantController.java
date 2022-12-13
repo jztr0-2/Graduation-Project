@@ -38,22 +38,22 @@ public class ProductVariantController {
     @Autowired
     ImageService imageService;
 
-    @GetMapping("index")
-    public ResponseEntity<ResponseObject> getTopNewProduct() {
-        Pageable pageable = CustomPageable.getPage("updatedAt", Constant.SORT_DESC);
-        Page<Product> products = service.findAll(pageable);
-        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
-        return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
-                "Get list new product successfully", productVariantList));
-    }
+//    @GetMapping
+//    public ResponseEntity<ResponseObject> getTopNewProduct() {
+//        Pageable pageable = CustomPageable.getPage("updatedAt", Constant.SORT_DESC);
+//        Page<Product> products = service.findAll(pageable);
+////        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
+//        return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+//                "Get list new product successfully", new PageableSerializer(products)));
+//    }
 
     @GetMapping
-    public ResponseEntity<ResponseObject> findByName(@RequestParam String name) {
+    public ResponseEntity<ResponseObject> findByName(@RequestParam(defaultValue = "") String name) {
         Pageable pageable = CustomPageable.getPage("updatedAt", Constant.SORT_DESC);
         Page<Product> products = service.findByNameLike(name, pageable);
-        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
+//        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
         return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
-                "Get list new product successfully", productVariantList));
+                "Get list new product successfully", new PageableSerializer(products)));
     }
 
     @GetMapping("/{id}/top_sale")
@@ -63,11 +63,11 @@ public class ProductVariantController {
 
         Pageable pageable = CustomPageable.getPage(page, perPage);
         Page<Product> products = service.findTopSaleByCategory(Long.valueOf(id), pageable);
-        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
-        PageableSerializer pageableSerializer = new PageableSerializer(products, productVariantList);
+//        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
+//        PageableSerializer pageableSerializer = new PageableSerializer(products, productVariantList);
 
         return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
-                "Get list new product successfully", pageableSerializer));
+                "Get list new product successfully", new PageableSerializer(products)));
     }
 
     @GetMapping("/{id}")

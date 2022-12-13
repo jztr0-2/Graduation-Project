@@ -227,4 +227,12 @@ public class UsersController {
         return "INIT SUCCESSFULLY";
     }
 
+    @Autowired SendSMSService sendSMSService;
+    @GetMapping("test-sendSMS")
+    public String testSendSMS(){
+        if(sendSMSService.send()){
+            return "DONE";
+        }
+        return "FAIL";
+    }
 }
