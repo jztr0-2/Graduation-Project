@@ -27,9 +27,9 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     public List<ProductVariant> toProductVariantFromDto(List<ProductVariantDto> list) {
+        if(list == null) return null;
        return list.stream().map(dto -> new ProductVariant(dto)).collect(Collectors.toList());
     }
-
 
     @Override
     public <S extends ProductVariant> S save(S entity) {

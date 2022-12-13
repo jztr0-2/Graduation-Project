@@ -132,5 +132,4 @@ public class Product {
     public String getImage(){
         return image != null ? Constant.BASE_API_URL + "public/" + image.getTitle() : "";
     }
-
 }

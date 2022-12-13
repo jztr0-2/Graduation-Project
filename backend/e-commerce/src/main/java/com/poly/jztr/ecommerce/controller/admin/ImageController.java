@@ -3,7 +3,6 @@ package com.poly.jztr.ecommerce.controller.admin;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.model.Image;
 import com.poly.jztr.ecommerce.model.Product;
-import com.poly.jztr.ecommerce.model.ProductImage;
 import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.service.ImageService;
 import com.poly.jztr.ecommerce.service.ProductService;
@@ -93,12 +92,7 @@ public class ImageController {
             productService.save(product);
         }else{
             fileName = "product_img_list" + id +"ran_" + random.nextInt() +Instant.now().getEpochSecond()+ ".jpg";
-            Image img= saveImg(file,fileName,type);
-            ProductImage productImage = new ProductImage();
-            productImage.setImageId(img.getId());
-            productImage.setProduct(new Product(Long.valueOf(id)));
-            productImage.setCreatedAt(Instant.now());
-            productImage.setUpdatedAt(Instant.now());
+            Image img= saveImg(file,fileName,type,Long.valueOf(id));
         }
     }
 
@@ -111,7 +105,23 @@ public class ImageController {
             Image image = new Image();
             image.setTitle(fileName);
             image.setType(type);
-            return    service.save(image);
+            return service.save(image);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Image saveImg(MultipartFile file, String fileName, Integer type, Long productId){
+        InputStream inputStream = null;
+        try {
+            Path path= Paths.get("uploads");
+            inputStream = file.getInputStream();
+            Files.copy(inputStream,path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+            Image image = new Image();
+            image.setTitle(fileName);
+            image.setType(type);
+            image.setProductId(productId);
+            return service.save(image);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
