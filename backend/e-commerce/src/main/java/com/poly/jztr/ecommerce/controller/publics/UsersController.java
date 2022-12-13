@@ -197,7 +197,7 @@ public class UsersController {
             order.setDescription("Fake order" + i);
 
 
-            String month = ((i%11) + 1) +"";
+            String month = ((i%12) + 1) +"";
 
             month = month.length() == 1 ? "0" + month : month;
             String stringDate = "09:15:30 PM, "+month+"/09/2022";

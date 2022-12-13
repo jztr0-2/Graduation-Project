@@ -82,6 +82,7 @@ public class OrderController {
         long orderCount = service.count();
         double totalRevenue = service.totalRevenueThisMonth();
         List<ProductStatic> top = productService.findStaticsProductTop();
+        System.out.println(top.size());
         List<ProductStatic> bottom = productService.findStaticsProductsBot();
         List<Object []> totalRevenuePerMonth = service.totalRevenuePerMonth();
         OrderStatics orderStatics = new OrderStatics(userCount,productSold,orderCount,totalRevenue,totalRevenuePerMonth,top,bottom);
