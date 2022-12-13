@@ -1,6 +1,7 @@
 package com.poly.jztr.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.poly.jztr.ecommerce.common.Constant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -111,5 +112,9 @@ public class User {
         this.password = password;
         this.updatedAt = Instant.now();
     }
+
+    public String getImage(){
+        return image != null ? Constant.BASE_API_URL + "public/" + image.getTitle() : "";
+     }
 
 }

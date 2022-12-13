@@ -1,12 +1,22 @@
 package com.poly.jztr.ecommerce.model;
 
+import com.poly.jztr.ecommerce.common.Constant;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
+
+@NamedQueries({
+    @NamedQuery(
+        name = "Product.getProductsByCategoryId",
+        query = "SELECT p FROM Product p WHERE p.category.id = ?1"
+    )
+})
 
 @Entity
 @Table(name = "products")
@@ -18,6 +28,10 @@ public class Product {
     public Product() {
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
+    }
+
+    public Product(Long id) {
+        this.id = id;
     }
 
     @Id
@@ -48,11 +62,13 @@ public class Product {
     @JoinColumn(name = "image_id")
     private Image image;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
+    @Fetch(FetchMode.JOIN)
     private Category category;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     public List<ProductVariant> productVariants;
 
     public Category getCategory() {
@@ -113,4 +129,7 @@ public class Product {
         this.updatedAt = Instant.now();
     }
 
+    public String getImage(){
+        return image != null ? Constant.BASE_API_URL + "public/" + image.getTitle() : "";
+    }
 }

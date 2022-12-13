@@ -108,9 +108,7 @@ public class JwtProvider {
         try {
             JWTClaimsSet claimsSet = getClaimsSetFromToken(token);
             username = claimsSet.getStringClaim("Username");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
         return username;
     }
 

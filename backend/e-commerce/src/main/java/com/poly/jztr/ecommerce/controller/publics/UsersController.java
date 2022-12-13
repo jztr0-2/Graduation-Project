@@ -16,11 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 
 @RestControllerAdvice("public/user")
@@ -129,6 +131,7 @@ public class UsersController {
 
     @GetMapping("/init-data")
     public String initData(){
+        Random random = new Random();
         if(service.findById(1L).isPresent()){
             return "INIT SUCCESSFULLY";
         }
@@ -159,19 +162,23 @@ public class UsersController {
             product.setDescription("PRODUCT" + i + "description");
             product.setStatus(1);
             product.setName("PRODUCT NAME" + i);
-            product = productService.save(product);
+            product.setCategory(new Category(random.nextLong(7)+ 1));
+            System.out.println(product.getCategory().getId());
+            List<ProductVariant> productVariantList = new ArrayList<>();
             for (int j = 1; j < 3; j++){
                 ProductVariant productVariant = new ProductVariant();
                 productVariant.setProduct(product);
                 productVariant.setDescription("{\"key1\": \"val1\", \"key2\": \"val2\"}");
                 productVariant.setQuantity(100);
                 productVariant.setUnitPrice(Double.valueOf(100+ i + j));
-                productVariantService.save(productVariant);
+                productVariantList.add(productVariant);
+//                productVariantService.save(productVariant);
             }
+            product.setProductVariants(productVariantList);
+            productService.save(product);
         }
 
         // init order
-        Random random = new Random();
 
         Address address = new Address();
         address.setCommune("Hoa Minh");
@@ -182,12 +189,28 @@ public class UsersController {
         address.setPhone("0973588761");
         address = addressService.save(address);
 
-        for(int i = 0; i < 10000; i ++){
-            User user= service.findById(random.nextLong(100)).get();
+        for(int i = 0; i < 1000; i ++){
+            User user= service.findById(random.nextLong(90) + 1).get();
             Order order = new Order();
             order.setUser(user);
             order.setStatus(Constant.ORDER_STATUS_SUCCESS);
             order.setDescription("Fake order" + i);
+
+
+            String month = ((i%12) + 1) +"";
+
+            month = month.length() == 1 ? "0" + month : month;
+            String stringDate = "09:15:30 PM, "+month+"/09/2022";
+            String pattern = "hh:mm:ss a, M/d/uuuu";
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
+            LocalDateTime localDateTime = LocalDateTime.parse(stringDate, dateTimeFormatter);
+            ZoneId zoneId = ZoneId.of("America/Chicago");
+            ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
+            Instant instant = zonedDateTime.toInstant();
+
+
+            order.setCreatedAt(instant);
+            order.setCreatedAt(instant);
             List<OrderItem> orderItemList = new ArrayList<>();
             order.setAddress(address);
             for(int j = 0; j < 5; j ++){
@@ -195,7 +218,7 @@ public class UsersController {
                 orderItem.setOrder(order);
                 orderItem.setQuantity(random.nextInt(10));
                 orderItem.setUnitPrice(random.nextDouble(1500));
-                orderItem.setProductVariant(new ProductVariant(random.nextLong(190)));
+                orderItem.setProductVariant(new ProductVariant(random.nextLong(190) + 1));
                 orderItemList.add(orderItem);
             }
             order.setOrderItems(orderItemList);

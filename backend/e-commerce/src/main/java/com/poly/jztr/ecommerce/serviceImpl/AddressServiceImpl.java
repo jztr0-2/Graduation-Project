@@ -33,8 +33,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Optional<Address> finByPhone(String phone) {
-        return repository.findByPhone(phone);
+    public List<Address> finByPhoneContains(String phone) {
+        return repository.findByPhoneContains(phone);
     }
 
     @Override

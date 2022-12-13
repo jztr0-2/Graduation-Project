@@ -1,12 +1,18 @@
 package com.poly.jztr.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.json.JSONObject;
+import com.poly.jztr.ecommerce.dto.ProductVariantDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "product_variant")
@@ -15,6 +21,13 @@ public class ProductVariant {
 
     public ProductVariant(){
         this.createdAt = Instant.now();
+    }
+    public ProductVariant(ProductVariantDto dto){
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+        this.setUnitPrice(dto.getUnitPrice());
+        this.setQuantity(dto.getQuantity());
+        this.setDescription(dto.getDescription());
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -105,8 +118,16 @@ public class ProductVariant {
         return product;
     }
 
-    public String getDescription() {
-        return description;
+    public Map<String, String> getDescription() {
+        description = description.substring(1, description.length() - 1);
+        List<String> items = Arrays.asList(description.split(","));
+        Map<String, String> map = new HashMap();
+        items.stream().forEach(item->{
+            int  position = item.indexOf(":");
+            map.put(item.substring(0,position).trim().replace("\"",""),
+                    item.substring(position+1).replace("\"",""));
+        });
+        return map;
     }
 
     public Double getUnitPrice() {

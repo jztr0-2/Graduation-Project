@@ -14,7 +14,7 @@ public interface AddressService {
 
     List<Address> findAll();
 
-    Optional<Address> finByPhone(String phone);
+    List<Address> finByPhoneContains(String phone);
 
     void deleteById(Long aLong);
 }
