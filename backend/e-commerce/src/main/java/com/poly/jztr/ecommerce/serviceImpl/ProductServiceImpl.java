@@ -30,10 +30,12 @@ public class ProductServiceImpl implements ProductService {
     public <S extends Product> S save(S entity) {
         Product p =  repository.save(entity);
         List<ProductVariant> productVariants = p.getProductVariants();
-        productVariants.stream().forEach(productVariant -> {
-            productVariant.setProduct(p);
-            productVariantService.save(productVariant);
-        });
+        if(productVariants != null){
+            productVariants.stream().forEach(productVariant -> {
+                productVariant.setProduct(p);
+                productVariantService.save(productVariant);
+            });
+        }
         return (S) p;
     }
 
