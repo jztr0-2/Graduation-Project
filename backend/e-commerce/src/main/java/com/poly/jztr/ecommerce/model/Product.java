@@ -58,7 +58,7 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
     private Image image;
 
@@ -130,6 +130,6 @@ public class Product {
     }
 
     public String getImage(){
-        return image != null ? Constant.BASE_API_URL + "public/" + image.getTitle() : "";
+        return image != null ? Constant.BASE_API_URL + "public/" + image.getTitle() : "ABC";
     }
 }

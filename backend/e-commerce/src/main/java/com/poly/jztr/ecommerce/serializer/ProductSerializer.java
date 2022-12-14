@@ -19,7 +19,7 @@ public class ProductSerializer {
     private Instant updatedAt;
     private Instant deletedAt;
     private String description;
-    private Image image;
+    private String image;
     private Category category;
     public List<ProductVariant> productVariants;
     public List<String> imageList;
