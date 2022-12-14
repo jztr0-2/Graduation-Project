@@ -5,7 +5,6 @@ import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.model.Image;
 import com.poly.jztr.ecommerce.model.Product;
-import com.poly.jztr.ecommerce.model.ProductVariant;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.serializer.ProductSerializer;
 import com.poly.jztr.ecommerce.service.ImageService;

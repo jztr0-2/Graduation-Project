@@ -35,4 +35,11 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     public <S extends ProductVariant> S save(S entity) {
         return repository.save(entity);
     }
+
+    @Override
+    public void minusQuantity(Long id, Integer quantity) {
+        ProductVariant p = repository.findById(id).get();
+        p.setQuantity(p.getQuantity() - quantity);
+        repository.save(p);
+    }
 }

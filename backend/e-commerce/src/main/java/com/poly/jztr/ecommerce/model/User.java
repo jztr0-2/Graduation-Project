@@ -44,9 +44,9 @@ public class User {
     @JsonIgnore
     private Instant updatedAt;
 
-    @Column(name = "delete_at")
+    @Column(name = "deleted_at")
     @JsonIgnore
-    private Instant deleteAt;
+    private Instant deletedAt;
 
     @Column(name = "phone")
     private String phone;
@@ -62,12 +62,12 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public Instant getDeleteAt() {
-        return deleteAt;
+    public Instant getDeletedAt() {
+        return deletedAt;
     }
 
-    public void setDeleteAt(Instant deleteAt) {
-        this.deleteAt = deleteAt;
+    public void setDeletedAt(Instant deleteAt) {
+        this.deletedAt = deleteAt;
     }
 
     public void setImage(Image image) {

@@ -1,7 +1,6 @@
 package com.poly.jztr.ecommerce.serializer;
 
 import com.poly.jztr.ecommerce.model.Category;
-import com.poly.jztr.ecommerce.model.Image;
 import com.poly.jztr.ecommerce.model.ProductVariant;
 import lombok.Getter;
 import lombok.Setter;

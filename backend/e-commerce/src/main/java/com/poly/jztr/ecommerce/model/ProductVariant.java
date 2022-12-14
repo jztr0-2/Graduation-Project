@@ -1,13 +1,14 @@
 package com.poly.jztr.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.json.JSONObject;
 import com.poly.jztr.ecommerce.dto.ProductVariantDto;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @Entity
 @Table(name = "product_variant")
+@Where(clause = "deleted_at is null")
 @AllArgsConstructor
 public class ProductVariant {
 
@@ -44,7 +46,17 @@ public class ProductVariant {
     private String description;
 
     @Column(name = "unit_price")
+    @NotNull
+    @Min(1)
     private Double unitPrice;
+
+    @Column(name = "quantity")
+    @NotNull
+    @Min(0)
+    private Integer quantity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -54,12 +66,6 @@ public class ProductVariant {
 
     @Column(name = "deleted_at")
     private Instant deletedAt;
-
-    @Column(name = "quantity")
-    private Integer quantity;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
-    private Image image;
 
     public ProductVariant(Long productVariantId) {
         this.id = productVariantId;
