@@ -106,6 +106,8 @@ public class ProductServiceImpl implements ProductService {
         if (optional.isPresent()) return optional.get();
         return 0L;
     }
-
-
+    @Override
+    public Page<Product> findByNameContainsAndStatus(String name, Integer status, Pageable pageable) {
+        return repository.findByNameContainsAndStatus(name, status, pageable);
+    }
 }

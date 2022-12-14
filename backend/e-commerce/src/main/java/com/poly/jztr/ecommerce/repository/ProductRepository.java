@@ -17,6 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByName(String name);
 
+    Page<Product> findByNameContainsAndStatus(String name,Integer status, Pageable pageable);
     @Query(value = "SELECT products.* FROM jztr.order_items join product_variant on " +
             "product_variant.id = order_items.product_variant_id " +
             "join products on products.id = product_variant.product_id " +

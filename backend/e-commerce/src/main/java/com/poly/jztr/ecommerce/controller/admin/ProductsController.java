@@ -51,11 +51,15 @@ public class ProductsController {
     @GetMapping
     public ResponseEntity<ResponseObject> index(@RequestParam(defaultValue = "1") Integer page,
                                                 @RequestParam (defaultValue = "10") Integer perPage,
-                                                @RequestParam(defaultValue = "") String name){
+                                                @RequestParam(defaultValue = "") String name,
+                                                @RequestParam(defaultValue = "-1") Integer status){
         Pageable pageable = CustomPageable.getPage(page,perPage,"updatedAt", Constant.SORT_DESC);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
-                        "Get products successfully", new PageableSerializer(service.findByNameLike(name,pageable))));
+        PageableSerializer data = null;
+        if(status == -1) data = new PageableSerializer(service.findByNameLike(name,pageable));
+        else data = new PageableSerializer(service.findByNameContainsAndStatus(name,status,pageable));
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                            "Get products successfully", data));
     }
 
     @GetMapping("{/id}")

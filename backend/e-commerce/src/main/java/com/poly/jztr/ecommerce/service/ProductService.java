@@ -32,4 +32,6 @@ public interface ProductService {
     Page<Product> getProductsByCategoryId(Long categoryId, Pageable page);
 
     Long getProductSoldThisMonth();
+
+    Page<Product> findByNameContainsAndStatus(String name, Integer status, Pageable pageable);
 }
