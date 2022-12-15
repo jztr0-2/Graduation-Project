@@ -74,7 +74,9 @@ public class ProductsController {
     @PutMapping("{id}")
     public ResponseEntity<ResponseObject> update(@PathVariable Long id, @RequestBody @Validated ProductDto dto ) throws DuplicateEntryException {
         Optional<Product> optionalProduct = service.findByName(dto.getName());
-        if(optionalProduct.isPresent()) throw new DuplicateEntryException("Name", "Product name is exists");
+        if(optionalProduct.isPresent()){
+            if(optionalProduct.get().getId() != id) throw new DuplicateEntryException("Name", "Product name is exists");
+        }
 
         if (categoryService.findById(dto.getCategoryId()).isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
