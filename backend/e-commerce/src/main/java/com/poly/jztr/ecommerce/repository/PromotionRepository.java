@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface PromotionRepository extends JpaRepository<Promotion, Long> {
     Page<Promotion> findByCodeContains(String code, Pageable pageable);
 
+    Page<Promotion> findByCodeContainsAndType(String code, Long type, Pageable pageable);
 }

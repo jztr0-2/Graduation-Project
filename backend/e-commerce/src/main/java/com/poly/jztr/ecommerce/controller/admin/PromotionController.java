@@ -5,6 +5,7 @@ import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.PromotionDto;
 import com.poly.jztr.ecommerce.model.Promotion;
+import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.service.PromotionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.TypeMismatchException;
@@ -34,13 +35,17 @@ public class PromotionController {
 //    }
 
     @GetMapping("")
-    public ResponseEntity<ResponseObject> findByCode(@RequestParam(defaultValue = "") String code,
+    public ResponseEntity<ResponseObject> findByCode(@RequestParam(defaultValue = "-1") Integer type,
+                                                     @RequestParam(defaultValue = "") String code,
                                                      @RequestParam(defaultValue = "1") Integer page,
                                                      @RequestParam(defaultValue = "10") Integer perPage){
+        PageableSerializer data = null;
         Pageable pageable = CustomPageable.getPage(page, perPage);
+        if(type == -1) data = new PageableSerializer(service.findByCodeLContains(code, pageable));
+        else data = new PageableSerializer(service.findByCodeContainsAndType(code,type, pageable));
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
-                        service.findByCodeLContains(code, pageable)));
+                        data));
     }
 
     @GetMapping("{id}")
