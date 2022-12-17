@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> findByProperties(Pageable pageable, String name, String email) {
-        return repository.findByLastNameContainsAndEmailContains(name, email, pageable);
+    public Page<User> findByProperties(Pageable pageable, String name, String email, String phone) {
+        return repository.findByLastNameContainsOrFirstNameContainsOrEmailContainsOrPhoneContains(name, name,email, phone,pageable);
     }
 }

@@ -36,10 +36,9 @@ public class UsersController {
     @GetMapping
     public ResponseEntity<ResponseObject> getAllUser(@RequestParam(defaultValue = "1") Integer page,
                                                      @RequestParam(defaultValue = "10") Integer perPage,
-                                                     @RequestParam(defaultValue = "") String name,
-                                                     @RequestParam(defaultValue = "") String email){
+                                                     @RequestParam(defaultValue = "") String query){
         Pageable pageable = CustomPageable.getPage(page,perPage);
-        Page<User> page1 = service.findByProperties(pageable,name,email);
+        Page<User> page1 = service.findByProperties(pageable,query,query,query);
         PageableSerializer pageableSerializer = new PageableSerializer(page1);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get user successfully",
