@@ -29,7 +29,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public <S extends Product> S save(S entity) {
         List<ProductVariant> productVariants = entity.getProductVariants();
-        productVariants.stream().forEach(item -> System.out.println(item.getQuantity() + " " + item.getUnitPrice()));
         Product p =  repository.save(entity);
         if(productVariants != null){
             productVariants.stream().forEach(productVariant -> {

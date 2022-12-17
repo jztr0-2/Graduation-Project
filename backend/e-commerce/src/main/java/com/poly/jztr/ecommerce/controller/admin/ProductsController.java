@@ -86,6 +86,7 @@ public class ProductsController {
         try {
             service.save(p);
         }catch (Exception e){
+            e.printStackTrace();
             throw new DuplicateEntryException("Name","Product name is exists");
         }
 
