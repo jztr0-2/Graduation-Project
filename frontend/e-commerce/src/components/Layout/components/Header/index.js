@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import queryString from 'query-string';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faCartShopping, faTimes } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import FormCustom from '~/components/Form';
+import * as request from '~/utils/http';
+import { CategoryApi } from '~/api/EcommerceApi';
+import { Link } from 'react-router-dom';
+
 const cx = classNames.bind(styles);
 
 function Header() {
@@ -12,6 +16,20 @@ function Header() {
     const handleStatusBars = () => {
         setStatusBars((status) => ({ clicked: !status.clicked }));
     };
+    /* CATEGORY LIST */
+    const [categories, setCategories] = useState([]);
+    useEffect(() => {
+        CategoryApi.getAll().then(
+            (res) => {
+                if (res.data) {
+                    setCategories(res.data);
+                }
+            },
+            (err) => {
+                console.log('error', err);
+            },
+        );
+    }, []);
     /* handle show form */
     const [showForm, setShowForm] = useState(false);
     return (
@@ -27,7 +45,36 @@ function Header() {
                         </a>
                     </li>
                     <li className={cx('nav-item')}>
-                        <a href="/">Category</a>
+                        <Link to="/public/products/category/1">Category</Link>
+                        <ul className={cx('dropdown__list')}>
+                            {categories.map((category, index) => {
+                                return index < 3 ? (
+                                    <li className={cx('dropdown__item')} key={category.id}>
+                                        <Link
+                                            to={`/category/${category.id}?page=1&limit=6`}
+                                            className={cx('dropdown__text')}
+                                        >
+                                            {category.name.toLowerCase()}
+                                        </Link>
+                                        <FontAwesomeIcon icon={faBars} />
+                                    </li>
+                                ) : null;
+                            })}
+                            {categories.length > 3 ? (
+                                <li className={cx('dropdown__item')}>
+                                    <Link
+                                        to="/categories/views?page=1"
+                                        className={cx('dropdown__text')}
+                                    >
+                                        View more
+                                    </Link>
+                                    <FontAwesomeIcon icon={faBars} />
+                                </li>
+                            ) : (
+                                <></>
+                            )}
+                            {/* Display show more  */}
+                        </ul>
                     </li>
                     <li className={cx('nav-item')}>
                         <a href="/">Selling</a>
