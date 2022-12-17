@@ -54,5 +54,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Long> totalProductSold(String time);
 
     @Query(name = "Product.getProductsByCategoryId")
-    Page<Product> getProductsByCategoryId(Long categoryId, Pageable page);
+    Page<Product> getProductsByCategoryId(Long categoryId, Pageable pageable);
 }

@@ -29,7 +29,7 @@ public interface ProductService {
 
     List<ProductStatic> findStaticsProductsBot();
 
-    Page<Product> getProductsByCategoryId(Long categoryId, Pageable page);
+    Page<Product> getProductsByCategoryId(Long categoryId, Pageable pageable);
 
     Long getProductSoldThisMonth();
 

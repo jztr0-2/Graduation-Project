@@ -84,28 +84,4 @@ public class ProductVariantController {
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get product successfully", productSerializer)
         );
     }
-
-    @GetMapping("/category/{id}")
-    public ResponseEntity<ResponseObject> getPageProducts(
-            @PathVariable Long id,
-            @RequestParam("page") Optional<Integer> page,
-            @RequestParam("limit") Optional<Integer> limit) {
-        if (id == null) {
-            return null;
-        }
-        // define pagination
-        Pageable pageable = CustomPageable.getPage(page.orElse(1), limit.orElse(10));
-        Page<Product> pageProduct = service.getProductsByCategoryId(id, pageable);
-        Map<String, Object> customResponse = new HashMap<>();
-        customResponse.put("products", productVariantService.toProductVariant(pageProduct.getContent()));
-        customResponse.put("total_pages", pageProduct.getTotalPages());
-        customResponse.put("total_items", pageProduct.getTotalElements());
-        customResponse.put("next_page", pageProduct.hasNext());
-        customResponse.put("prev_page", pageProduct.hasPrevious());
-        // response data
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get products successfully", customResponse)
-        );
-
-    }
 }
