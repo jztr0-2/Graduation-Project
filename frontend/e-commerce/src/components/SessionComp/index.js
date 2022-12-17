@@ -2,13 +2,36 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import CategoryCard from '../CategoryCard';
+import ProdCard from '../ProdCard';
 import classNames from 'classnames/bind';
 import styles from './SessionComp.module.scss';
-import CategoryCard from '../CategoryCard';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-function SessionComp({ title, subtitle, sizePercentCard = 45, cards }) {
+function SessionComp({ title, subtitle, sizePercentCard = 45, type, items, ...props }) {
+    // Handle show card
+    let cards = [];
+    switch (type) {
+        case 'product':
+            for (const item of items) {
+                cards.push(
+                    <ProdCard
+                        key={item.id}
+                        name={item.name}
+                        description={item.description}
+                        price={item.productVariants[0]?.unitPrice}
+                        urlImg={item.imageList[0]}
+                    />,
+                );
+            }
+            break;
+        case 'category':
+            break;
+        default:
+            break;
+    }
     return (
         <section id="destinations" className={cx('section__padding')}>
             <div className={cx('wrapper-base')}>
@@ -35,10 +58,11 @@ function SessionComp({ title, subtitle, sizePercentCard = 45, cards }) {
                                 <FontAwesomeIcon icon={faArrowRight} />
                             </div>
                         </div>
-                        <button className={cx('btn', 'btn__2', 'light')}>View all</button>
+                        <Link className={cx('btn', 'btn__2', 'light')} to={props.linkView}>
+                            View all
+                        </Link>
                     </div>
                 </div>
-
                 <Carousel
                     showThumbs={false}
                     showIndicators={false}

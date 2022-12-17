@@ -4,9 +4,6 @@ import { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faHeadset,
-    faHeart,
-    faMoneyBillTransfer,
     faTruckFast,
     faHeadphonesSimple,
     faWallet,
@@ -16,7 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import styles from './Home.module.scss';
 // component static
-import CategoryProdCard from '~/components/CategoryProdCard';
+// disable - import CategoryProdCard from '~/components/CategoryProdCard';
 import SessionComp from '~/components/SessionComp';
 import CategoryCard from '~/components/CategoryCard';
 import ProdCard from '~/components/ProdCard';
@@ -26,7 +23,6 @@ const cx = classNames.bind(styles);
 function Home() {
     useEffect(() => {
         const collageImages = [...document.getElementsByName('collage-img')];
-        console.log('Collage images: ', collageImages);
         collageImages.map((item, i) => {
             item.addEventListener('mouseover', () => {
                 collageImages.map((image, index) => {
@@ -72,25 +68,31 @@ function Home() {
         />,
     ];
     /* Product cards */
-    const productCards = [<ProdCard />, <ProdCard />, <ProdCard />, <ProdCard />];
+    const productCards = [
+        <ProdCard key={1} />,
+        <ProdCard key={2} />,
+        <ProdCard key={3} />,
+        <ProdCard key={4} />,
+    ];
     return (
         <div className={cx('wrapper')}>
+            <div className={cx('header-content')}></div>
             {/* <!--==================== CATEGORY CARD ====================--> */}
-            <SessionComp
+            {/* <SessionComp
                 title="Most popular category"
                 subtitle="category"
                 cards={categoryCards}
                 sizePercentCard={45}
-            />
+            /> */}
             {/* <!--==================== CATEGORY CARD END ====================--> */}
 
             {/* <!--==================== PRODUCT CARD ====================--> */}
-            <SessionComp
+            {/* <SessionComp
                 title="Most popular product"
                 subtitle="product"
                 cards={productCards}
                 sizePercentCard={30}
-            />
+            /> */}
             {/* <!--==================== PRODUCT CARD END ====================--> */}
             {/* <!-- services section starts  --> */}
 
