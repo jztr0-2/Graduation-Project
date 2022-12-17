@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Where;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "categories")
+@Where(clause = "delete_at is null OR updated_at > delete_at")
 @Setter
 @Getter
 public class Category {

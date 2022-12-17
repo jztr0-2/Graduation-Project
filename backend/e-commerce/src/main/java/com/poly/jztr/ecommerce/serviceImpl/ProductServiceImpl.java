@@ -94,9 +94,8 @@ public class ProductServiceImpl implements ProductService {
                  new ProductStatic(pro[0]+"", Long.valueOf(pro[1]+""))
          ).collect(Collectors.toList());
      }
-
-    public Page<Product> getProductsByCategoryId(Long categoryId, Pageable page) {
-        return repository.getProductsByCategoryId(categoryId, page);
+    public Page<Product> getProductsByCategoryId(Long categoryId, Pageable pageable) {
+        return repository.getProductsByCategoryId(categoryId, pageable);
     }
 
     @Override
