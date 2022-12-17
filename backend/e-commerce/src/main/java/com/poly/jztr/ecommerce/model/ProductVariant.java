@@ -125,6 +125,9 @@ public class ProductVariant {
     }
 
     public Map<String, String> getDescription() {
+        if(description == null){
+            return null;
+        }
         description = description.substring(1, description.length() - 1);
         List<String> items = Arrays.asList(description.split(","));
         Map<String, String> map = new HashMap();

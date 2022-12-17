@@ -6,6 +6,7 @@ import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.ProductDto;
 import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
 import com.poly.jztr.ecommerce.model.Product;
+import com.poly.jztr.ecommerce.model.ProductVariant;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.ProductService;
@@ -17,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @RestControllerAdvice("admin/product")
@@ -73,22 +75,23 @@ public class ProductsController {
 
     @PutMapping("{id}")
     public ResponseEntity<ResponseObject> update(@PathVariable Long id, @RequestBody @Validated ProductDto dto ) throws DuplicateEntryException {
-        Optional<Product> optionalProduct = service.findByName(dto.getName());
-        if(optionalProduct.isPresent()){
-            if(optionalProduct.get().getId() != id) throw new DuplicateEntryException("Name", "Product name is exists");
-        }
-
         if (categoryService.findById(dto.getCategoryId()).isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,
                             "Category not found", null));
         }
+
         Product p = service.toProduct(dto);
         p.setId(id);
-        p = service.save(p);
+        try {
+            service.save(p);
+        }catch (Exception e){
+            throw new DuplicateEntryException("Name","Product name is exists");
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
-                        "Update successfully", service.save(p)));
+                        "Update successfully", null));
     }
 
     @DeleteMapping("{id}")
