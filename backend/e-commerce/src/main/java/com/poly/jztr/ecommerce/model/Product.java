@@ -20,7 +20,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "products")
-@Where(clause = "deleted_at is null")
+@Where(clause = "deleted_at is null OR deleted_at < updated_at")
 @Getter
 @Setter
 public class Product {

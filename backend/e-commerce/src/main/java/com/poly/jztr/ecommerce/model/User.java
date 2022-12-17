@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.poly.jztr.ecommerce.common.Constant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -12,6 +13,7 @@ import java.time.Instant;
 @Table(name = "users")
 @NoArgsConstructor
 @Getter
+@Where(clause = "deleted_at is null")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
