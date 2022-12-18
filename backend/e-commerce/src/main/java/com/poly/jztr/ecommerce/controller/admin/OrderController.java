@@ -19,13 +19,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @RestControllerAdvice("admin/orders")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(value = {"http://localhost:3000", "http://localhost:4000"})
 @RequestMapping("api/v1/admin/orders")
 public class OrderController {
     @Autowired
