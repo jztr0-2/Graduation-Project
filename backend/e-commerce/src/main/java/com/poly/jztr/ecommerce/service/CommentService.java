@@ -10,5 +10,7 @@ public interface CommentService {
 
     Comment save(CommentDto dto);
 
+    Comment save(Comment dto);
+
     void update(CommentDto dto, Long id);
 }

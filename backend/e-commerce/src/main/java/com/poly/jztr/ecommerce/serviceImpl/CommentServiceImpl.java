@@ -31,6 +31,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Comment save(Comment dto) {
+        return repository.save(dto);
+    }
+
+    @Override
     public void update(CommentDto dto, Long id) {
         Comment cmt = repository.findById(id).get();
     }

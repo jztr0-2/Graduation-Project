@@ -49,8 +49,7 @@ public class Promotion {
     private Instant deletedAt;
 
     @Column(name = "type")
-
-    private Long type;
+    private Integer type;
 
     public void setId(Long id) {
         this.id = id;
@@ -104,7 +103,7 @@ public class Promotion {
 
 
 
-    public void setType(Long type) {
+    public void setType(Integer type) {
         this.type = type;
         this.updatedAt = Instant.now();
     }

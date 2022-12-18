@@ -10,10 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Getter
@@ -122,7 +119,8 @@ public class ProductVariant {
 
     public void setDisplayName(String name){
         Map<String, String> map = getDescription();
-        this.displayName = name + map.get("title");
+        String title = map.get("title");
+        this.displayName = name + " " + title + " " + map.get("color");
     }
 
     public Map<String, String> getDescription() {

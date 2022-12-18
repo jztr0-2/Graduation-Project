@@ -63,7 +63,7 @@ public class PromotionController {
     public ResponseEntity<ResponseObject> post(@RequestBody @Validated PromotionDto promotionDto) throws IllegalAccessException, InvocationTargetException{
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
-        promotion.setType(1L);
+        promotion.setType(1);
         return ResponseEntity.status(HttpStatus.OK).body(
         new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Crated promotion successfully", service.save(promotion)));
     

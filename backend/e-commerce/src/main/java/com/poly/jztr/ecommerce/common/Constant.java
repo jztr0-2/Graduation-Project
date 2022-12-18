@@ -26,5 +26,9 @@ public class Constant {
 
     public static Integer IMAGE_TYPE_PRODUCT_MULTIPLE = 3;
 
+    public static Integer PROMOTION_TYPE_MULTIPLE_USER = 1;
+
+    public static Integer PROMOTION_TYPE_SINGLE_USER = 2;
+
     public static String BASE_API_URL = "http://localhost:8080/api/v1/";
 }

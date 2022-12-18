@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.apache.commons.lang3.RandomStringUtils;
+
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -59,6 +61,11 @@ public class UsersController {
 
     @Autowired
     AddressService addressService;
+
+    @Autowired
+    CommentService commentService;
+
+    @Autowired PromotionService promotionService;
 
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> login(@RequestBody LoginDto login) {
@@ -165,10 +172,11 @@ public class UsersController {
             product.setCategory(new Category(random.nextLong(7)+ 1));
             System.out.println(product.getCategory().getId());
             List<ProductVariant> productVariantList = new ArrayList<>();
+            String[] colors = {"xxx","YELLOW", "BLUE", "PINK", "RED"};
             for (int j = 1; j < 3; j++){
                 ProductVariant productVariant = new ProductVariant();
                 productVariant.setProduct(product);
-                productVariant.setDescription("{\"title\": \"product-variant" + j +  "\", \"key2\": \"val2\"}");
+                productVariant.setDescription("{\"title\": \"color\", \"color\": \""+ colors[j] +i+ "\"}");
                 productVariant.setQuantity(1000);
                 productVariant.setUnitPrice(Double.valueOf(100+ i + j));
                 productVariant.setDisplayName("PRODUCT NAME" + i);
@@ -177,6 +185,28 @@ public class UsersController {
             }
             product.setProductVariants(productVariantList);
             productService.save(product);
+        }
+
+
+        //init comment
+
+        for(int i = 1; i < 100; i ++){
+            Comment cmt = new Comment();
+            cmt.setUser(new User(Long.valueOf(i/2 + 1)));
+            cmt.setContent("Comment " + i);
+            cmt.setProduct(new Product(Long.valueOf(i)));
+            commentService.save(cmt);
+        }
+
+
+        // init promotion
+
+        for (int i = 1; i < 100; i ++){
+            Promotion promotion = new Promotion();
+            promotion.setCreatedAt(Instant.now());
+            promotion.setType(i%2 + 1);
+            promotion.setCode( RandomStringUtils.random(6));
+            promotionService.save(promotion);
         }
 
         // init order
