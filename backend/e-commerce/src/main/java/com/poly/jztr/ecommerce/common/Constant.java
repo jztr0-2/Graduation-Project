@@ -8,6 +8,8 @@ public class Constant {
     public static Integer ORDER_STATUS_PENDING = 0;
 
     public static Integer ORDER_STATUS_SUCCESS = 1;
+
+    public static Integer ORDER_STATUS_CANCEL = 2;
     public static String RESPONSE_STATUS_SUCCESS = "OK";
 
     public static String RESPONSE_STATUS_NOTFOUND = "NOT_FOUND";

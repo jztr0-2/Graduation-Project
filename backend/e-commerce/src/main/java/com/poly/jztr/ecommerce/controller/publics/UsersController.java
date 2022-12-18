@@ -168,9 +168,10 @@ public class UsersController {
             for (int j = 1; j < 3; j++){
                 ProductVariant productVariant = new ProductVariant();
                 productVariant.setProduct(product);
-                productVariant.setDescription("{\"key1\": \"val1\", \"key2\": \"val2\"}");
-                productVariant.setQuantity(100);
+                productVariant.setDescription("{\"title\": \"product-variant" + j +  "\", \"key2\": \"val2\"}");
+                productVariant.setQuantity(1000);
                 productVariant.setUnitPrice(Double.valueOf(100+ i + j));
+                productVariant.setDisplayName("PRODUCT NAME" + i);
                 productVariantList.add(productVariant);
 //                productVariantService.save(productVariant);
             }

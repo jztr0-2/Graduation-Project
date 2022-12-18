@@ -3,11 +3,11 @@ package com.poly.jztr.ecommerce.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.poly.jztr.ecommerce.dto.ProductVariantDto;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Arrays;
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
+@Getter
 @Table(name = "product_variant")
 @Where(clause = "deleted_at is null")
 @AllArgsConstructor
@@ -67,6 +68,9 @@ public class ProductVariant {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
+    @Column(name = "display_name", unique = true)
+    private String displayName;
+
     public ProductVariant(Long productVariantId) {
         this.id = productVariantId;
     }
@@ -116,12 +120,9 @@ public class ProductVariant {
         this.updatedAt = Instant.now();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Product getProduct() {
-        return product;
+    public void setDisplayName(String name){
+        Map<String, String> map = getDescription();
+        this.displayName = name + map.get("title");
     }
 
     public Map<String, String> getDescription() {
@@ -137,30 +138,6 @@ public class ProductVariant {
                     item.substring(position+1).replace("\"",""));
         });
         return map;
-    }
-
-    public Double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public Instant getDeletedAt() {
-        return deletedAt;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public Image getImage() {
-        return image;
     }
 
     /*
