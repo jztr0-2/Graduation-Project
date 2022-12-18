@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
 
 @RestControllerAdvice("admin/promotion")
 @CrossOrigin("http://localhost:3000")
@@ -63,6 +64,11 @@ public class PromotionController {
     public ResponseEntity<ResponseObject> post(@RequestBody @Validated PromotionDto promotionDto) throws IllegalAccessException, InvocationTargetException{
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
+        if (Instant.now().isAfter(promotion.getEndDate())) {
+            promotion.setStatus(0);
+        } else {
+            promotion.setStatus(1);
+        }
         promotion.setType(1);
         return ResponseEntity.status(HttpStatus.OK).body(
         new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Crated promotion successfully", service.save(promotion)));
@@ -78,6 +84,11 @@ public class PromotionController {
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
         promotion.setId(id);
+        if (Instant.now().isAfter(promotion.getEndDate())) {
+            promotion.setStatus(0);
+        } else {
+            promotion.setStatus(1);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Promotion Success", service.save(promotion)));
     }

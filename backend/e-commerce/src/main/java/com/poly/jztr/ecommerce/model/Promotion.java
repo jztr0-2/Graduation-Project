@@ -51,6 +51,17 @@ public class Promotion {
     @Column(name = "type")
     private Integer type;
 
+    @Column(name =  "status")
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public void setId(Long id) {
         this.id = id;
         this.updatedAt = Instant.now();

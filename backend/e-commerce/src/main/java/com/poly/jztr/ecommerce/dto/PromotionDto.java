@@ -36,7 +36,6 @@ public class PromotionDto {
     @NotNull
     private Instant startDate;
 
-    @NotNull
     private Boolean status;
     private Long type;
 
