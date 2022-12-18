@@ -23,15 +23,6 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "name", length = 100)
-    private String firstName;
-
-    @Column(name = "email", length = 100)
-    private String email;
-
-    @Column(name = "phone", length = 15)
-    private String phone;
-
     @Column(name = "content", length = 1000)
     private String content;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -60,36 +51,21 @@ public class Comment {
     public void setUser(User user) {
         this.user = user;
     }
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public void setContent(String content){
         this.content = content;
         this.updatedAt = Instant.now();
     }
 
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-
     public void setParent(Comment parent) {
         this.parent = parent;
     }
-
-
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
-
-
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-
     public void setProduct(Product product) {
         this.product = product;
     }

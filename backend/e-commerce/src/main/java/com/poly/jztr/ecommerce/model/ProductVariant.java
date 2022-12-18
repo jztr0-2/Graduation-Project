@@ -120,7 +120,7 @@ public class ProductVariant {
     public void setDisplayName(String name){
         Map<String, String> map = getDescription();
         String title = map.get("title");
-        this.displayName = name + " " + title + " " + map.get("color");
+        this.displayName = name + " " + title + " " + map.get(title);
     }
 
     public Map<String, String> getDescription() {

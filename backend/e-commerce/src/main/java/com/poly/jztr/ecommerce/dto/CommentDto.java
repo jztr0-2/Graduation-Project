@@ -16,4 +16,5 @@ public class CommentDto {
     private Long userId;
     private Long productId;
     private Long parentId;
+    private String content;
 }

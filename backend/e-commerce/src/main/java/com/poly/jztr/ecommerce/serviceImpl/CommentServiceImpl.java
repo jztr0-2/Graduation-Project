@@ -2,6 +2,7 @@ package com.poly.jztr.ecommerce.serviceImpl;
 
 import com.poly.jztr.ecommerce.dto.CommentDto;
 import com.poly.jztr.ecommerce.model.Comment;
+import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.repository.CommentRepository;
 import com.poly.jztr.ecommerce.service.CommentService;
 import org.springframework.beans.BeanUtils;
@@ -36,7 +37,23 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void update(CommentDto dto, Long id) {
-        Comment cmt = repository.findById(id).get();
+    public void update(CommentDto dto, Long id, User user) {
+        if(dto.getUserId() == user.getId()){
+            Comment comment = repository.findById(id).get();
+            comment.setContent(dto.getContent());
+            repository.save(comment);
+        }
+    }
+
+    @Override
+    public void delete(Long id, User user) {
+        if(id == user.getId()){
+            repository.deleteById(id);
+        }
+    }
+
+    @Override
+    public Page<Comment> findParentComment(Pageable pageable) {
+        return repository.findByParent(null, pageable);
     }
 }
