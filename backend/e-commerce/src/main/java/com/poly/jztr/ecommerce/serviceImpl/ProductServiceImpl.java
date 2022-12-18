@@ -109,4 +109,9 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> findByNameContainsAndStatus(String name, Integer status, Pageable pageable) {
         return repository.findByNameContainsAndStatus(name, status, pageable);
     }
+
+    @Override
+    public List<Product> findTopSale() {
+        return repository.findTopSale();
+    }
 }

@@ -25,7 +25,7 @@ public class CommentsController {
     @GetMapping
     public ResponseEntity<ResponseObject> getListRecent(@RequestParam(defaultValue = "1") Integer page,
                                                         @RequestParam(defaultValue = "10") Integer perPage){
-        Pageable pageable = CustomPageable.getPage(page,perPage, "created_at",Constant.SORT_DESC);
+        Pageable pageable = CustomPageable.getPage(page,perPage, "createdAt",Constant.SORT_DESC);
         Page<Comment> commentPage = commentService.findParentComment(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,

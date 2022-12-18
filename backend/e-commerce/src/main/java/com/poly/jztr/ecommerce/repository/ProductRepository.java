@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "join categories on products.category_id = categories.id " +
             "where categories.id = ?1 " +
             "group by products.id " +
-            "order by (order_items.quantity) desc ",
+            "order by (order_items.quantity) desc",
             countQuery = "SELECT count(*) FROM (select products.* from jztr.order_items join product_variant on " +
                     " product_variant.id = order_items.product_variant_id " +
                     " join products on products.id = product_variant.product_id " +
@@ -52,6 +52,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "and orders.created_at > ?" +
             "  order by SUM(order_items.quantity)", nativeQuery = true)
     Optional<Long> totalProductSold(String time);
+
+    @Query(value = "SELECT products.* FROM jztr.order_items join product_variant on " +
+            "product_variant.id = order_items.product_variant_id join products " +
+            "on products.id = product_variant.product_id group by " +
+            "products.id order by (order_items.quantity) desc limit 10", nativeQuery = true)
+    List<Product> findTopSale();
 
     @Query(name = "Product.getProductsByCategoryId")
     Page<Product> getProductsByCategoryId(Long categoryId, Pageable pageable);

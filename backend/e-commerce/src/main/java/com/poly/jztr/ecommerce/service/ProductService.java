@@ -34,4 +34,6 @@ public interface ProductService {
     Long getProductSoldThisMonth();
 
     Page<Product> findByNameContainsAndStatus(String name, Integer status, Pageable pageable);
+
+    List<Product> findTopSale();
 }

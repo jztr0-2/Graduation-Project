@@ -3,10 +3,12 @@ package com.poly.jztr.ecommerce.controller.publics;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
+import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Image;
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.serializer.ProductSerializer;
+import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.ImageService;
 import com.poly.jztr.ecommerce.service.ProductService;
 import com.poly.jztr.ecommerce.service.ProductVariantService;
@@ -33,6 +35,9 @@ public class ProductVariantController {
 
     @Autowired
     ProductVariantService productVariantService;
+
+    @Autowired
+    CategoryService categoryService;
 
     @Autowired
     ImageService imageService;
@@ -62,9 +67,6 @@ public class ProductVariantController {
 
         Pageable pageable = CustomPageable.getPage(page, perPage);
         Page<Product> products = service.findTopSaleByCategory(Long.valueOf(id), pageable);
-//        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
-//        PageableSerializer pageableSerializer = new PageableSerializer(products, productVariantList);
-
         return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
                 "Get list new product successfully", new PageableSerializer(products)));
     }
@@ -83,5 +85,21 @@ public class ProductVariantController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get product successfully", productSerializer)
         );
+    }
+
+    @GetMapping("top-category")
+    public ResponseEntity<ResponseObject> getTopSaleOfCategory(){
+        Category category = categoryService.findTopSaleCategory();
+        Page<Product> products = service.findTopSaleByCategory(category.getId(), CustomPageable.getPage(1,10));
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK",
+                        new PageableSerializer(products)));
+    }
+
+    @GetMapping("top-sale")
+    public ResponseEntity<ResponseObject> getTopSaleProducts(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK",
+                        service.findTopSale()));
     }
 }
