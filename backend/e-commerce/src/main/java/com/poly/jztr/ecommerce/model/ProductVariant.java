@@ -120,7 +120,16 @@ public class ProductVariant {
     public void setDisplayName(String name){
         Map<String, String> map = getDescription();
         String title = map.get("title");
-        this.displayName = name + " " + title + " " + map.get("color");
+        if(title == "color"){
+            this.displayName = name + " " + title + " " + map.get("color");
+        }else if(title == "RAM"){
+            this.displayName = name + " " + title + " " + map.get("RAM");
+        }else if(title == "ROM"){
+            this.displayName = name + " " + title + " " + map.get("ROM");
+        }else{
+            if(map.get(title) != null) this.displayName = name + " " + title + " " + map.get(title);
+            else this.displayName = name + " " + title + " " + Instant.now();
+        }
     }
 
     public Map<String, String> getDescription() {
