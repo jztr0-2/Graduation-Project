@@ -14,5 +14,14 @@ export const CategoryApi = {
         const url = `/public/categories/views`;
         return axiosClient.get(url, params);
     },
+    getSaleCategory: (params = {}) => {
+        const url = `/public/products/top-category`;
+        return axiosClient.get(url, params);
+    },
 };
-export const ProductApi = {};
+export const ProductApi = {
+    getSaleProducts: (params = {}) => {
+        const url = `/public/products/top-sale`;
+        return axiosClient.get(url, params);
+    },
+};

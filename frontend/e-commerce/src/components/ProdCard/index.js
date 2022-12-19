@@ -9,6 +9,10 @@ import LoadingSkeleton from '../LoadingSkeleton';
 const cx = classNames.bind(styles);
 
 const ProdCard = ({ name, description, price, className, urlImg, ...props }) => {
+    // Handle url img invalid
+    if (!urlImg) {
+        urlImg = images.noImage;
+    }
     return (
         <div
             id="product-carousel"

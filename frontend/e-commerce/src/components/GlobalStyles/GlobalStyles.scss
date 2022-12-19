@@ -99,6 +99,7 @@ input,
     font-weight: var(--font-extra-bold);
     font-size: var(--section-title-font-size);
     margin-bottom: 25px;
+    text-transform: capitalize;
 }
 .section__title.light {
     color: var(--white-color);
@@ -115,6 +116,18 @@ input,
     font-size: 50px;
     margin-bottom: 1rem;
     line-height: 1.2;
+}
+.mb-0 {
+    margin-bottom: 0px !important;
+}
+.py-0 {
+    padding: 0px !important;
+}
+.text-5xl {
+    font-size: 3rem;
+}
+.text-transform {
+    text-transform: capitalize !important;
 }
 /* Buttons */
 .button__wrapper {
