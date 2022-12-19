@@ -204,8 +204,9 @@ public class UsersController {
         for (int i = 1; i < 100; i ++){
             Promotion promotion = new Promotion();
             promotion.setCreatedAt(Instant.now());
-            promotion.setType(i%2 + 1);
+//            promotion.setType(i%2 + 1);
             promotion.setCode( RandomStringUtils.random(6));
+
             promotionService.save(promotion);
         }
 

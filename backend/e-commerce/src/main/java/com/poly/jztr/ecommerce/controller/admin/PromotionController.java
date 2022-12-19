@@ -35,17 +35,31 @@ public class PromotionController {
 //                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get All Promotion Success", service.findAll()));
 //    }
 
+//    @GetMapping("")
+//    public ResponseEntity<ResponseObject> findByCode(@RequestParam(defaultValue = "-1") Integer status,
+//                                                     @RequestParam(defaultValue = "") String code,
+//                                                     @RequestParam(defaultValue = "1") Integer page,
+//                                                     @RequestParam(defaultValue = "10") Integer perPage){
+//        PageableSerializer data = null;
+//        Pageable pageable = CustomPageable.getPage(page, perPage);
+//        if(status == -1) data = new PageableSerializer(service.findByCodeLContains(code, pageable));
+//        else data = new PageableSerializer(service.findByCodeContainsAndStatus(code,status, pageable));
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
+//                        data));
+//    }
+
     @GetMapping("")
-    public ResponseEntity<ResponseObject> findByCode(@RequestParam(defaultValue = "-1") Integer type,
+    public ResponseEntity<ResponseObject> findByStatus(@RequestParam(defaultValue = "-1") Integer status,
                                                      @RequestParam(defaultValue = "") String code,
                                                      @RequestParam(defaultValue = "1") Integer page,
                                                      @RequestParam(defaultValue = "10") Integer perPage){
         PageableSerializer data = null;
         Pageable pageable = CustomPageable.getPage(page, perPage);
-        if(type == -1) data = new PageableSerializer(service.findByCodeLContains(code, pageable));
-        else data = new PageableSerializer(service.findByCodeContainsAndType(code,type, pageable));
+        if(status == -1) data = new PageableSerializer(service.findByCodeLContains(code, pageable));
+        else data = new PageableSerializer(service.findByStatus(status, pageable));
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data status successfully",
                         data));
     }
 
@@ -69,7 +83,7 @@ public class PromotionController {
         } else {
             promotion.setStatus(1);
         }
-        promotion.setType(1);
+//        promotion.setType(1);
         return ResponseEntity.status(HttpStatus.OK).body(
         new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Crated promotion successfully", service.save(promotion)));
     
