@@ -18,14 +18,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByName(String name);
 
     Page<Product> findByNameContainsAndStatus(String name,Integer status, Pageable pageable);
-    @Query(value = "SELECT products.* FROM jztr.order_items join product_variant on " +
+    @Query(value = "SELECT products.* FROM order_items join product_variant on " +
             "product_variant.id = order_items.product_variant_id " +
             "join products on products.id = product_variant.product_id " +
             "join categories on products.category_id = categories.id " +
             "where categories.id = ?1 " +
             "group by products.id " +
             "order by (order_items.quantity) desc",
-            countQuery = "SELECT count(*) FROM (select products.* from jztr.order_items join product_variant on " +
+            countQuery = "SELECT count(*) FROM (select products.* from order_items join product_variant on " +
                     " product_variant.id = order_items.product_variant_id " +
                     " join products on products.id = product_variant.product_id " +
                     " join categories on products.category_id = categories.id " +
@@ -53,7 +53,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "  order by SUM(order_items.quantity)", nativeQuery = true)
     Optional<Long> totalProductSold(String time);
 
-    @Query(value = "SELECT products.* FROM jztr.order_items join product_variant on " +
+    @Query(value = "SELECT products.* FROM order_items join product_variant on " +
             "product_variant.id = order_items.product_variant_id join products " +
             "on products.id = product_variant.product_id group by " +
             "products.id order by (order_items.quantity) desc limit 10", nativeQuery = true)
