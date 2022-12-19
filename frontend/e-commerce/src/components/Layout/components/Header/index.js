@@ -35,14 +35,14 @@ function Header() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('navbar')}>
-                <a href="/" className={cx('logo')}>
+                <Link to="/" className={cx('logo')}>
                     Logo
-                </a>
+                </Link>
                 <ul className={cx('navbar-nav', statusBars.clicked ? 'active-nav' : null)}>
                     <li className={cx('nav-item')}>
-                        <a className={cx('active')} href="/">
+                        <Link className={cx('active')} to="/">
                             Home
-                        </a>
+                        </Link>
                     </li>
                     <li className={cx('nav-item')}>
                         <Link to="/public/products/category/1">Category</Link>
