@@ -48,8 +48,20 @@ public class Promotion {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
-    @Column(name = "type")
-    private Integer type;
+//    @Column(name = "type")
+//    private Integer type;
+
+    @Column(name =  "status")
+    private Integer status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+        this.updatedAt = Instant.now();
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -103,8 +115,8 @@ public class Promotion {
 
 
 
-    public void setType(Integer type) {
-        this.type = type;
-        this.updatedAt = Instant.now();
-    }
+//    public void setType(Integer type) {
+//        this.type = type;
+//        this.updatedAt = Instant.now();
+//    }
 }

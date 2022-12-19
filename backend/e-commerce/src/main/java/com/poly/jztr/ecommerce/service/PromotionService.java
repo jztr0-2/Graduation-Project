@@ -32,5 +32,8 @@ public interface PromotionService {
 
     Page<Promotion> findByCodeLContains(String code, Pageable pageable);
 
-    Page<Promotion> findByCodeContainsAndType(String code, Integer status, Pageable pageable);
+
+    Page<Promotion> findByStatus(Integer code, Pageable pageable);
+
+    Page<Promotion> findByCodeContainsAndStatus(String code, Integer status, Pageable pageable);
 }
