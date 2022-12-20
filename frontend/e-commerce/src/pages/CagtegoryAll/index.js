@@ -4,11 +4,14 @@ import { Pagination } from 'antd';
 import queryString from 'query-string';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import classNames from 'classnames/bind';
+import styles from './CategoryAll.module.scss';
 import { CategoryApi } from '~/api/EcommerceApi';
 import SessionComp from '~/components/SessionComp';
 import DataEmpty from '~/components/DataEmpty';
-
+import images from '~/assets/images';
+import Image from '~/components/Image';
+const cx = classNames.bind(styles);
 function CategoryAll() {
     const pathName = window.location.pathname;
     const location = useLocation();
@@ -63,12 +66,79 @@ function CategoryAll() {
                             subtitle="category"
                             items={products}
                             type="product"
-                            sizePercentCard={30}
+                            sizePercentCard={29}
                             linkView={`/category/${category.id}?page=1&limit=6`}
                         />
                     ) : (
                         <></>
                     )}
+                    <div
+                        className={cx(
+                            'cards-temp',
+                            'flex',
+                            'items-center',
+                            'flex-wrap',
+                            'justify-evenly',
+                            'justify-between',
+                        )}
+                    >
+                        <div
+                            className={cx(
+                                'card-item',
+                                'bg-gray-100',
+                                'rounded-3xl',
+                                'p-5',
+                                'flex',
+                                'items-center',
+                            )}
+                        >
+                            <p>Category 1</p>
+                            <Image src={images.background} className={cx('img-item')} />
+                        </div>
+                        <div
+                            className={cx(
+                                'card-item',
+                                'bg-gray-100',
+                                'rounded-3xl',
+                                'p-3',
+                                'flex',
+                                'items-center',
+                            )}
+                        >
+                            <p>Category 2</p>
+                        </div>
+                        <div
+                            className={cx(
+                                'card-item',
+                                'bg-gray-100',
+                                'rounded-3xl',
+                                'p-3',
+                                'flex',
+                                'items-center',
+                            )}
+                        >
+                            <p>Category 3</p>
+                        </div>
+                    </div>
+                    <div className={cx('card')}>
+                        <div className={cx('imgBx')}>
+                            <Image src={images.dest1} />
+                        </div>
+                        <div className={cx('content')}>
+                            <div className={cx('details')}>
+                                <h2>Category</h2>
+                                <div className={cx('data')}>
+                                    <h3>
+                                        <br />
+                                        <span></span>
+                                    </h3>
+                                </div>
+                                <div className={cx('actionBtn')}>
+                                    <button>More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <Pagination
                         current={currentPage}
                         pageSize={1}

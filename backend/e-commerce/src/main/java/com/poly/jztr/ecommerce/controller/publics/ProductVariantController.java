@@ -93,7 +93,7 @@ public class ProductVariantController {
         Page<Product> products = service.findTopSaleByCategory(category.getId(), CustomPageable.getPage(1,10));
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK",
-                        new PageableSerializer(products)));
+                        new PageableSerializer(products).getContent()));
     }
 
     @GetMapping("top-sale")

@@ -49,6 +49,7 @@ function Category() {
                     setCategoryId(initialCategoryId);
                     setLoading(false);
                     setError(false);
+                    console.log('Category details data: ', res.data);
                     console.log(res.data.products[0].category);
                 }
             },
@@ -71,6 +72,28 @@ function Category() {
         <div className={cx('wrapper')}>
             {!error ? (
                 <>
+                    {!loading ? (
+                        <section id="destinations" className={cx('section__padding', 'py-0')}>
+                            <div className={cx('wrapper-base')}>
+                                {/* <!-- SECTION TOP --> */}
+                                <div className={cx('section__top', 'mb-0')}>
+                                    <div className={cx('section__heading')}>
+                                        <h1
+                                            className={cx(
+                                                'section__subtitle',
+                                                'text-5xl',
+                                                'text-transform',
+                                            )}
+                                        >
+                                            {category.name.toLowerCase()}
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    ) : (
+                        <></>
+                    )}
                     <div className={cx('prods')}>
                         {loading &&
                             products?.map((productVariant) => {
@@ -87,6 +110,7 @@ function Category() {
                                         name={product.name}
                                         description={product.description}
                                         price={product.productVariants[0]?.unitPrice}
+                                        urlImg={product.imageList[0]}
                                         onClick={handleShowToast}
                                     />
                                 );
@@ -96,6 +120,7 @@ function Category() {
                         current={currentPage}
                         pageSize={productsPerPage}
                         total={totalProducts}
+                        showSizeChanger={false}
                         onChange={(page) => handleChangePage(page)}
                     />
                 </>

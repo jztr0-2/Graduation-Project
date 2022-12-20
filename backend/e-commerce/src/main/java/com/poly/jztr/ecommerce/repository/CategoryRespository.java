@@ -16,7 +16,7 @@ public interface CategoryRespository extends JpaRepository<Category, Long>{
     List<Category> findByDeleteAt(Instant deleted);
     Optional<Category> findByIdAndDeleteAt(Long aLong, Instant deleted);
     @Query(value =
-            "SELECT  categories.* FROM jztr.order_items join product_variant on " +
+            "SELECT  categories.* FROM order_items join product_variant on " +
                     "product_variant.id = order_items.product_variant_id join products " +
                     "on products.id = product_variant.product_id join categories on" +
                     " products.category_id = categories.id where delete_at is null group by " +

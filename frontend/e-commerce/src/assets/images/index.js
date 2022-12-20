@@ -1,5 +1,6 @@
 const images = {
-    noImage: require('~/assets/images/no-image.png'),
+    background: require('~/assets/images/background.png'),
+    noImage: require('~/assets/images/no-image.jpg'),
     mainHeader: require('~/assets/images/main-header.png'),
     mainHeader2: require('~/assets/images/main-header2.png'),
     mainHeader3: require('~/assets/images/main-header3.png'),
