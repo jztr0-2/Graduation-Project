@@ -352,7 +352,7 @@ public class UsersController {
                 variant.setDescription("{\"title\": \""+title+"\", \""+title+"\": "+row.getCell(7)+"".trim()+"\"}");
                 String imgLink = row.getCell(8).toString().trim();
                 saveImg(imgLink,"product_lst" + product.getId() + random.nextInt() + ".jpg",Constant.IMAGE_TYPE_PRODUCT_MULTIPLE,product.getId());
-                variant.setDisplayName(productName);
+                variant.setDisplayName(product.getName());
                 productVariantService.save(variant);
             }
         }
@@ -389,7 +389,7 @@ public class UsersController {
                 orderItem.setOrder(order);
                 orderItem.setQuantity(random.nextInt(10));
                 orderItem.setUnitPrice(random.nextDouble(1500));
-                orderItem.setProductVariant(new ProductVariant(random.nextLong(1,137));
+                orderItem.setProductVariant(new ProductVariant(random.nextLong(1,137)));
                 orderItemList.add(orderItem);
             }
             order.setOrderItems(orderItemList);

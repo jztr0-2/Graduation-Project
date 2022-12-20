@@ -120,16 +120,12 @@ public class ProductVariant {
     public void setDisplayName(String name){
         Map<String, String> map = getDescription();
         String title = map.get("title");
-        if(title == "color"){
-            this.displayName = name + " " + title + " " + map.get("color");
-        }else if(title == "RAM"){
-            this.displayName = name + " " + title + " " + map.get("RAM");
-        }else if(title == "ROM"){
-            this.displayName = name + " " + title + " " + map.get("ROM");
-        }else{
-            if(map.get(title) != null) this.displayName = name + " " + title + " " + map.get(title);
-            else this.displayName = name + " " + title + " " + Instant.now();
-        }
+        System.out.println("line 123: " + name);
+        System.out.println("line 124: " +title);
+        System.out.println("line 125: " + map.get(title));
+        map.forEach((key, val) -> System.out.println(key + " " + val));
+
+        this.displayName = name + title + map.get(title);
     }
 
     public Map<String, String> getDescription() {
@@ -141,8 +137,8 @@ public class ProductVariant {
         Map<String, String> map = new HashMap();
         items.stream().forEach(item->{
             int  position = item.indexOf(":");
-            map.put(item.substring(0,position).trim().replace("\"",""),
-                    item.substring(position+1).replace("\"",""));
+            map.put(item.substring(0,position).trim().replace("\"","").trim(),
+                    item.substring(position+1).replace("\"","").trim());
         });
         return map;
     }
