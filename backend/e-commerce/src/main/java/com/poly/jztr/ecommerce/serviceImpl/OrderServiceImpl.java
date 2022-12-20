@@ -111,4 +111,9 @@ public class OrderServiceImpl implements OrderService {
     public List<Object[]> totalRevenuePerMonth(){
         return repository.totalRevenuePerMonth();
     }
+
+    @Override
+    public Page<Order> findByUsername(String firstName, String lastName, Pageable pageable) {
+        return  repository.findByUserFirstNameContainsOrUserLastNameContains(firstName, lastName, pageable);
+    }
 }

@@ -32,4 +32,6 @@ public interface OrderService {
     Double totalRevenueThisMonth();
 
     List<Object[]> totalRevenuePerMonth();
+
+    Page<Order> findByUsername(String first, String lastName, Pageable pageable);
 }
