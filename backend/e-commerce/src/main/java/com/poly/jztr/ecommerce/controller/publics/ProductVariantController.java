@@ -102,4 +102,14 @@ public class ProductVariantController {
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK",
                         service.findTopSale()));
     }
+
+    @GetMapping("related/{id}")
+    public ResponseEntity<ResponseObject> getRelatedProducts(@PathVariable Long id){
+        List<Product> products = service.findRelatedProduct(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("content", products);
+        map.put("count", products.size());
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK", map));
+    }
 }

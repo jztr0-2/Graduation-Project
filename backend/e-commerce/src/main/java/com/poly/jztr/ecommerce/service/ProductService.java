@@ -36,4 +36,6 @@ public interface ProductService {
     Page<Product> findByNameContainsAndStatus(String name, Integer status, Pageable pageable);
 
     List<Product> findTopSale();
+
+    List<Product> findRelatedProduct(Long product_id);
 }
