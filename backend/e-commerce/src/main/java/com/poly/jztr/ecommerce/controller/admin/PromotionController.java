@@ -5,6 +5,7 @@ import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.PromotionDto;
 import com.poly.jztr.ecommerce.model.Promotion;
+import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.service.PromotionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.TypeMismatchException;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
 
 @RestControllerAdvice("admin/promotion")
 @CrossOrigin("http://localhost:3000")
@@ -33,14 +35,32 @@ public class PromotionController {
 //                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get All Promotion Success", service.findAll()));
 //    }
 
+//    @GetMapping("")
+//    public ResponseEntity<ResponseObject> findByCode(@RequestParam(defaultValue = "-1") Integer status,
+//                                                     @RequestParam(defaultValue = "") String code,
+//                                                     @RequestParam(defaultValue = "1") Integer page,
+//                                                     @RequestParam(defaultValue = "10") Integer perPage){
+//        PageableSerializer data = null;
+//        Pageable pageable = CustomPageable.getPage(page, perPage);
+//        if(status == -1) data = new PageableSerializer(service.findByCodeLContains(code, pageable));
+//        else data = new PageableSerializer(service.findByCodeContainsAndStatus(code,status, pageable));
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
+//                        data));
+//    }
+
     @GetMapping("")
-    public ResponseEntity<ResponseObject> findByCode(@RequestParam(defaultValue = "") String code,
+    public ResponseEntity<ResponseObject> findByStatus(@RequestParam(defaultValue = "-1") Integer status,
+                                                     @RequestParam(defaultValue = "") String code,
                                                      @RequestParam(defaultValue = "1") Integer page,
                                                      @RequestParam(defaultValue = "10") Integer perPage){
+        PageableSerializer data = null;
         Pageable pageable = CustomPageable.getPage(page, perPage);
+        if(status == -1) data = new PageableSerializer(service.findByCodeLContains(code, pageable));
+        else data = new PageableSerializer(service.findByStatus(status, pageable));
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
-                        service.findByCodeLContains(code, pageable)));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data status successfully",
+                        data));
     }
 
     @GetMapping("{id}")
@@ -58,7 +78,12 @@ public class PromotionController {
     public ResponseEntity<ResponseObject> post(@RequestBody @Validated PromotionDto promotionDto) throws IllegalAccessException, InvocationTargetException{
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
-        promotion.setType(1L);
+        if (Instant.now().isAfter(promotion.getEndDate())) {
+            promotion.setStatus(0);
+        } else {
+            promotion.setStatus(1);
+        }
+//        promotion.setType(1);
         return ResponseEntity.status(HttpStatus.OK).body(
         new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Crated promotion successfully", service.save(promotion)));
     
@@ -73,6 +98,11 @@ public class PromotionController {
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
         promotion.setId(id);
+        if (Instant.now().isAfter(promotion.getEndDate())) {
+            promotion.setStatus(0);
+        } else {
+            promotion.setStatus(1);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Promotion Success", service.save(promotion)));
     }

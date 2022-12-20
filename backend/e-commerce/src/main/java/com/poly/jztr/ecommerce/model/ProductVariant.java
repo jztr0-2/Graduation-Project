@@ -1,20 +1,33 @@
 package com.poly.jztr.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.poly.jztr.ecommerce.dto.ProductVariantDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
+import java.util.*;
 
 @Entity
+@Getter
 @Table(name = "product_variant")
+@Where(clause = "deleted_at is null")
 @AllArgsConstructor
 public class ProductVariant {
 
     public ProductVariant(){
         this.createdAt = Instant.now();
+    }
+    public ProductVariant(ProductVariantDto dto){
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+        this.setUnitPrice(dto.getUnitPrice());
+        this.setQuantity(dto.getQuantity());
+        this.setDescription(dto.getDescription());
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +44,17 @@ public class ProductVariant {
     private String description;
 
     @Column(name = "unit_price")
+    @NotNull
+    @Min(1)
     private Double unitPrice;
+
+    @Column(name = "quantity")
+    @NotNull
+    @Min(0)
+    private Integer quantity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -42,11 +65,8 @@ public class ProductVariant {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
-    @Column(name = "quantity")
-    private Integer quantity;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
-    private Image image;
+    @Column(name = "display_name", unique = true)
+    private String displayName;
 
     public ProductVariant(Long productVariantId) {
         this.id = productVariantId;
@@ -97,40 +117,30 @@ public class ProductVariant {
         this.updatedAt = Instant.now();
     }
 
-    public Long getId() {
-        return id;
+    public void setDisplayName(String name){
+        Map<String, String> map = getDescription();
+        String title = map.get("title");
+        System.out.println("line 123: " + name);
+        System.out.println("line 124: " +title);
+        System.out.println("line 125: " + map.get(title));
+        map.forEach((key, val) -> System.out.println(key + " " + val));
+
+        this.displayName = name + title + map.get(title);
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public Instant getDeletedAt() {
-        return deletedAt;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public Image getImage() {
-        return image;
+    public Map<String, String> getDescription() {
+        if(description == null){
+            return null;
+        }
+        description = description.substring(1, description.length() - 1);
+        List<String> items = Arrays.asList(description.split(","));
+        Map<String, String> map = new HashMap();
+        items.stream().forEach(item->{
+            int  position = item.indexOf(":");
+            map.put(item.substring(0,position).trim().replace("\"","").trim(),
+                    item.substring(position+1).replace("\"","").trim());
+        });
+        return map;
     }
 
     /*

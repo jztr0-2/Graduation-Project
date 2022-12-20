@@ -46,4 +46,11 @@ public class CustomExceptionHandler {
         return ResponseError.build(HttpStatus.NOT_FOUND,"Data not found", errors);
     }
 
+    @ExceptionHandler(QuantityIsTooLagerException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseError handleQuantity(){
+        Map<String, String> errors = new HashMap<String, String>();
+        return ResponseError.build(HttpStatus.UNPROCESSABLE_ENTITY,"Quantity is too lager", errors);
+    }
+
 }

@@ -1,8 +1,10 @@
 package com.poly.jztr.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.poly.jztr.ecommerce.common.Constant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -11,11 +13,11 @@ import java.time.Instant;
 @Table(name = "users")
 @NoArgsConstructor
 @Getter
+@Where(clause = "deleted_at is null")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @JsonIgnore
     private Long id;
 
     @Column(name = "last_name", nullable = false, length = 45)
@@ -43,9 +45,9 @@ public class User {
     @JsonIgnore
     private Instant updatedAt;
 
-    @Column(name = "delete_at")
+    @Column(name = "deleted_at")
     @JsonIgnore
-    private Instant deleteAt;
+    private Instant deletedAt;
 
     @Column(name = "phone")
     private String phone;
@@ -61,12 +63,12 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public Instant getDeleteAt() {
-        return deleteAt;
+    public Instant getDeletedAt() {
+        return deletedAt;
     }
 
-    public void setDeleteAt(Instant deleteAt) {
-        this.deleteAt = deleteAt;
+    public void setDeletedAt(Instant deleteAt) {
+        this.deletedAt = deleteAt;
     }
 
     public void setImage(Image image) {
@@ -111,5 +113,9 @@ public class User {
         this.password = password;
         this.updatedAt = Instant.now();
     }
+
+    public String getImage(){
+        return image != null ? Constant.BASE_API_URL + "public/" + image.getTitle() : "";
+     }
 
 }

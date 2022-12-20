@@ -12,4 +12,6 @@ public interface ProductVariantService {
     List<ProductVariant> toProductVariantFromDto(List<ProductVariantDto> list);
 
     <S extends ProductVariant> S save(S entity);
+
+    void minusQuantity(Long id, Integer quantity);
 }

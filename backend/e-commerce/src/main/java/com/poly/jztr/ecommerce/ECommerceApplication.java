@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-@CrossOrigin("localhost:3000")
+@CrossOrigin(value = {"localhost:3000", "localhost:4000"})
 @OpenAPIDefinition(info = @Info(title = "Application API", version = "1.0"))
 public class ECommerceApplication {
 
@@ -25,7 +25,8 @@ public class ECommerceApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedHeaders("*").allowedOrigins("http://localhost:3000")
+                registry.addMapping("/**").allowedHeaders("*").
+                        allowedOrigins("http://localhost:3000", "http://localhost:4000")
                         .allowedMethods("*");
             }
         };

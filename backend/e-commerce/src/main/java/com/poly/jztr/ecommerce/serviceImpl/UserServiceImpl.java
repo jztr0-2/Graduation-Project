@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poly.jztr.ecommerce.dto.UserDto;
 import com.poly.jztr.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.poly.jztr.ecommerce.model.User;
@@ -22,18 +23,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public <S extends User> S save(S entity) {
-        if(entity.getId() == null)  entity.setCreatedAt(Instant.now());
+        if (entity.getId() == null) entity.setCreatedAt(Instant.now());
 
         entity.setUpdatedAt(Instant.now());
         return repository.save(entity);
     }
 
     @Override
-    public UserDto getJson(String user, MultipartFile file){
+    public UserDto getJson(String user, MultipartFile file) {
         UserDto dto = new UserDto();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            dto = objectMapper.readValue(user,UserDto.class);
+            dto = objectMapper.readValue(user, UserDto.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -46,11 +47,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByEmail(String email){
+    public Optional<User> findByEmail(String email) {
         return repository.findByEmail(email);
     }
 
     public long count() {
         return repository.count();
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Page<User> findByProperties(Pageable pageable, String name, String email, String phone) {
+        return repository.findByLastNameContainsOrFirstNameContainsOrEmailContainsOrPhoneContains(name, name,email, phone,pageable);
     }
 }

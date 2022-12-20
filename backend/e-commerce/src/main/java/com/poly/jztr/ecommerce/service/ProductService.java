@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface ProductService {
     <S extends Product> S save(S entity);
 
-    List<Product> findByNameLike(String name);
+    Page<Product> findByNameLike(String name, Pageable pageable);
 
     Optional<Product> findByName(String name);
 
@@ -25,8 +25,15 @@ public interface ProductService {
 
     Optional<Product> findById(Long id);
 
-    List<ProductStatic> findStaticsProduct(String time);
+    List<ProductStatic> findStaticsProductTop();
 
-    Page<Product> getProductsByCategoryId(Long categoryId, Pageable page);
+    List<ProductStatic> findStaticsProductsBot();
 
+    Page<Product> getProductsByCategoryId(Long categoryId, Pageable pageable);
+
+    Long getProductSoldThisMonth();
+
+    Page<Product> findByNameContainsAndStatus(String name, Integer status, Pageable pageable);
+
+    List<Product> findTopSale();
 }

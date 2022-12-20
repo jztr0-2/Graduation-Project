@@ -2,7 +2,11 @@ package com.poly.jztr.ecommerce.controller.admin;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.model.Image;
+import com.poly.jztr.ecommerce.model.Product;
+import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.service.ImageService;
+import com.poly.jztr.ecommerce.service.ProductService;
+import com.poly.jztr.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
@@ -18,6 +22,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
+import java.util.List;
+import java.util.Random;
 
 @RestController("users/image")
 @RequestMapping("api/v1/admin/images")
@@ -27,6 +33,12 @@ public class ImageController {
     @Autowired
     ImageService service;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    ProductService productService;
+
     @PostMapping
     public ResponseEntity<Void> addOneImage(@RequestParam("image")MultipartFile file,
                                             @RequestParam("id") String id,
@@ -34,6 +46,16 @@ public class ImageController {
         saveFile(file,type,id);
         return ResponseEntity.ok().build();
     }
+
+
+    @PostMapping("upload-multiple")
+    public ResponseEntity<Void> uploadPolicyDocument(@RequestParam("images") List<MultipartFile> multipartFile,
+                                                     @RequestParam String id,
+                                                     @RequestParam("type") Integer type) {
+        multipartFile.stream().forEach(file -> saveFile(file,type,id));
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<ByteArrayResource> getImg(@PathVariable Long id) {
         Image image = service.findById(id).get();
@@ -54,16 +76,28 @@ public class ImageController {
     }
 
     private void saveFile(MultipartFile file, Integer type, String id){
-        InputStream inputStream = null;
+        Random random = new Random();
         String fileName = "";
         if(type == Constant.IMAGE_TYPE_USER){
             fileName = "user_avatar" + id + ".jpg";
+            Image img= saveImg(file,fileName,type);
+            User user = userService.findById(Long.valueOf(id)).get();
+            user.setImage(img);
+            userService.save(user);
         }else if(type == Constant.IMAGE_TYPE_PRODUCT_AVT){
             fileName = "product_avatar" + id + ".jpg";
+            Image img= saveImg(file,fileName,type);
+            Product product = productService.findById(Long.valueOf(id)).get();
+            product.setImage(img);
+            productService.save(product);
         }else{
-            fileName = "product_img_list" + id + +Instant.now().getEpochSecond()+ ".jpg";
+            fileName = "product_img_list" + id +"ran_" + random.nextInt() +Instant.now().getEpochSecond()+ ".jpg";
+            Image img= saveImg(file,fileName,type,Long.valueOf(id));
         }
+    }
 
+    private Image saveImg(MultipartFile file, String fileName, Integer type){
+        InputStream inputStream = null;
         try {
             Path path= Paths.get("uploads");
             inputStream = file.getInputStream();
@@ -71,11 +105,25 @@ public class ImageController {
             Image image = new Image();
             image.setTitle(fileName);
             image.setType(type);
-            service.save(image);
-
+            return service.save(image);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    private Image saveImg(MultipartFile file, String fileName, Integer type, Long productId){
+        InputStream inputStream = null;
+        try {
+            Path path= Paths.get("uploads");
+            inputStream = file.getInputStream();
+            Files.copy(inputStream,path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+            Image image = new Image();
+            image.setTitle(fileName);
+            image.setType(type);
+            image.setProductId(productId);
+            return service.save(image);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

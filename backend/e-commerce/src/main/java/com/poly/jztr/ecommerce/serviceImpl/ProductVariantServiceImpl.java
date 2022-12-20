@@ -27,12 +27,19 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     public List<ProductVariant> toProductVariantFromDto(List<ProductVariantDto> list) {
-       return list.stream().map(dto -> new ProductVariant()).collect(Collectors.toList());
+        if(list == null) return null;
+       return list.stream().map(dto -> new ProductVariant(dto)).collect(Collectors.toList());
     }
-
 
     @Override
     public <S extends ProductVariant> S save(S entity) {
         return repository.save(entity);
+    }
+
+    @Override
+    public void minusQuantity(Long id, Integer quantity) {
+        ProductVariant p = repository.findById(id).get();
+        p.setQuantity(p.getQuantity() - quantity);
+        repository.save(p);
     }
 }
