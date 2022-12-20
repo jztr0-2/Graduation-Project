@@ -20,7 +20,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "products")
-@Where(clause = "deleted_at is null")
+@Where(clause = "deleted_at is null OR deleted_at < updated_at")
 @Getter
 @Setter
 public class Product {
@@ -39,7 +39,7 @@ public class Product {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "status", nullable = false)
@@ -58,7 +58,7 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
     private Image image;
 
@@ -69,19 +69,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
-    public List<ProductVariant> productVariants;
-
-    public Category getCategory() {
-        return this.category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Long getId() {
-        return id;
-    }
+    private List<ProductVariant> productVariants;
 
     public void setId(Long id) {
         this.id = id;
@@ -100,25 +88,6 @@ public class Product {
         this.updatedAt = Instant.now();
     }
 
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-
-    public void setDeletedAt(Instant deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public void setDescription(String description) {
         this.description = description;
         this.updatedAt = Instant.now();
@@ -130,6 +99,6 @@ public class Product {
     }
 
     public String getImage(){
-        return image != null ? Constant.BASE_API_URL + "public/" + image.getTitle() : "";
+        return image != null ? Constant.BASE_API_URL + "public/images/" + image.getTitle() : "";
     }
 }

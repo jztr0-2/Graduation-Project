@@ -7,6 +7,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class Order {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
+    @ManyToOne(optional = false)
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

@@ -5,6 +5,7 @@ import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
 import com.poly.jztr.ecommerce.dto.OrderDto;
+import com.poly.jztr.ecommerce.expection.QuantityIsTooLagerException;
 import com.poly.jztr.ecommerce.model.Order;
 import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.service.OrderService;
@@ -33,19 +34,23 @@ public class OrdersController {
                                                 @RequestParam(defaultValue = "1") Integer page,
                                                 @RequestParam(defaultValue = "10") Integer perPage) {
         User user = getUserByToken(jwt);
-        Pageable pageable = CustomPageable.getPage(page,perPage,"updatedAt",Constant.SORT_DESC);
+        Pageable pageable = CustomPageable.getPage(page, perPage, "updatedAt", Constant.SORT_DESC);
         return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get order by user successfully",
-                service.findByUser(pageable,user)));
+                service.findByUser(pageable, user)));
     }
 
     @PostMapping
     public ResponseEntity<ResponseObject> create(@RequestHeader(value = "Authorization") String jwt,
-                                                 @RequestBody OrderDto dto) {
-        Order order = service.toOrder(dto);
-        order.setUser(getUserByToken(jwt));
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                Constant.RESPONSE_STATUS_SUCCESS, "Create order successfully", service.save(order)
-        ));
+                                                 @RequestBody OrderDto dto) throws QuantityIsTooLagerException {
+        try {
+            Order order = service.toOrder(dto);
+            order.setUser(getUserByToken(jwt));
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
+                    Constant.RESPONSE_STATUS_SUCCESS, "Create order successfully", service.save(order)
+            ));
+        } catch (Exception e) {
+            throw new QuantityIsTooLagerException();
+        }
     }
 
     private User getUserByToken(String jwt) {

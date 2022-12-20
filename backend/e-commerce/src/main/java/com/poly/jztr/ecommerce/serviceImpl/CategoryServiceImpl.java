@@ -51,4 +51,8 @@ public class CategoryServiceImpl implements CategoryService {
         return respository.findByName(name);
     }
 
+    @Override
+    public Category findTopSaleCategory() {
+        return respository.findTopSaleCategory();
+    }
 }

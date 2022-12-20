@@ -22,4 +22,6 @@ public interface UserService {
     long count();
 
     Page<User> findAll(Pageable pageable);
-}
+
+    Page<User> findByProperties(Pageable pageable, String name, String email, String phone);
+ }

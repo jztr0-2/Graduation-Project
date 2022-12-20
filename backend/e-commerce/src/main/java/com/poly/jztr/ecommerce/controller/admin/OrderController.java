@@ -8,22 +8,22 @@ import com.poly.jztr.ecommerce.model.Order;
 import com.poly.jztr.ecommerce.serializer.OrderStatics;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.serializer.ProductStatic;
+import com.poly.jztr.ecommerce.serializer.RecentOrderSerializer;
 import com.poly.jztr.ecommerce.service.OrderService;
 import com.poly.jztr.ecommerce.service.ProductService;
 import com.poly.jztr.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @RestControllerAdvice("admin/orders")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(value = {"http://localhost:3000", "http://localhost:4000"})
 @RequestMapping("api/v1/admin/orders")
 public class OrderController {
     @Autowired
@@ -53,10 +53,6 @@ public class OrderController {
     @GetMapping("{id}")
     public ResponseEntity<ResponseObject> getById(@PathVariable("id") Long id){
         Optional<Order> optOrder = service.findById(id);
-//        if(optOrder.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Order By Id", null));
-//        }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Find Order Success", service.findById(id)));
     }
@@ -82,13 +78,21 @@ public class OrderController {
         long orderCount = service.count();
         double totalRevenue = service.totalRevenueThisMonth();
         List<ProductStatic> top = productService.findStaticsProductTop();
-        System.out.println(top.size());
         List<ProductStatic> bottom = productService.findStaticsProductsBot();
         List<Object []> totalRevenuePerMonth = service.totalRevenuePerMonth();
         OrderStatics orderStatics = new OrderStatics(userCount,productSold,orderCount,totalRevenue,totalRevenuePerMonth,top,bottom);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get order statistical successfully",
                         orderStatics));
+    }
+
+    @GetMapping("recent-order")
+    public ResponseEntity<ResponseObject> getRecentOrder(){
+        Pageable pageable = CustomPageable.getPage(1, 20, "createdAt", Constant.SORT_DESC);
+        Page<Order> orderPage = service.findAll(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get order statistical successfully",
+                        new RecentOrderSerializer(orderPage.getContent())));
     }
 
 }

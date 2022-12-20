@@ -3,11 +3,12 @@ package com.poly.jztr.ecommerce.controller.publics;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
+import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Image;
 import com.poly.jztr.ecommerce.model.Product;
-import com.poly.jztr.ecommerce.model.ProductVariant;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.serializer.ProductSerializer;
+import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.ImageService;
 import com.poly.jztr.ecommerce.service.ProductService;
 import com.poly.jztr.ecommerce.service.ProductVariantService;
@@ -36,24 +37,27 @@ public class ProductVariantController {
     ProductVariantService productVariantService;
 
     @Autowired
+    CategoryService categoryService;
+
+    @Autowired
     ImageService imageService;
 
-    @GetMapping("index")
-    public ResponseEntity<ResponseObject> getTopNewProduct() {
-        Pageable pageable = CustomPageable.getPage("updatedAt", Constant.SORT_DESC);
-        Page<Product> products = service.findAll(pageable);
-        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
-        return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
-                "Get list new product successfully", productVariantList));
-    }
+//    @GetMapping
+//    public ResponseEntity<ResponseObject> getTopNewProduct() {
+//        Pageable pageable = CustomPageable.getPage("updatedAt", Constant.SORT_DESC);
+//        Page<Product> products = service.findAll(pageable);
+////        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
+//        return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+//                "Get list new product successfully", new PageableSerializer(products)));
+//    }
 
     @GetMapping
-    public ResponseEntity<ResponseObject> findByName(@RequestParam String name) {
+    public ResponseEntity<ResponseObject> findByName(@RequestParam(defaultValue = "") String name) {
         Pageable pageable = CustomPageable.getPage("updatedAt", Constant.SORT_DESC);
         Page<Product> products = service.findByNameLike(name, pageable);
-        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
+//        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
         return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
-                "Get list new product successfully", productVariantList));
+                "Get list new product successfully", new PageableSerializer(products)));
     }
 
     @GetMapping("/{id}/top_sale")
@@ -63,11 +67,8 @@ public class ProductVariantController {
 
         Pageable pageable = CustomPageable.getPage(page, perPage);
         Page<Product> products = service.findTopSaleByCategory(Long.valueOf(id), pageable);
-        List<ProductVariant> productVariantList = productVariantService.toProductVariant(products.getContent());
-        PageableSerializer pageableSerializer = new PageableSerializer(products, productVariantList);
-
         return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
-                "Get list new product successfully", pageableSerializer));
+                "Get list new product successfully", new PageableSerializer(products)));
     }
 
     @GetMapping("/{id}")
@@ -86,27 +87,19 @@ public class ProductVariantController {
         );
     }
 
-    @GetMapping("/category/{id}")
-    public ResponseEntity<ResponseObject> getPageProducts(
-            @PathVariable Long id,
-            @RequestParam("page") Optional<Integer> page,
-            @RequestParam("limit") Optional<Integer> limit) {
-        if (id == null) {
-            return null;
-        }
-        // define pagination
-        Pageable pageable = CustomPageable.getPage(page.orElse(1), limit.orElse(10));
-        Page<Product> pageProduct = service.getProductsByCategoryId(id, pageable);
-        Map<String, Object> customResponse = new HashMap<>();
-        customResponse.put("products", productVariantService.toProductVariant(pageProduct.getContent()));
-        customResponse.put("total_pages", pageProduct.getTotalPages());
-        customResponse.put("total_items", pageProduct.getTotalElements());
-        customResponse.put("next_page", pageProduct.hasNext());
-        customResponse.put("prev_page", pageProduct.hasPrevious());
-        // response data
+    @GetMapping("top-category")
+    public ResponseEntity<ResponseObject> getTopSaleOfCategory(){
+        Category category = categoryService.findTopSaleCategory();
+        Page<Product> products = service.findTopSaleByCategory(category.getId(), CustomPageable.getPage(1,10));
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get products successfully", customResponse)
-        );
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK",
+                        new PageableSerializer(products).getContent()));
+    }
 
+    @GetMapping("top-sale")
+    public ResponseEntity<ResponseObject> getTopSaleProducts(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK",
+                        service.findTopSale()));
     }
 }

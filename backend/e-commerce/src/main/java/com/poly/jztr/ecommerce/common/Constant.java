@@ -8,6 +8,8 @@ public class Constant {
     public static Integer ORDER_STATUS_PENDING = 0;
 
     public static Integer ORDER_STATUS_SUCCESS = 1;
+
+    public static Integer ORDER_STATUS_CANCEL = 2;
     public static String RESPONSE_STATUS_SUCCESS = "OK";
 
     public static String RESPONSE_STATUS_NOTFOUND = "NOT_FOUND";
@@ -23,6 +25,10 @@ public class Constant {
     public static Integer IMAGE_TYPE_PRODUCT_AVT = 2;
 
     public static Integer IMAGE_TYPE_PRODUCT_MULTIPLE = 3;
+
+    public static Integer PROMOTION_TYPE_MULTIPLE_USER = 1;
+
+    public static Integer PROMOTION_TYPE_SINGLE_USER = 2;
 
     public static String BASE_API_URL = "http://localhost:8080/api/v1/";
 }

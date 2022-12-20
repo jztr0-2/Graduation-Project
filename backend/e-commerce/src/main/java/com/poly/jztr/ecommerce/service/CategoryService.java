@@ -23,4 +23,5 @@ public interface CategoryService {
     Optional<Category> findByName(String name);
 
 
+    Category findTopSaleCategory();
 }

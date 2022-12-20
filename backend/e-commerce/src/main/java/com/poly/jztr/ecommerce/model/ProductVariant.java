@@ -1,21 +1,21 @@
 package com.poly.jztr.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.json.JSONObject;
 import com.poly.jztr.ecommerce.dto.ProductVariantDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
+@Getter
 @Table(name = "product_variant")
+@Where(clause = "deleted_at is null")
 @AllArgsConstructor
 public class ProductVariant {
 
@@ -44,7 +44,17 @@ public class ProductVariant {
     private String description;
 
     @Column(name = "unit_price")
+    @NotNull
+    @Min(1)
     private Double unitPrice;
+
+    @Column(name = "quantity")
+    @NotNull
+    @Min(0)
+    private Integer quantity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -55,11 +65,8 @@ public class ProductVariant {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
-    @Column(name = "quantity")
-    private Integer quantity;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
-    private Image image;
+    @Column(name = "display_name", unique = true)
+    private String displayName;
 
     public ProductVariant(Long productVariantId) {
         this.id = productVariantId;
@@ -110,15 +117,25 @@ public class ProductVariant {
         this.updatedAt = Instant.now();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Product getProduct() {
-        return product;
+    public void setDisplayName(String name){
+        Map<String, String> map = getDescription();
+        String title = map.get("title");
+        if(title == "color"){
+            this.displayName = name + " " + title + " " + map.get("color");
+        }else if(title == "RAM"){
+            this.displayName = name + " " + title + " " + map.get("RAM");
+        }else if(title == "ROM"){
+            this.displayName = name + " " + title + " " + map.get("ROM");
+        }else{
+            if(map.get(title) != null) this.displayName = name + " " + title + " " + map.get(title);
+            else this.displayName = name + " " + title + " " + Instant.now();
+        }
     }
 
     public Map<String, String> getDescription() {
+        if(description == null){
+            return null;
+        }
         description = description.substring(1, description.length() - 1);
         List<String> items = Arrays.asList(description.split(","));
         Map<String, String> map = new HashMap();
@@ -128,30 +145,6 @@ public class ProductVariant {
                     item.substring(position+1).replace("\"",""));
         });
         return map;
-    }
-
-    public Double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public Instant getDeletedAt() {
-        return deletedAt;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public Image getImage() {
-        return image;
     }
 
     /*

@@ -2,6 +2,7 @@ package com.poly.jztr.ecommerce.service;
 
 
 import com.poly.jztr.ecommerce.model.Promotion;
+import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -30,4 +31,9 @@ public interface PromotionService {
     void deleteById(Long id);
 
     Page<Promotion> findByCodeLContains(String code, Pageable pageable);
+
+
+    Page<Promotion> findByStatus(Integer code, Pageable pageable);
+
+    Page<Promotion> findByCodeContainsAndStatus(String code, Integer status, Pageable pageable);
 }

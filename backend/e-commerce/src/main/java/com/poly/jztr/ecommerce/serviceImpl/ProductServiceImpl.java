@@ -28,8 +28,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public <S extends Product> S save(S entity) {
+        List<ProductVariant> productVariants = entity.getProductVariants();
         Product p =  repository.save(entity);
-        List<ProductVariant> productVariants = p.getProductVariants();
         if(productVariants != null){
             productVariants.stream().forEach(productVariant -> {
                 productVariant.setProduct(p);
@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> findByNameLike(String name, Pageable pageable) {
-        return repository.findByNameLike(name, pageable);
+        return repository.findByNameContains(name, pageable);
     }
 
     @Override
@@ -94,9 +94,8 @@ public class ProductServiceImpl implements ProductService {
                  new ProductStatic(pro[0]+"", Long.valueOf(pro[1]+""))
          ).collect(Collectors.toList());
      }
-
-    public Page<Product> getProductsByCategoryId(Long categoryId, Pageable page) {
-        return repository.getProductsByCategoryId(categoryId, page);
+    public Page<Product> getProductsByCategoryId(Long categoryId, Pageable pageable) {
+        return repository.getProductsByCategoryId(categoryId, pageable);
     }
 
     @Override
@@ -106,6 +105,13 @@ public class ProductServiceImpl implements ProductService {
         if (optional.isPresent()) return optional.get();
         return 0L;
     }
+    @Override
+    public Page<Product> findByNameContainsAndStatus(String name, Integer status, Pageable pageable) {
+        return repository.findByNameContainsAndStatus(name, status, pageable);
+    }
 
-
+    @Override
+    public List<Product> findTopSale() {
+        return repository.findTopSale();
+    }
 }

@@ -10,10 +10,12 @@ import com.poly.jztr.ecommerce.repository.OrderItemRepository;
 import com.poly.jztr.ecommerce.repository.OrderRepository;
 import com.poly.jztr.ecommerce.service.OrderItemService;
 import com.poly.jztr.ecommerce.service.OrderService;
+import com.poly.jztr.ecommerce.service.ProductVariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -31,6 +33,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderItemService orderItemService;
+
+    @Autowired
+    ProductVariantService productVariantService;
 
     @Override
     public List<Order> findByDate(Instant start, Instant end) {
@@ -55,13 +60,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional()
     public <S extends Order> S save(S entity) {
         entity = repository.save(entity);
         S finalEntity = entity;
-        System.out.println(finalEntity.getId());
         List<OrderItem> orderItems = entity.getOrderItems().stream().
                 map(orderItem -> {
                  orderItem.setOrder(finalEntity);
+                 productVariantService.minusQuantity(orderItem.getProductVariant().getId(),orderItem.getQuantity());
                  return orderItem;
                 }).collect(Collectors.toList());
         orderItemRepository.saveAll(orderItems);
