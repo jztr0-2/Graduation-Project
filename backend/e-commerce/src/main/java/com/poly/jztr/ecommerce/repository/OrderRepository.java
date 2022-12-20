@@ -36,4 +36,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             nativeQuery = true)
     List<Object[]> totalRevenuePerMonth();
 
+    Page<Order> findByUserFirstNameContainsOrUserLastNameContains(String firstName, String lastName, Pageable pageable);
+
 }

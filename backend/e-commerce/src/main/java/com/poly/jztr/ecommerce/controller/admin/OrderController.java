@@ -50,6 +50,22 @@ public class OrderController {
                         new PageableSerializer(service.findByStatusIs(status, pageable))));
     }
 
+    @GetMapping("username")
+    public ResponseEntity<ResponseObject> finByUsername(@RequestParam(defaultValue = "") String name,
+                                                        @RequestParam(defaultValue = "1") Integer page,
+                                                        @RequestParam(defaultValue = "10") Integer perPage){
+        Pageable pageable = CustomPageable.getPage(page, perPage, "createdAt", Constant.SORT_DESC);
+        if("".equalsIgnoreCase(name) ) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
+                            service.findAll(pageable)));
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data username successfully",
+                            service.findByUsername(name, name, pageable)));
+        }
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<ResponseObject> getById(@PathVariable("id") Long id){
         Optional<Order> optOrder = service.findById(id);
