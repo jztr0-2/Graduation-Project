@@ -45,4 +45,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Page<Order> findByUserFirstNameContainsOrUserLastNameContains(String firstName, String lastName, Pageable pageable);
 
     Optional<Order> findByPromotionCodeContains(String code);
+
 }
