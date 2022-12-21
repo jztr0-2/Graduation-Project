@@ -25,3 +25,9 @@ export const ProductApi = {
         return axiosClient.get(url, params);
     },
 };
+export const LoginApi = {
+    adminLogin: (data = {}) => {
+        const url = `public/users/login`;
+        return axiosClient.post(url, data);
+    },
+};

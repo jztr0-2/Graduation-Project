@@ -1,12 +1,13 @@
 .wrapper {
     .navbar {
-        position: absolute;
+        position: fixed;
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 20px 80px;
-        box-shadow: 0 3px 15px rgba(144, 144, 144, 0.2);
+        background-color: #1d2631;
+        // box-shadow: 0 3px 15px rgba(144, 144, 144, 0.2);
         z-index: 2;
         .navbar-nav {
             display: flex;

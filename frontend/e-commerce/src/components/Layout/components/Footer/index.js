@@ -136,7 +136,7 @@ function Footer() {
                         </div>
                     </address>
 
-                    <div className={cx('footer-list')}>
+                    <div className={cx('footer-list', 'news-letter')}>
                         <p className={cx('title')}>News Letter</p>
                         <form className={cx('form-news-letter')}>
                             <div className={cx('form-group')}>

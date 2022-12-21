@@ -1,0 +1,94 @@
+.container-others {
+    padding: 85px 0 50px 0;
+    .services-about {
+        height: max-content;
+        padding: 100px 300px;
+
+        .services-title {
+            font-size: 45px;
+            margin-bottom: 50px;
+        }
+
+        .services-content {
+            display: grid;
+            justify-content: space-between;
+            gap: 100px;
+            grid-template-columns: repeat(3, 400px);
+            grid-template-rows: repeat(2, max-content);
+
+            .services-item {
+                .icon-wrapper {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    background-color: rgb(250, 250, 237);
+                    color: rgb(43, 42, 42);
+                    font-size: 20px;
+                    text-align: center;
+                    line-height: 50px;
+                }
+
+                .title {
+                    font-size: 25px;
+                    margin: 20px 0;
+                }
+            }
+        }
+    }
+
+    .about-us-wrapper {
+        padding: 100px 300px 120px 300px;
+        background: radial-gradient(50.53% 50.53% at 50.23% 49.47%, #414d59 0%, #586372 100%);
+
+        .services-title {
+            font-size: 45px;
+            margin-bottom: 50px;
+        }
+
+        .tab-wrapper {
+            height: max-content;
+
+            .tabcontent {
+                padding: 10px 20px 20px 20px;
+                font-size: 20px;
+                background-color: #fff;
+                color: #26292c;
+                border-top: none;
+
+                h3 {
+                    width: 600px;
+                    font-size: 26px;
+                    font-weight: bold;
+                    margin: 5px 0 20px 0;
+                }
+
+                p {
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+
+    .locations-wrapper {
+        padding: 100px 300px;
+
+        .services-title {
+            font-size: 45px;
+            margin-bottom: 50px;
+        }
+
+        .location-content {
+            .title {
+                width: 500px;
+                font-size: 35px;
+                border-bottom: 6px solid var(--main-color);
+            }
+
+            .description-content {
+                margin-top: 8px;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+}
