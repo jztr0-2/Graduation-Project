@@ -75,6 +75,16 @@ public class ImageController {
         }
     }
 
+    @PutMapping("")
+    private ResponseEntity<Void> updateImg(@RequestParam String url, @RequestParam MultipartFile file) throws IOException {
+        String title = url.substring(url.lastIndexOf("/") + 1);
+        service.findByTitle(title).get();
+        Path path= Paths.get("uploads");
+        InputStream inputStream  = file.getInputStream();
+        Files.copy(inputStream,path.resolve(title), StandardCopyOption.REPLACE_EXISTING);
+        return ResponseEntity.ok().build();
+    }
+
     private void saveFile(MultipartFile file, Integer type, String id){
         Random random = new Random();
         String fileName = "";
