@@ -124,12 +124,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Integer status, Instant start, Instant end, Double min, Double max, Pageable pageable) {
-        return repository.findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(status, start, end, min, max, pageable);
+    public Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan
+            (Integer status, Instant start, Instant end, Double min, Double max, String name,Pageable pageable) {
+        return repository.findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContains(
+                status, start, end, min, max, name, pageable);
     }
 
     @Override
-    public Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Instant start, Instant end, Double min, Double max, Pageable pageable) {
-        return repository.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(start, end, min, max, pageable);
+    public Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan
+            (Instant start, Instant end, Double min, Double max, String name , Pageable pageable) {
+        return repository.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContains
+                (start, end, min, max, name,pageable);
     }
 }

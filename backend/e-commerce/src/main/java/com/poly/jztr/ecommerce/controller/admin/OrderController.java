@@ -44,7 +44,8 @@ public class OrderController {
                                                        @RequestParam(defaultValue = "1608538211") Long startDate,
                                                        @RequestParam(defaultValue = "2555223011") Long endDate,
                                                        @RequestParam(defaultValue = "0") Double min,
-                                                       @RequestParam(defaultValue = "9999999999999") Double max){
+                                                       @RequestParam(defaultValue = "9999999999999") Double max,
+                                                       @RequestParam(defaultValue = "") String name){
         Pageable pageable = CustomPageable.getPage(page, perPage, "createdAt", Constant.SORT_DESC);
         Instant start = Instant.EPOCH.plus(startDate, ChronoUnit.SECONDS);
         Instant end = Instant.EPOCH.plus(endDate, ChronoUnit.SECONDS);
@@ -52,7 +53,7 @@ public class OrderController {
         if(status == -1) {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
-                            service.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(start,end,min,max,pageable)));
+                            service.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(start,end,min,max,name,pageable)));
         }
 
 
@@ -60,7 +61,7 @@ public class OrderController {
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
                         new PageableSerializer(
                                 service.findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(status,start,end,min,
-                                        max,pageable))));
+                                        max,name, pageable))));
     }
 
     @GetMapping("username")
