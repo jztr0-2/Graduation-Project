@@ -3,6 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import styles from './Form.module.scss';
+import { LoginApi } from '~/api/EcommerceApi';
+import http from '~/utils/http';
+
+//ADMIN
 
 const cx = classNames.bind(styles);
 
@@ -21,11 +25,27 @@ function FormCustom({ showForm, setShowForm }) {
         [setShowForm, showForm],
     );
 
-    useEffect(() => {
-        document.addEventListener('keydown', keyPress);
-        // call clean up func to clean event avoid out of memory;
-        return () => document.removeEventListener('keydown', keyPress);
-    }, [keyPress]);
+    const click = (event) => {
+        event.preventDefault();
+        var username = document.getElementById('user').value;
+        var password = document.getElementById('pass').value;
+
+        //Prevent page reload
+        const data = {
+            email: username,
+            password: password,
+        };
+        console.log(data);
+        LoginApi.adminLogin(data)
+            .then((res) => {
+                localStorage.setItem('token', 'Bearer ' + res.data.data);
+                //succesfuly
+                setTimeout(() => window.location.reload(), 3000);
+            })
+            .catch((err) => {
+                //faild
+            });
+    };
 
     return (
         <>
@@ -40,12 +60,12 @@ function FormCustom({ showForm, setShowForm }) {
                         <div className={cx('form')}>
                             <h2>Sign in</h2>
                             <div className={cx('input-box')}>
-                                <input required="required" />
+                                <input id="user" required="required" />
                                 <span>Username</span>
                                 <i></i>
                             </div>
                             <div className={cx('input-box')}>
-                                <input type="password" required="required" />
+                                <input id="pass" type="password" required="required" />
                                 <span>Password</span>
                                 <i></i>
                             </div>
@@ -53,7 +73,7 @@ function FormCustom({ showForm, setShowForm }) {
                                 <a href="/">Forgot Password</a>
                                 <a href="/">Signup</a>
                             </div>
-                            <input type="submit" value="Login" />
+                            <input type="submit" onClick={click} value="Login" />
                         </div>
                     </div>
                 </div>
