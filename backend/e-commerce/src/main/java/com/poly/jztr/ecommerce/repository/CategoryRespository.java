@@ -1,5 +1,7 @@
 package com.poly.jztr.ecommerce.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -23,4 +25,6 @@ public interface CategoryRespository extends JpaRepository<Category, Long>{
                     "category_id order by sum(order_items.quantity) desc limit 1", nativeQuery = true
     )
     Category findTopSaleCategory();
+    @Query(name = "Category.findPageCategory")
+    Page<Category> findPageCategory(Pageable pageable);
 }

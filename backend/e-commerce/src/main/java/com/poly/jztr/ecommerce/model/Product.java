@@ -69,6 +69,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
+    @Where(clause = "deleted_at is null")
     private List<ProductVariant> productVariants;
 
     public void setId(Long id) {

@@ -20,10 +20,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Page<Order> findByStatusIs(Integer status, Pageable pageable);
 
-    Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Integer status,
-                Instant start,Instant end, Double min, Double max, Pageable pageable);
+    Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContains(Integer status,
+                Instant start,Instant end, Double min, Double max, String name,Pageable pageable);
 
-    Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Instant start,Instant end, Double min, Double max, Pageable pageable);
+    Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContains
+            (Instant start,Instant end, Double min, Double max,String name, Pageable pageable);
 
     @Query(value = "select SUM(order_items.unit_price * order_items.quantity) from orders join order_items on order_items.order_id = orders.id" +
             " join product_variant on order_items.product_variant_id = product_variant.id " +

@@ -1,10 +1,9 @@
 .cards-temp {
     .card-item {
-        width: 300px;
-        height: 200px;
+        width: 240px;
+        height: 160px;
         cursor: pointer;
         color: #333;
-        font-weight: bold;
         overflow: hidden;
         .img-item {
             width: 70%;
@@ -15,25 +14,28 @@
             box-shadow: 0 5px 20px rgba(102, 102, 102, 0.5);
             margin-top: -20px;
         }
+        p {
+            font-weight: bold;
+        }
     }
 }
 .card {
     position: relative;
-    width: 350px;
-    height: 190px;
+    width: 200px;
+    height: 120px;
     background: #fff;
     border-radius: 20px;
     box-shadow: 0 35px 80px rgba(172, 172, 172, 0.5);
     transition: 0.5s;
     &:hover {
-        height: 250px;
+        height: 150px;
         .imgBx {
-            width: 200px;
-            height: 200px;
+            width: 120px;
+            height: 120px;
         }
         .content {
             .details {
-                transform: translateY(10px);
+                transform: translateY(20px);
                 h2 {
                     display: none;
                 }
@@ -45,8 +47,8 @@
         left: 50%;
         top: -50px;
         transform: translateX(-50%);
-        width: 150px;
-        height: 150px;
+        width: 100px;
+        height: 100px;
         background: #fff;
         border-radius: 20px;
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);

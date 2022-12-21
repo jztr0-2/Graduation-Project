@@ -40,18 +40,26 @@ public interface OrderService {
     Page<Order> findByUsername(String first, String lastName, Pageable pageable);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     Optional<Order> findByPromotion(String code);
 =======
+=======
+
+>>>>>>> 6d481269aeb2ce0800bb2fc439c716407a804bc8
     List<Order> findByCreatedAtGreaterThanEqualAndCreatedAtLessThanEqual(Instant start, Instant end);
 
-    Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Integer status, Instant start, Instant end, Double min, Double max, Pageable pageable);
-
-    Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Instant start, Instant end, Double min, Double max, Pageable pageable);
+    Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan
+            (Integer status, Instant start, Instant end, Double min,Double max, String name, Pageable pageable);
+    Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan
+            (Instant start, Instant end, Double min, Double max,String name, Pageable pageable);
 
     @Transactional()
     <S extends Order> S save(S entity, String code);
 
     Optional<Order> findByPromotion(String code);
+<<<<<<< HEAD
 
 >>>>>>> 33a1b73a441befd253e15fae60fc514eae4220b3
+=======
+>>>>>>> 6d481269aeb2ce0800bb2fc439c716407a804bc8
 }

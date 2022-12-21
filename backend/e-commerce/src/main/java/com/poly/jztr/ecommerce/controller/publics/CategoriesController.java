@@ -40,6 +40,30 @@ public class CategoriesController {
                         "Get category successfully",
                         filterCategories));
     }
+    @GetMapping("/views/page")
+    public ResponseEntity<ResponseObject> getPageCategory(
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("limit") Optional<Integer> limit
+    ) {
+        Pageable pageable = CustomPageable.getPage(page.orElse(1), limit.orElse(10));
+        Page<Category> categories = service.findPageCategory(pageable);
+        if (categories.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,
+                            "Categories is empty data",
+                            new ArrayList<>()));
+        }
+        // prepare response
+        Map<String, Object> customResponse = new HashMap<>();
+        customResponse.put("categories", categories.getContent());
+        customResponse.put("totalPages", categories.getTotalPages());
+        customResponse.put("totalItems", categories.getTotalElements());
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                        "Get categories successfully",
+                        customResponse));
+    }
     @GetMapping("/views")
     public ResponseEntity<ResponseObject> getAllIncludeProducts(
             @RequestParam("page") Optional<Integer> page

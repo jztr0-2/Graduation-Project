@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+
 @RestController("admin/product-variants")
 public class ProductVariantsController {
     @Autowired
@@ -24,5 +26,13 @@ public class ProductVariantsController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK",
                         service.save(variant)));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        ProductVariant variant = service.findById(id);
+        variant.setDeletedAt(Instant.now());
+        service.save(variant);
+        return ResponseEntity.ok().build();
     }
 }

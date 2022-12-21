@@ -6,6 +6,10 @@ export const CategoryApi = {
         const url = '/public/categories';
         return axiosClient.get(url, { params });
     },
+    getAllPage: (params = {}) => {
+        const url = `public/categories/views/page`;
+        return axiosClient.get(url, { params });
+    },
     getByCategoryId: (params = {}, pathVariable = '') => {
         const url = `/public/categories/${pathVariable}`;
         return axiosClient.get(url, params);
@@ -23,6 +27,10 @@ export const ProductApi = {
     getSaleProducts: (params = {}) => {
         const url = `/public/products/top-sale`;
         return axiosClient.get(url, params);
+    },
+    getById: (pathVariable) => {
+        const url = `/public/products/${pathVariable}`;
+        return axiosClient.get(url, {});
     },
 };
 export const LoginApi = {

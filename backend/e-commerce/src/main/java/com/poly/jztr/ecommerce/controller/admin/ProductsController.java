@@ -146,9 +146,10 @@ public class ProductsController {
         }
 
         Product p = service.toProduct(dto);
+
         p.setId(id);
         try {
-            service.save(p);
+            service.saveOnlyProduct(p);
         } catch (Exception e) {
             e.printStackTrace();
             throw new DuplicateEntryException("Name", "Product name is exists");

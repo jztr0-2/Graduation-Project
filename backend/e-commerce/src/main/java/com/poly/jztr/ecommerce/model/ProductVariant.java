@@ -52,7 +52,7 @@ public class ProductVariant {
     @NotNull
     @Min(0)
     private Integer quantity;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
     private Image image;
 
