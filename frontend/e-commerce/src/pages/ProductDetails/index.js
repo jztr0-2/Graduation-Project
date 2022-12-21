@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faShare, faStar } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
+import { useStore, actions } from '~/store';
 import 'swiper/css';
 
 import classNames from 'classnames/bind';
@@ -24,7 +25,7 @@ function ProductDetails() {
     const [productVariant, setProductVariant] = useState({});
     const [productVariants, setProductVariants] = useState([]);
     const [indexSelectVariant, setIndexSelectVariant] = useState(0);
-    const [quantityBy, setQuantityBuy] = useState(1);
+    const [quantityBuy, setQuantityBuy] = useState(1);
     const [keyDescription, setKeyDescription] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -61,7 +62,23 @@ function ProductDetails() {
                 toast.error(e);
             });
     }, [pathName, productId, indexSelectVariant]);
-
+    /* Handle add cart item */
+    const [state, dispatch] = useStore();
+    const handleAddCartItem = () => {
+        dispatch(
+            actions.addCartItem({
+                id: product?.id,
+                idVariant: productVariant?.id,
+                name: product?.name,
+                nameVariant: productVariant?.displayName,
+                quantity: Math.min(quantityBuy, productVariant.quantity),
+                price: productVariant?.unitPrice,
+                createdAt: productVariant?.createdAt,
+                categoryName: category?.name,
+            }),
+        );
+        toast.success('Product has been added to cart successfully');
+    };
     // Handle select variant
     // useEffect(() => {
     //     let indexSelect = Math.min(indexSelectVariant, productVariants.length - 1);
@@ -584,7 +601,7 @@ function ProductDetails() {
                                                                     </button>
                                                                     <input
                                                                         type="text"
-                                                                        value={quantityBy}
+                                                                        value={quantityBuy}
                                                                         style={{
                                                                             color: 'black',
                                                                         }}
@@ -626,7 +643,10 @@ function ProductDetails() {
                                                                     </button>
                                                                 </div>
                                                                 <div className={cx('button-cart')}>
-                                                                    <button className="secondary-button">
+                                                                    <button
+                                                                        className="secondary-button"
+                                                                        onClick={handleAddCartItem}
+                                                                    >
                                                                         Add to cart
                                                                     </button>
                                                                 </div>
@@ -789,7 +809,7 @@ function ProductDetails() {
                     )}
                 </>
             ) : (
-                <DataEmpty />
+                <DataEmpty isPadding={'pt-[100px]'} />
             )}
             <ToastContainer />
         </div>
