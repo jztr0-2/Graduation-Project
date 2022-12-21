@@ -65,7 +65,7 @@ public class CustomExceptionHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ResponseError handleCommon(Exception e){
         Map<String, String> errors = new HashMap<String, String>();
-        errors.put(e.getCause().toString(),e.getMessage());
+        errors.put(e.getLocalizedMessage(),e.getMessage());
         return ResponseError.build(HttpStatus.UNPROCESSABLE_ENTITY,"Have an errors", errors);
     }
 
