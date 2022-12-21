@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.poly.jztr.ecommerce.service.PromotionService;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -27,6 +28,9 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderRepository repository;
+
+    @Autowired
+    PromotionService promoService;
 
     @Autowired
     OrderItemRepository orderItemRepository;
@@ -60,19 +64,62 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional()
     public <S extends Order> S save(S entity) {
         entity = repository.save(entity);
         S finalEntity = entity;
         List<OrderItem> orderItems = entity.getOrderItems().stream().
                 map(orderItem -> {
-                 orderItem.setOrder(finalEntity);
-                 productVariantService.minusQuantity(orderItem.getProductVariant().getId(),orderItem.getQuantity());
-                 return orderItem;
+                    orderItem.setOrder(finalEntity);
+                    productVariantService.minusQuantity(orderItem.getProductVariant().getId(),orderItem.getQuantity());
+                    return orderItem;
                 }).collect(Collectors.toList());
+
+        Double total = 0.0;
+        for (OrderItem orderItem: orderItems) {
+            total = orderItem.getUnitPrice() * orderItem.getQuantity();
+        }
+
+        entity.setTotal(total);
+        return repository.save(entity);
+    }
+
+    @Override
+    @Transactional()
+    public <S extends Order> S save(S entity, String code) {
+        entity = repository.save(entity);
+        S finalEntity = entity;
+        List<OrderItem> orderItems = entity.getOrderItems().stream().
+                map(orderItem -> {
+                    orderItem.setOrder(finalEntity);
+                    productVariantService.minusQuantity(orderItem.getProductVariant().getId(),orderItem.getQuantity());
+                    return orderItem;
+                }).collect(Collectors.toList());
+
+        Double total = 0.0;
+        for (OrderItem orderItem: orderItems) {
+            total = orderItem.getUnitPrice() * orderItem.getQuantity();
+        }
+
+        Optional<Promotion> optPro = promoService.findByCode(code);
+        if(optPro.isPresent()) {
+            if(optPro.get().getStatus() == 1) {
+                if(optPro.get().getAmount() >= total) {
+                    entity.setTotal(0.0);
+                } else {
+                    entity.setTotal(total - optPro.get().getAmount());
+                }
+            } else {
+                entity.setTotal(total);
+            }
+        } else {
+            entity.setTotal(total);
+        }
+        repository.save(entity);
         orderItemRepository.saveAll(orderItems);
         return null;
     }
+
+
 
     @Override
     public Page<Order> findByUser(Pageable page, User user){
@@ -131,5 +178,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Instant start, Instant end, Double min, Double max, Pageable pageable) {
         return repository.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(start, end, min, max, pageable);
+    }
+
+    @Override
+    public Optional<Order> findByPromotion(String code) {
+        return repository.findByPromotionCodeContains(code);
     }
 }
