@@ -80,10 +80,10 @@ function Header() {
                         <a href="/">Selling</a>
                     </li>
                     <li className={cx('nav-item')}>
-                        <a href="/">About</a>
+                        <Link to="/about">About</Link>
                     </li>
                     <li className={cx('nav-item')}>
-                        <a href="/">Contact</a>
+                        <Link to="/contact">Contact</Link>
                     </li>
                 </ul>
                 <div className={cx('mobile')} onClick={handleStatusBars}>
