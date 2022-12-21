@@ -106,6 +106,7 @@ function Category() {
                                 return (
                                     <ProdCard
                                         className={cx('size-prod-card')}
+                                        id={product.id}
                                         key={product.id}
                                         name={product.name}
                                         description={product.description}

@@ -13,6 +13,12 @@ import org.hibernate.annotations.Where;
 import java.time.Instant;
 import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "Category.findPageCategory",
+                query = "SELECT c FROM Category c WHERE c.products.size > 1"
+        )
+})
 
 @Entity
 @Table(name = "categories")

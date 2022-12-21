@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, Link, useParams } from 'react-router-dom';
 import { Pagination } from 'antd';
 import queryString from 'query-string';
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,6 +21,7 @@ function CategoryAll() {
 
     const [products, setProducts] = useState([]);
     const [category, setCategory] = useState({});
+    const [categories, setCategories] = useState([]);
     const [currentPage, setCurrentPage] = useState(initialPageNumber);
     const [totalCategories, setTotalCategories] = useState();
 
@@ -29,20 +30,38 @@ function CategoryAll() {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        CategoryApi.getAllIncludeProducts({
+        // CategoryApi.getAllIncludeProducts({
+        //     params: {
+        //         ...initialParams,
+        //     },
+        // })
+        //     .then(
+        //         (res) => {
+        //             setProducts(res.data.products);
+        //             setCategory(res.data.category);
+        //             setTotalCategories(res.data.totalItems);
+        //             setLoading(false);
+        //             setError(false);
+        //             console.log('Res check', res);
+        //             console.log('Data check', res.data.products);
+        //         },
+        //         (error) => {
+        //             setError(true);
+        //             toast.error(error.response.data.message);
+        //         },
+        //     )
+        //     .catch((e) => {});
+        CategoryApi.getAllPage({
             params: {
                 ...initialParams,
             },
         })
             .then(
                 (res) => {
-                    setProducts(res.data.products);
-                    setCategory(res.data.category);
+                    setCategories(res.data.categories);
                     setTotalCategories(res.data.totalItems);
                     setLoading(false);
-                    setError(false);
-                    console.log('Res check', res);
-                    console.log('Data check', res.data.products);
+                    console.log('Page Category:', res);
                 },
                 (error) => {
                     setError(true);
@@ -61,66 +80,55 @@ function CategoryAll() {
             {!error ? (
                 <>
                     {!loading ? (
-                        <SessionComp
-                            title={category.name}
-                            subtitle="category"
-                            items={products}
-                            type="product"
-                            sizePercentCard={29}
-                            linkView={`/category/${category.id}?page=1&limit=6`}
-                        />
+                        // <SessionComp
+                        //     title={category.name}
+                        //     subtitle="category"
+                        //     items={products}
+                        //     type="product"
+                        //     sizePercentCard={29}
+                        //     linkView={`/category/${category.id}?page=1&limit=6`}
+                        // />
+
+                        <div
+                            className={cx(
+                                'cards-temp',
+                                'flex',
+                                'items-center',
+                                'flex-wrap',
+                                'justify-start',
+                                'pl-11',
+                            )}
+                        >
+                            {categories.map((category) => {
+                                return (
+                                    <Link to={`/category/${category.id}?page=1&limit=6`}>
+                                        <div
+                                            className={cx(
+                                                'card-item',
+                                                'bg-gray-100',
+                                                'rounded-3xl',
+                                                'p-3',
+                                                'flex',
+                                                'justify-between',
+                                                'items-center',
+                                                'flex-col',
+                                                'm-6',
+                                            )}
+                                        >
+                                            <Image
+                                                src={images.background}
+                                                className={cx('img-item')}
+                                            />
+                                            <p>{category.name}</p>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
+                        </div>
                     ) : (
                         <></>
                     )}
-                    <div
-                        className={cx(
-                            'cards-temp',
-                            'flex',
-                            'items-center',
-                            'flex-wrap',
-                            'justify-evenly',
-                            'justify-between',
-                        )}
-                    >
-                        <div
-                            className={cx(
-                                'card-item',
-                                'bg-gray-100',
-                                'rounded-3xl',
-                                'p-5',
-                                'flex',
-                                'items-center',
-                            )}
-                        >
-                            <p>Category 1</p>
-                            <Image src={images.background} className={cx('img-item')} />
-                        </div>
-                        <div
-                            className={cx(
-                                'card-item',
-                                'bg-gray-100',
-                                'rounded-3xl',
-                                'p-3',
-                                'flex',
-                                'items-center',
-                            )}
-                        >
-                            <p>Category 2</p>
-                        </div>
-                        <div
-                            className={cx(
-                                'card-item',
-                                'bg-gray-100',
-                                'rounded-3xl',
-                                'p-3',
-                                'flex',
-                                'items-center',
-                            )}
-                        >
-                            <p>Category 3</p>
-                        </div>
-                    </div>
-                    <div className={cx('card')}>
+                    {/* <div className={cx('card')}>
                         <div className={cx('imgBx')}>
                             <Image src={images.dest1} />
                         </div>
@@ -138,10 +146,10 @@ function CategoryAll() {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <Pagination
                         current={currentPage}
-                        pageSize={1}
+                        pageSize={10}
                         total={totalCategories}
                         onChange={(page) => handleChangePage(page)}
                     />
