@@ -8,9 +8,15 @@ import com.poly.jztr.ecommerce.dto.OrderDto;
 import com.poly.jztr.ecommerce.expection.QuantityIsTooLagerException;
 import com.poly.jztr.ecommerce.model.Order;
 import com.poly.jztr.ecommerce.model.User;
+<<<<<<< HEAD
 import com.poly.jztr.ecommerce.common.service.OrderService;
 import com.poly.jztr.ecommerce.common.service.PromotionService;
 import com.poly.jztr.ecommerce.common.service.UserService;
+=======
+import com.poly.jztr.ecommerce.service.OrderService;
+import com.poly.jztr.ecommerce.service.UserService;
+import net.bytebuddy.asm.Advice;
+>>>>>>> develop
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -29,9 +35,6 @@ public class OrdersController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    PromotionService promoService;
-
     @GetMapping
     public ResponseEntity<ResponseObject> index(@RequestHeader(value = "Authorization") String jwt,
                                                 @RequestParam(defaultValue = "1") Integer page,
@@ -46,15 +49,13 @@ public class OrdersController {
     public ResponseEntity<ResponseObject> create(@RequestHeader(value = "Authorization") String jwt,
                                                  @RequestBody OrderDto dto) throws QuantityIsTooLagerException {
         try {
-
+            
             Order order = service.toOrder(dto);
             order.setUser(getUserByToken(jwt));
-
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                    Constant.RESPONSE_STATUS_SUCCESS, "Create order successfully", service.save(order, dto.getPromoCode())
+                    Constant.RESPONSE_STATUS_SUCCESS, "Create order successfully", service.save(order)
             ));
         } catch (Exception e) {
-            e.printStackTrace();
             throw new QuantityIsTooLagerException();
         }
     }
