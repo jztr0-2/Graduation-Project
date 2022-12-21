@@ -1,4 +1,4 @@
-package com.poly.jztr.ecommerce.configuration.I18N;
+package com.poly.jztr.ecommerce.controller.admin.configuration.I18N;
 
 import org.aopalliance.intercept.Interceptor;
 import org.springframework.context.MessageSource;

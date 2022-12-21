@@ -1,7 +1,7 @@
-package com.poly.jztr.ecommerce.configuration;
+package com.poly.jztr.ecommerce.controller.admin.configuration;
 
-import com.poly.jztr.ecommerce.configuration.jwt.JwtEntryPoint;
-import com.poly.jztr.ecommerce.configuration.jwt.JwtTokenFilter;
+import com.poly.jztr.ecommerce.controller.admin.configuration.jwt.JwtEntryPoint;
+import com.poly.jztr.ecommerce.controller.admin.configuration.jwt.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

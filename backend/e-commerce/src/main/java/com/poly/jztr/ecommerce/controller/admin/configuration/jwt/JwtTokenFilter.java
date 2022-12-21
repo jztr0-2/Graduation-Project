@@ -1,4 +1,4 @@
-package com.poly.jztr.ecommerce.configuration.jwt;
+package com.poly.jztr.ecommerce.controller.admin.configuration.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

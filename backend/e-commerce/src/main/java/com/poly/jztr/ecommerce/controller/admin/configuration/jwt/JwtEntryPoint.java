@@ -1,4 +1,4 @@
-package com.poly.jztr.ecommerce.configuration.jwt;
+package com.poly.jztr.ecommerce.controller.admin.configuration.jwt;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

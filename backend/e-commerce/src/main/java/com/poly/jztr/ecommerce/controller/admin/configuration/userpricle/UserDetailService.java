@@ -1,4 +1,4 @@
-package com.poly.jztr.ecommerce.configuration.userpricle;
+package com.poly.jztr.ecommerce.controller.admin.configuration.userpricle;
 
 import com.poly.jztr.ecommerce.model.Admin;
 import com.poly.jztr.ecommerce.model.User;

@@ -1,16 +1,13 @@
-package com.poly.jztr.ecommerce.configuration.userpricle;
+package com.poly.jztr.ecommerce.controller.admin.configuration.userpricle;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.poly.jztr.ecommerce.model.Admin;
 import com.poly.jztr.ecommerce.model.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 public class UserPrinciple implements UserDetails {
