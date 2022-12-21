@@ -67,6 +67,7 @@ function Home() {
             .catch((e) => {
                 console.log(e);
                 setError(true);
+                toast.error(e);
             });
         /* Get sale products (TOP 10) */
         ProductApi.getSaleProducts()
@@ -94,7 +95,6 @@ function Home() {
                 (res) => {
                     if (res.data) {
                         setCategories(res.data);
-                        console.log('Categories: ', res.data);
                     }
                 },
                 (error) => {

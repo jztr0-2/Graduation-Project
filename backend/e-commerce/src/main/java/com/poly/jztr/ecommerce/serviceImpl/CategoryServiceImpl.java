@@ -5,6 +5,8 @@ import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.repository.CategoryRespository;
 import com.poly.jztr.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,5 +56,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findTopSaleCategory() {
         return respository.findTopSaleCategory();
+    }
+
+    @Override
+    public Page<Category> findPageCategory(Pageable pageable) {
+        return respository.findPageCategory(pageable);
     }
 }
