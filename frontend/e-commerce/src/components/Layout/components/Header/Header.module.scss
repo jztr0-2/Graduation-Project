@@ -127,6 +127,20 @@
             }
         }
     }
+    .counter-item {
+        position: relative;
+        span {
+            position: absolute;
+            top: -7px;
+            left: 8px;
+            width: 20px;
+            line-height: 20px;
+            border-radius: var(--radius-full);
+            text-align: center;
+            background: var(--main-color);
+            font-size: 1rem;
+        }
+    }
 }
 
 // responsive navbar

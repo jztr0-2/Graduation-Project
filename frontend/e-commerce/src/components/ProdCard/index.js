@@ -1,3 +1,5 @@
+// Global state
+import { useStore, actions } from '~/store';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faHeart, faMoneyCheck } from '@fortawesome/free-solid-svg-icons';
@@ -10,12 +12,41 @@ import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-const ProdCard = ({ id, name, description, price, className, urlImg, ...props }) => {
+const ProdCard = ({
+    id,
+    name,
+    description,
+    price,
+    className,
+    urlImg,
+    indexVariantSelect = 0,
+    amountProductAddCart = 1,
+    item,
+    ...props
+}) => {
     // Handle url img invalid
     if (!urlImg) {
         urlImg = images.noImage;
     }
-
+    const [state, dispatch] = useStore();
+    const handleAddCartItem = () => {
+        if (item) {
+            let product = item;
+            let productVariant = product?.productVariants[indexVariantSelect];
+            dispatch(
+                actions.addCartItem({
+                    id: product?.id,
+                    idVariant: productVariant?.id,
+                    name: product?.name,
+                    nameVariant: productVariant?.displayName,
+                    quantity: amountProductAddCart,
+                    price: productVariant?.unitPrice,
+                    createdAt: productVariant?.createdAt,
+                    categoryName: product?.category?.name,
+                }),
+            );
+        }
+    };
     return (
         <>
             <div
@@ -25,36 +56,36 @@ const ProdCard = ({ id, name, description, price, className, urlImg, ...props })
                 data-aos-duration="1000"
                 {...props}
             >
-                <Link to={`/product/details/${id}`}>
-                    <div className={cx('product__item')}>
+                <div className={cx('product__item')}>
+                    <Link to={`/product/details/${id}`}>
                         <div className={cx('img__box')}>
                             <Image src={urlImg} alt="dest-img-1" />
                         </div>
-                        <div className={cx('product__item__content')}>
-                            <div className={cx('product__details')}>
-                                <a href="#" className={cx('product__name')}>
-                                    {name}
-                                </a>
-                                <div className={cx('rating')}>
-                                    <FontAwesomeIcon icon={faHeart} />
-                                </div>
+                    </Link>
+                    <div className={cx('product__item__content')}>
+                        <div className={cx('product__details')}>
+                            <Link to={`/product/details/${id}`} className={cx('product__name')}>
+                                {name}
+                            </Link>
+                            <div className={cx('rating')}>
+                                <FontAwesomeIcon icon={faHeart} />
                             </div>
-                            <p className={cx('desc')}>{description}</p>
-                            <div className={cx('product__details')}>
-                                <div className={cx('location')}>
-                                    <FontAwesomeIcon icon={faCartShopping} />
-                                    <p>Add Cart</p>
-                                </div>
-                                <div className={cx('price')}>
-                                    <FontAwesomeIcon icon={faMoneyCheck} />
-                                    <p>
-                                        {price} đ{/* <span>/ package</span> */}
-                                    </p>
-                                </div>
+                        </div>
+                        <p className={cx('desc')}>{description}</p>
+                        <div className={cx('product__details')}>
+                            <div className={cx('location')} onClick={handleAddCartItem}>
+                                <FontAwesomeIcon icon={faCartShopping} />
+                                <p>Add Cart</p>
+                            </div>
+                            <div className={cx('price')}>
+                                <FontAwesomeIcon icon={faMoneyCheck} />
+                                <p>
+                                    {price} đ{/* <span>/ package</span> */}
+                                </p>
                             </div>
                         </div>
                     </div>
-                </Link>
+                </div>
             </div>
             <ToastContainer />
         </>

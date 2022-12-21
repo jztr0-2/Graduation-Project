@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import GlobalStyles from './components/GlobalStyles';
 import reportWebVitals from './reportWebVitals';
+import { StoreProvier } from './store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
     <GlobalStyles>
-        <App />
+        <StoreProvier>
+            <App />
+        </StoreProvier>
     </GlobalStyles>,
     // </React.StrictMode>,
 );
