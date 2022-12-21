@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 
 @RestController("admin/product-variants")
+@RequestMapping("api/v1/admin/variants")
 public class ProductVariantsController {
     @Autowired
     ProductVariantService service;
