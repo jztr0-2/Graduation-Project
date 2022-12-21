@@ -15,7 +15,7 @@ import java.util.List;
 public class OrderDto {
     private String description;
     private Long addressId;
-    private Long promoId;
+    private String promoCode;
     private List<OrderItemDto> items;
     private Integer status;
 }
