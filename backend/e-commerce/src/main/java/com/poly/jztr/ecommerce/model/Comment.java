@@ -1,5 +1,6 @@
 package com.poly.jztr.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +9,6 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "comments")
-@Getter
 public class Comment {
 
     public Comment(){
@@ -35,6 +35,7 @@ public class Comment {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
@@ -70,4 +71,31 @@ public class Comment {
         this.product = product;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Comment getParent() {
+        return parent;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
 }
