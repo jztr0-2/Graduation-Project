@@ -140,7 +140,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void saveOnlyProduct(Product p) {
-        p.setProductVariants(null);
+        List<ProductVariant> variants = p.getProductVariants();
+        variants.stream().forEach((item) ->{
+            item.setProduct(p);
+            productVariantService.save(item);
+        });
         repository.save(p);
     }
 }
