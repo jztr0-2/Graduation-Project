@@ -5,6 +5,7 @@ import com.poly.jztr.ecommerce.model.Order;
 import com.poly.jztr.ecommerce.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -35,11 +36,16 @@ public interface OrderService {
 
     Page<Order> findByUsername(String first, String lastName, Pageable pageable);
 
+
     List<Order> findByCreatedAtGreaterThanEqualAndCreatedAtLessThanEqual(Instant start, Instant end);
 
     Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan
             (Integer status, Instant start, Instant end, Double min,Double max, String name, Pageable pageable);
-
     Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan
             (Instant start, Instant end, Double min, Double max,String name, Pageable pageable);
+
+    @Transactional()
+    <S extends Order> S save(S entity, String code);
+
+    Optional<Order> findByPromotion(String code);
 }

@@ -55,9 +55,9 @@ public class PromotionServiceImpl implements PromotionService {
         return respository.findByCodeContainsAndStatus(code, Long.valueOf(status), pageable);
     }
 
+    @Override
     public Optional<Promotion> findByCode(String code) {
         return respository.findByCodeContains(code);
     }
-
 
 }
