@@ -34,6 +34,7 @@ public class ProductServiceImpl implements ProductService {
         if(productVariants != null){
             productVariants.stream().forEach(productVariant -> {
                 productVariant.setProduct(p);
+                productVariant.setDisplayName(p.getName());
                 productVariantService.save(productVariant);
             });
         }

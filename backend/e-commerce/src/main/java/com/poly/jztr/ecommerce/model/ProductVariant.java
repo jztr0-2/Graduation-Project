@@ -132,7 +132,9 @@ public class ProductVariant {
         if(description == null){
             return null;
         }
-        description = description.substring(1, description.length() - 1);
+        if(description.startsWith("{")){
+            description = description.substring(1, description.length() - 1);
+        }
         List<String> items = Arrays.asList(description.split(","));
         Map<String, String> map = new HashMap();
         items.stream().forEach(item->{

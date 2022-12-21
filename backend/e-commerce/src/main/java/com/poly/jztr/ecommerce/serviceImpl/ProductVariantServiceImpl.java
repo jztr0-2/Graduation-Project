@@ -42,4 +42,9 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         p.setQuantity(p.getQuantity() - quantity);
         repository.save(p);
     }
+
+    @Override
+    public ProductVariant findById(Long id) {
+        return repository.findById(id).get();
+    }
 }

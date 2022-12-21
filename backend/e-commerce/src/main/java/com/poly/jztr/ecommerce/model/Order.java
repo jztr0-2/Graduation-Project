@@ -47,9 +47,16 @@ public class Order {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
+    @Column(name = "total")
+    private Double total;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
     @Fetch(FetchMode.SUBSELECT)
     private List<OrderItem> orderItems;
+
+    @ManyToOne
+    @JoinColumn(name = "promotion_id")
+    private Promotion promotion;
 
     public Order(){
         this.createdAt = Instant.now();
@@ -98,5 +105,13 @@ public class Order {
     public void setDescription(String description) {
         this.updatedAt = Instant.now();
         this.description = description;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 }

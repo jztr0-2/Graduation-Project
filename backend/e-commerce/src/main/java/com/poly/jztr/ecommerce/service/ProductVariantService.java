@@ -14,4 +14,6 @@ public interface ProductVariantService {
     <S extends ProductVariant> S save(S entity);
 
     void minusQuantity(Long id, Integer quantity);
+
+    ProductVariant findById(Long id);
 }
