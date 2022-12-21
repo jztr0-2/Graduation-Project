@@ -118,4 +118,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    @Override
+    public List<Order> findByCreatedAtGreaterThanEqualAndCreatedAtLessThanEqual(Instant start, Instant end) {
+        return repository.findByCreatedAtGreaterThanEqualAndCreatedAtLessThanEqual(start, end);
+    }
+
+    @Override
+    public Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Integer status, Instant start, Instant end, Double min, Double max, Pageable pageable) {
+        return repository.findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(status, start, end, min, max, pageable);
+    }
+
+    @Override
+    public Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Instant start, Instant end, Double min, Double max, Pageable pageable) {
+        return repository.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(start, end, min, max, pageable);
+    }
 }

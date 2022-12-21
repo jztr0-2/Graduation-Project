@@ -34,4 +34,10 @@ public interface OrderService {
     List<Object[]> totalRevenuePerMonth();
 
     Page<Order> findByUsername(String first, String lastName, Pageable pageable);
+
+    List<Order> findByCreatedAtGreaterThanEqualAndCreatedAtLessThanEqual(Instant start, Instant end);
+
+    Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Integer status, Instant start, Instant end, Double min, Double max, Pageable pageable);
+
+    Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Instant start, Instant end, Double min, Double max, Pageable pageable);
 }

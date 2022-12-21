@@ -7,8 +7,10 @@ import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
 import com.poly.jztr.ecommerce.dto.OrderDto;
 import com.poly.jztr.ecommerce.expection.QuantityIsTooLagerException;
 import com.poly.jztr.ecommerce.model.Order;
+import com.poly.jztr.ecommerce.model.Promotion;
 import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.service.OrderService;
+import com.poly.jztr.ecommerce.service.PromotionService;
 import com.poly.jztr.ecommerce.service.UserService;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ public class OrdersController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    PromotionService promotionService;
     @GetMapping
     public ResponseEntity<ResponseObject> index(@RequestHeader(value = "Authorization") String jwt,
                                                 @RequestParam(defaultValue = "1") Integer page,
