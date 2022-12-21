@@ -215,9 +215,8 @@ public class UsersController {
         for (int i = 1; i < 100; i ++){
             Promotion promotion = new Promotion();
             promotion.setCreatedAt(Instant.now());
-//            promotion.setType(i%2 + 1);
-            promotion.setCode( RandomStringUtils.random(6));
-
+            promotion.setStatus(i%2 + 1);
+            promotion.setCode( RandomStringUtils.random(6, 'a','b','c','d','e','f','g','h','j','k','q','w','1','2','3','4','5','6','7'));
             promotionService.save(promotion);
         }
 
@@ -236,7 +235,7 @@ public class UsersController {
             User user= service.findById(random.nextLong(90) + 1).get();
             Order order = new Order();
             order.setUser(user);
-            order.setStatus(Constant.ORDER_STATUS_SUCCESS);
+            order.setStatus(random.nextInt(2));
             order.setDescription("Fake order" + i);
 
 
@@ -273,10 +272,18 @@ public class UsersController {
     @Autowired SendSMSService sendSMSService;
     @GetMapping("test-sendSMS")
     public String testSendSMS(){
-        if(sendSMSService.send()){
-            return "DONE";
+//        if(sendSMSService.send()){
+//            return "DONE";
+//        }
+//        return "FAIL";
+        for (int i = 1; i < 100; i ++){
+            Promotion promotion = new Promotion();
+            promotion.setCreatedAt(Instant.now());
+            promotion.setStatus(i%2 + 1);
+            promotion.setCode( RandomStringUtils.random(6, 'a','b','c','d','e','f','g','h','j','k','q','w','1','2','3','4','5','6','7'));
+            promotionService.save(promotion);
         }
-        return "FAIL";
+        return "";
     }
 
     @PostMapping("init-file-data")
