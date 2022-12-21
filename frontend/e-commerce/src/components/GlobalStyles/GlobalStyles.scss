@@ -3,11 +3,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 /* Amita */
 @import url('https://fonts.googleapis.com/css2?family=Amita:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Rubik:wght@300;400;500;600&display=swap');
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Rubik', sans-serif;
 }
 :root {
     --header-height: 4.5rem;
@@ -15,6 +16,8 @@
     /* ========== Colors ========== */
     --main-color: #1ac2bf;
     --bold-color: #27cbc8;
+    --secondary-color: #794afa;
+    --primary-color: #ff6b6b;
     --text-bold-color: #fff;
     --text-light-color: #818693;
     --text-dark-color: rgba(255, 255, 255, 0.65);
@@ -23,12 +26,15 @@
     --white-color: #fff;
     --black-color: #000;
     --label-color: rgba(62, 69, 89, 0.35);
-
+    --light-bg-color: #f2f3f5;
+    --border-color: #e5e8ec;
     /* ========== Font & Typography ========== */
     --font-family-1: 'Roboto', sans-serif;
     --font-family-2: 'Amita', cursive;
     --section-title-font-size: 29px;
     --text-font-size: 15px;
+    --font-small: 13px;
+    --font-smaller: 11px;
 
     /* ========== Font Weight ========== */
     --font-extra-light: 300;
@@ -44,6 +50,11 @@
     --radius-14: 14px;
     --radius-30: 30px;
     --radius-full: 50%;
+
+    /* ========== Background colors ========== */
+    --trans-background-color: background-color 0.3s, color 0.3s;
+    --trans-background: background-color 0.3s;
+    --trans-color: color 0.3s;
 }
 html {
     font-size: 62.5%;
@@ -56,7 +67,13 @@ body {
     --webkit-font-smoothing: antialiased;
     color: var(--white-color);
 }
-
+strong {
+    font-weight: var(--font-bold);
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
 a[href] {
     color: var(--text-color);
     text-decoration: none;
@@ -65,6 +82,31 @@ ul,
 li {
     list-style: none;
     padding: 0;
+    line-height: 2em;
+}
+.primary-button,
+.secondary-button,
+.light-button {
+    font-size: var(--font-small);
+    padding: 0.9em 2em;
+    height: auto;
+    width: fit-content;
+    border-radius: 2em;
+    transition: var(--trans-background-color);
+}
+.primary-button {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+.primary-button:hover {
+    background-color: var(--text-dark-color);
+}
+.secondary-button {
+    background-color: var(--main-color);
+    color: var(--white-color);
+}
+.secondary-button:hover {
+    background-color: var(--bold-color);
 }
 button,
 input,
@@ -129,6 +171,48 @@ input,
 .text-transform {
     text-transform: capitalize !important;
 }
+/*
+    * REUSABLE SELECTOR
+*/
+.expand {
+    .js-content {
+        display: block !important;
+    }
+}
+.custom-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 0.938em;
+}
+.custom-column {
+    margin-left: -0.938em;
+    margin-right: -0.938em;
+}
+.custom-row {
+    padding: 0 0.938em;
+}
+.custom-item {
+    display: flex;
+}
+.custom-flexwrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+.custom-flexcenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.custom-flexitem {
+    display: flex;
+    align-items: center;
+}
+.custom-flexcol {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
 /* Buttons */
 .button__wrapper {
     display: flex;
