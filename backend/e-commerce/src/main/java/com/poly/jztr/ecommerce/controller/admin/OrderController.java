@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,17 +39,28 @@ public class OrderController {
 
     @GetMapping("")
     public ResponseEntity<ResponseObject> findByStatus(@RequestParam(defaultValue = "-1") Integer status,
-                                                     @RequestParam(defaultValue = "1") Integer page,
-                                                     @RequestParam(defaultValue = "10") Integer perPage){
+                                                       @RequestParam(defaultValue = "1") Integer page,
+                                                       @RequestParam(defaultValue = "10") Integer perPage,
+                                                       @RequestParam(defaultValue = "1608538211") Long startDate,
+                                                       @RequestParam(defaultValue = "2555223011") Long endDate,
+                                                       @RequestParam(defaultValue = "0") Double min,
+                                                       @RequestParam(defaultValue = "9999999999999") Double max){
         Pageable pageable = CustomPageable.getPage(page, perPage, "createdAt", Constant.SORT_DESC);
+        Instant start = Instant.EPOCH.plus(startDate, ChronoUnit.SECONDS);
+        Instant end = Instant.EPOCH.plus(endDate, ChronoUnit.SECONDS);
+        System.out.println(start + " "+ end);
         if(status == -1) {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
-                            service.findAll(pageable)));
+                            service.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(start,end,min,max,pageable)));
         }
+
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
-                        new PageableSerializer(service.findByStatusIs(status, pageable))));
+                        new PageableSerializer(
+                                service.findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(status,start,end,min,
+                                        max,pageable))));
     }
 
     @GetMapping("username")

@@ -1,6 +1,7 @@
 package com.poly.jztr.ecommerce.serviceImpl;
 
 import com.poly.jztr.ecommerce.dto.ProductDto;
+import com.poly.jztr.ecommerce.expection.CommonException;
 import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.model.ProductVariant;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -53,13 +55,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product toProduct(ProductDto dto){
+    public Product toProduct(ProductDto dto) {
         Product product= new Product();
         product.setDescription(dto.getDescription());
         product.setName(dto.getName());
         product.setStatus(dto.getStatus());
         List<ProductVariant> productVariants = productVariantService.
                 toProductVariantFromDto(dto.getProductVariantList());
+        productVariants.stream().forEach((variant)->{
+            Map<String, String> des = variant.getDescription();
+            String title = des.get("title");
+            if(title == null || des.get(title) == null){
+                try {
+                    throw new CommonException("Descripton invalid", "title key is require");
+                } catch (CommonException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         product.setProductVariants(productVariants);
         product.setCategory(new Category(dto.getCategoryId()));
         return product;

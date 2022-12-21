@@ -215,7 +215,7 @@ public class UsersController {
         for (int i = 1; i < 100; i ++){
             Promotion promotion = new Promotion();
             promotion.setCreatedAt(Instant.now());
-            promotion.setStatus(i%2 + 1);
+            promotion.setStatus(i%2);
             promotion.setCode( RandomStringUtils.random(6, 'a','b','c','d','e','f','g','h','j','k','q','w','1','2','3','4','5','6','7'));
             promotionService.save(promotion);
         }
@@ -391,14 +391,17 @@ public class UsersController {
             order.setCreatedAt(instant);
             List<OrderItem> orderItemList = new ArrayList<>();
             order.setAddress(address);
+            Double total = 0D;
             for(int j = 0; j < 5; j ++){
                 OrderItem orderItem = new OrderItem();
                 orderItem.setOrder(order);
                 orderItem.setQuantity(random.nextInt(10));
                 orderItem.setUnitPrice(random.nextDouble(1500));
                 orderItem.setProductVariant(new ProductVariant(random.nextLong(1,137)));
+                total += orderItem.getUnitPrice() * orderItem.getQuantity();
                 orderItemList.add(orderItem);
             }
+            order.setTotal(total);
             order.setOrderItems(orderItemList);
             orderService.save(order);
         }
@@ -419,6 +422,5 @@ public class UsersController {
             image.setProductId(id);
         }
         return imageService.save(image);
-
     }
 }

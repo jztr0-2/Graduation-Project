@@ -6,7 +6,7 @@ import CategoryDetails from '~/pages/CategoryDetails';
 import CategoryAll from '~/pages/CagtegoryAll';
 import About from '~/pages/About';
 import Contact from '~/pages/Contact';
-
+import Oders from '~/pages/Oders';
 // Not requires login
 const publicRoutes = [
     { path: '/', component: Home },
@@ -14,6 +14,7 @@ const publicRoutes = [
     { path: '/category/:categoryId', component: CategoryDetails },
     { path: '/about', component: About },
     { path: '/contact', component: Contact },
+    { path: '/oder', component: Oders },
 ];
 
 // Requires login
