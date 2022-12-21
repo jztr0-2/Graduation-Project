@@ -2,10 +2,7 @@ package com.poly.jztr.ecommerce.serviceImpl;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.dto.OrderDto;
-import com.poly.jztr.ecommerce.model.Address;
-import com.poly.jztr.ecommerce.model.Order;
-import com.poly.jztr.ecommerce.model.OrderItem;
-import com.poly.jztr.ecommerce.model.User;
+import com.poly.jztr.ecommerce.model.*;
 import com.poly.jztr.ecommerce.repository.OrderItemRepository;
 import com.poly.jztr.ecommerce.repository.OrderRepository;
 import com.poly.jztr.ecommerce.service.OrderItemService;
@@ -173,13 +170,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Integer status, Instant start, Instant end, Double min, Double max, Pageable pageable) {
-        return repository.findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(status, start, end, min, max, pageable);
+    public Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan
+            (Integer status, Instant start, Instant end, Double min, Double max, String name,Pageable pageable) {
+        return repository.findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContains(
+                status, start, end, min, max, name, pageable);
     }
 
     @Override
-    public Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(Instant start, Instant end, Double min, Double max, Pageable pageable) {
-        return repository.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(start, end, min, max, pageable);
+    public Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan
+            (Instant start, Instant end, Double min, Double max, String name , Pageable pageable) {
+        return repository.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContains
+                (start, end, min, max, name,pageable);
     }
 
     @Override

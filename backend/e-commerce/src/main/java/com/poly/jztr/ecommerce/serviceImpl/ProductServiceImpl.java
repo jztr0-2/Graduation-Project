@@ -137,4 +137,10 @@ public class ProductServiceImpl implements ProductService {
         Product product = repository.findById(productId).get();
         return repository.getRelatedProduct(product.getCategory().getId(), limit);
     }
+
+    @Override
+    public void saveOnlyProduct(Product p) {
+        p.setProductVariants(null);
+        repository.save(p);
+    }
 }

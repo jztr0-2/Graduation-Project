@@ -38,4 +38,6 @@ public interface ProductService {
     List<Product> findTopSale();
 
     List<Product> findRelatedProduct(Long product_id);
+
+    void saveOnlyProduct(Product p);
 }
