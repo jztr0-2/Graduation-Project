@@ -5,6 +5,7 @@ import com.poly.jztr.ecommerce.model.Order;
 import com.poly.jztr.ecommerce.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -18,6 +19,9 @@ public interface OrderService {
     Order toOrder(OrderDto dto);
 
     <S extends Order> S save(S entity);
+
+    @Transactional()
+    <S extends Order> S save(S entity, String code);
 
     Page<Order> findByUser(Pageable page, User user);
 
@@ -34,4 +38,6 @@ public interface OrderService {
     List<Object[]> totalRevenuePerMonth();
 
     Page<Order> findByUsername(String first, String lastName, Pageable pageable);
+
+    Optional<Order> findByPromotion(String code);
 }
