@@ -2,15 +2,13 @@ package com.poly.jztr.ecommerce.serviceImpl;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.dto.OrderDto;
-import com.poly.jztr.ecommerce.model.Address;
-import com.poly.jztr.ecommerce.model.Order;
-import com.poly.jztr.ecommerce.model.OrderItem;
-import com.poly.jztr.ecommerce.model.User;
+import com.poly.jztr.ecommerce.model.*;
 import com.poly.jztr.ecommerce.repository.OrderItemRepository;
 import com.poly.jztr.ecommerce.repository.OrderRepository;
 import com.poly.jztr.ecommerce.service.OrderItemService;
 import com.poly.jztr.ecommerce.service.OrderService;
 import com.poly.jztr.ecommerce.service.ProductVariantService;
+import com.poly.jztr.ecommerce.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +28,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderItemRepository orderItemRepository;
+
+    @Autowired
+    PromotionService promoService;
 
     @Autowired
     OrderItemService orderItemService;
@@ -60,8 +61,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional()
     public <S extends Order> S save(S entity) {
+        entity = repository.save(entity);
+        S finalEntity = entity;
+        List<OrderItem> orderItems = entity.getOrderItems().stream().
+                map(orderItem -> {
+                    orderItem.setOrder(finalEntity);
+                    productVariantService.minusQuantity(orderItem.getProductVariant().getId(),orderItem.getQuantity());
+                    return orderItem;
+                }).collect(Collectors.toList());
+
+        Double total = 0.0;
+        for (OrderItem orderItem: orderItems) {
+            total = orderItem.getUnitPrice() * orderItem.getQuantity();
+        }
+
+        entity.setTotal(total);
+        return repository.save(entity);
+    }
+
+    @Override
+    @Transactional()
+    public <S extends Order> S save(S entity, String code) {
         entity = repository.save(entity);
         S finalEntity = entity;
         List<OrderItem> orderItems = entity.getOrderItems().stream().
@@ -70,6 +91,25 @@ public class OrderServiceImpl implements OrderService {
                  productVariantService.minusQuantity(orderItem.getProductVariant().getId(),orderItem.getQuantity());
                  return orderItem;
                 }).collect(Collectors.toList());
+        Double total = 0.0;
+        for (OrderItem orderItem: orderItems) {
+            total += (orderItem.getUnitPrice() * orderItem.getQuantity());
+        }
+        Optional<Promotion> optPro = promoService.findByCode(code);
+        if(optPro.isPresent()) {
+            if(optPro.get().getStatus() == 1) {
+                if(optPro.get().getAmount() >= total) {
+                    entity.setTotal(0.0);
+                } else {
+                    entity.setTotal(total - optPro.get().getAmount());
+                }
+            } else {
+                entity.setTotal(total);
+            }
+        } else {
+            entity.setTotal(total);
+        }
+        repository.save(entity);
         orderItemRepository.saveAll(orderItems);
         return null;
     }
@@ -115,6 +155,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> findByUsername(String firstName, String lastName, Pageable pageable) {
         return  repository.findByUserFirstNameContainsOrUserLastNameContains(firstName, lastName, pageable);
+    }
+
+    @Override
+    public Optional<Order> findByPromotion(String code) {
+        return repository.findByPromotionCodeContains(code);
     }
 
 
