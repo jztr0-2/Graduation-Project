@@ -51,7 +51,7 @@ public class Promotion {
 //    @Column(name = "type")
 //    private Integer type;
 
-    @Column(name =  "status")
+    @Column(name =  "status", nullable = false)
     private Integer status;
 
     public int getStatus() {
