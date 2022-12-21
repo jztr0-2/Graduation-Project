@@ -48,4 +48,6 @@ public interface OrderService {
     <S extends Order> S save(S entity, String code);
 
     Optional<Order> findByPromotion(String code);
+
+    Order updateStatus(Order order);
 }

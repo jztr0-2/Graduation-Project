@@ -96,7 +96,7 @@ public class OrderController {
         }
         Order order = optOrder.get();
         order.setStatus(dto.getStatus());
-        order = service.save(order);
+        order = service.updateStatus(order);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update order successfully", order));
     }

@@ -185,4 +185,9 @@ public class OrderServiceImpl implements OrderService {
     public Optional<Order> findByPromotion(String code) {
         return repository.findByPromotionCodeContains(code);
     }
+
+    @Override
+    public Order updateStatus(Order order) {
+        return repository.save(order);
+    }
 }
