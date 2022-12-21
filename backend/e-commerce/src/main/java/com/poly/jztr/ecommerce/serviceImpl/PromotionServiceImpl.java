@@ -2,7 +2,7 @@ package com.poly.jztr.ecommerce.serviceImpl;
 
 import com.poly.jztr.ecommerce.model.Promotion;
 import com.poly.jztr.ecommerce.repository.PromotionRepository;
-import com.poly.jztr.ecommerce.service.PromotionService;
+import com.poly.jztr.ecommerce.common.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

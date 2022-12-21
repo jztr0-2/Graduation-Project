@@ -1,7 +1,7 @@
 package com.poly.jztr.ecommerce.controller.admin;
 
 import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
-import com.poly.jztr.ecommerce.service.CategoryService;
+import com.poly.jztr.ecommerce.common.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

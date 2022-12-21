@@ -2,8 +2,8 @@ package com.poly.jztr.ecommerce.configuration.userpricle;
 
 import com.poly.jztr.ecommerce.model.Admin;
 import com.poly.jztr.ecommerce.model.User;
-import com.poly.jztr.ecommerce.service.AdminService;
-import com.poly.jztr.ecommerce.service.UserService;
+import com.poly.jztr.ecommerce.common.service.AdminService;
+import com.poly.jztr.ecommerce.common.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -4,7 +4,7 @@ import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.ProductVariantDto;
 import com.poly.jztr.ecommerce.model.ProductVariant;
-import com.poly.jztr.ecommerce.service.ProductVariantService;
+import com.poly.jztr.ecommerce.common.service.ProductVariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,6 @@
 package com.poly.jztr.ecommerce.controller.publics;
 
-import com.poly.jztr.ecommerce.model.Image;
-import com.poly.jztr.ecommerce.service.ImageService;
-import org.jetbrains.annotations.NotNull;
+import com.poly.jztr.ecommerce.common.service.ImageService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

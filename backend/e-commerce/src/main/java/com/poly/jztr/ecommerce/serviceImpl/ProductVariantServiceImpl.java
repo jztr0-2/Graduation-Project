@@ -4,7 +4,7 @@ import com.poly.jztr.ecommerce.dto.ProductVariantDto;
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.model.ProductVariant;
 import com.poly.jztr.ecommerce.repository.ProductVariantRepository;
-import com.poly.jztr.ecommerce.service.ProductVariantService;
+import com.poly.jztr.ecommerce.common.service.ProductVariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

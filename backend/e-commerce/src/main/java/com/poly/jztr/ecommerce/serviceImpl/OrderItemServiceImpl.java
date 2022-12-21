@@ -3,7 +3,7 @@ package com.poly.jztr.ecommerce.serviceImpl;
 import com.poly.jztr.ecommerce.dto.OrderItemDto;
 import com.poly.jztr.ecommerce.model.OrderItem;
 import com.poly.jztr.ecommerce.model.ProductVariant;
-import com.poly.jztr.ecommerce.service.OrderItemService;
+import com.poly.jztr.ecommerce.common.service.OrderItemService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

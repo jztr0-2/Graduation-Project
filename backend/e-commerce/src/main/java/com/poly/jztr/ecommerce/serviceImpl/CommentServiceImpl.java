@@ -4,7 +4,7 @@ import com.poly.jztr.ecommerce.dto.CommentDto;
 import com.poly.jztr.ecommerce.model.Comment;
 import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.repository.CommentRepository;
-import com.poly.jztr.ecommerce.service.CommentService;
+import com.poly.jztr.ecommerce.common.service.CommentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

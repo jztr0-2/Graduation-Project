@@ -3,7 +3,7 @@ package com.poly.jztr.ecommerce.serviceImpl;
 import com.poly.jztr.ecommerce.dto.CategoryDto;
 import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.repository.CategoryRespository;
-import com.poly.jztr.ecommerce.service.CategoryService;
+import com.poly.jztr.ecommerce.common.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

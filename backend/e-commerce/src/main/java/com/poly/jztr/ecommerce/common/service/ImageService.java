@@ -1,4 +1,4 @@
-package com.poly.jztr.ecommerce.service;
+package com.poly.jztr.ecommerce.common.service;
 
 import com.poly.jztr.ecommerce.model.Image;
 

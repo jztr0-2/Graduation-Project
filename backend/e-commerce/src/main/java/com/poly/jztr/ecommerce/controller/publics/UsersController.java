@@ -2,6 +2,7 @@ package com.poly.jztr.ecommerce.controller.publics;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.ResponseObject;
+import com.poly.jztr.ecommerce.common.service.*;
 import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
 import com.poly.jztr.ecommerce.dto.LoginDto;
 import com.poly.jztr.ecommerce.dto.UserDto;
@@ -22,8 +23,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
@@ -76,7 +75,8 @@ public class UsersController {
     @Autowired
     CommentService commentService;
 
-    @Autowired PromotionService promotionService;
+    @Autowired
+    PromotionService promotionService;
 
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> login(@RequestBody LoginDto login) {
@@ -269,7 +269,8 @@ public class UsersController {
         return "INIT SUCCESSFULLY";
     }
 
-    @Autowired SendSMSService sendSMSService;
+    @Autowired
+    SendSMSService sendSMSService;
     @GetMapping("test-sendSMS")
     public String testSendSMS(){
 //        if(sendSMSService.send()){

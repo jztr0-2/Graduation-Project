@@ -1,4 +1,4 @@
-package com.poly.jztr.ecommerce.service;
+package com.poly.jztr.ecommerce.common.service;
 public interface SendSMSService {
     boolean send();
 }

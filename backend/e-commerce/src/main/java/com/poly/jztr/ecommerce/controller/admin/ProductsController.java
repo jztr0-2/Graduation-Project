@@ -6,10 +6,9 @@ import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.ProductDto;
 import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
 import com.poly.jztr.ecommerce.model.Product;
-import com.poly.jztr.ecommerce.model.ProductVariant;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
-import com.poly.jztr.ecommerce.service.CategoryService;
-import com.poly.jztr.ecommerce.service.ProductService;
+import com.poly.jztr.ecommerce.common.service.CategoryService;
+import com.poly.jztr.ecommerce.common.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 @RestControllerAdvice("admin/product")

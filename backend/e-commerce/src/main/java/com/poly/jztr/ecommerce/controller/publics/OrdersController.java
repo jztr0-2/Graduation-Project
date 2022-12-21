@@ -5,7 +5,7 @@ import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.OrderDto;
 import com.poly.jztr.ecommerce.expection.QuantityIsTooLagerException;
 import com.poly.jztr.ecommerce.model.Order;
-import com.poly.jztr.ecommerce.service.OrderService;
+import com.poly.jztr.ecommerce.common.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -6,14 +6,13 @@ import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.PromotionDto;
 import com.poly.jztr.ecommerce.model.Promotion;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
-import com.poly.jztr.ecommerce.service.PromotionService;
+import com.poly.jztr.ecommerce.common.service.PromotionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

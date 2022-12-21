@@ -1,7 +1,7 @@
 package com.poly.jztr.ecommerce.serviceImpl;
 
-import com.poly.jztr.ecommerce.service.SendSMSService;
-import com.poly.jztr.ecommerce.service.UserService;
+import com.poly.jztr.ecommerce.common.service.SendSMSService;
+import com.poly.jztr.ecommerce.common.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 

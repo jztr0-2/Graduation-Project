@@ -2,7 +2,7 @@ package com.poly.jztr.ecommerce.serviceImpl;
 
 import com.poly.jztr.ecommerce.model.Image;
 import com.poly.jztr.ecommerce.repository.ImageRepository;
-import com.poly.jztr.ecommerce.service.ImageService;
+import com.poly.jztr.ecommerce.common.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

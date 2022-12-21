@@ -3,7 +3,7 @@ package com.poly.jztr.ecommerce.serviceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poly.jztr.ecommerce.dto.UserDto;
-import com.poly.jztr.ecommerce.service.UserService;
+import com.poly.jztr.ecommerce.common.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
