@@ -81,6 +81,7 @@ public class OrderServiceImpl implements OrderService {
 
         entity.setTotal(total);
         return repository.save(entity);
+
     }
 
     @Override
@@ -117,6 +118,7 @@ public class OrderServiceImpl implements OrderService {
         repository.save(entity);
         orderItemRepository.saveAll(orderItems);
         return null;
+
     }
 
 
