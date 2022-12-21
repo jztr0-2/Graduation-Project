@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -113,5 +114,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findTopSale() {
         return repository.findTopSale();
+    }
+
+    @Override
+    public List<Product> findRelatedProduct(Long productId) {
+        Random random = new Random();
+        int limit = random.nextInt(5,10);
+        Product product = repository.findById(productId).get();
+        return repository.getRelatedProduct(product.getCategory().getId(), limit);
     }
 }
