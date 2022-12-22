@@ -33,3 +33,10 @@ export const ProductApi = {
         return axiosClient.get(url, {});
     },
 };
+
+export const LoginApi = {
+    userLogin: (data = {}) => {
+        const url = `public/users/login`;
+        return axiosClient.post(url, data);
+    },
+};
