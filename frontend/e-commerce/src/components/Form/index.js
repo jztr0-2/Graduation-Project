@@ -46,6 +46,7 @@ function FormCustom({ showForm, setShowForm }) {
                     localStorage.setItem("userPhone",resp.data.phone);
                     localStorage.setItem("userName",resp.data.firstName + resp.data.lastName);
                     localStorage.setItem("userImage",resp.data.image);
+                    window.location.reload()
                 }).catch((err)=>{
                     console.log(err)
                 });
