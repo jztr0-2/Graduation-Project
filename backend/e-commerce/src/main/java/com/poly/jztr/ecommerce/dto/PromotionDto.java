@@ -41,19 +41,10 @@ public class PromotionDto {
     private Double maxAmount;
 
     @NotNull
-    private Instant endDate;
+    private String endDate;
 
     @NotNull
-    private Instant startDate;
+    private String startDate;
 
     private Integer status;
-
-    public void setStartDate(String date){
-        this.startDate = DateHelper.toDate(date, "dd-MM-yyyy");
-    }
-
-    public void setEndDate(String date){
-        this.endDate = DateHelper.toDate(date, "dd-MM-yyyy");
-    }
-
 }

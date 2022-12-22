@@ -105,7 +105,6 @@ public class OrderServiceImpl implements OrderService {
         if(code != null || !((code+"").equalsIgnoreCase("null"))){
             Optional<Promotion> optPro = promoService.findByCode(code);
             boolean check = checkPromo(optPro);
-            System.out.println("Line 107L:" + check);
             if(check) {
                 if(optPro.get().getAmount() >= total.get()) {
                     entity.setTotal(0.0);
@@ -128,6 +127,9 @@ public class OrderServiceImpl implements OrderService {
 
         Promotion promotion = optPro.get();
         if(promotion.getStatus() == Constant.PROMOTION_TYPE_SINGLE_USER){
+            if(promotion.getEndDate().isBefore(Instant.now())){
+                return false;
+            }
             if(promotion.getDeletedAt() != null) return false;
             else{
                 promotion.setDeletedAt(Instant.now());

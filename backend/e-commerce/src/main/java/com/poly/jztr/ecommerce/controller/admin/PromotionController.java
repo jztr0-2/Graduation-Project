@@ -2,6 +2,7 @@ package com.poly.jztr.ecommerce.controller.admin;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.CustomPageable;
+import com.poly.jztr.ecommerce.common.DateHelper;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.PromotionDto;
 import com.poly.jztr.ecommerce.model.Promotion;
@@ -78,6 +79,10 @@ public class PromotionController {
     public ResponseEntity<ResponseObject> post(@RequestBody @Validated PromotionDto promotionDto) throws IllegalAccessException, InvocationTargetException{
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
+        Instant startDate = DateHelper.toDate(promotionDto.getStartDate(), "dd-MM-yyyy");
+        Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "dd-MM-yyyy");
+        promotion.setStartDate(startDate);
+        promotion.setEndDate(endDate);
         promotion.setStatus(promotionDto.getStatus());
         return ResponseEntity.status(HttpStatus.OK).body(
         new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Crated promotion successfully", service.save(promotion)));
@@ -95,8 +100,10 @@ public class PromotionController {
         promotion.setId(id);
         promotion.setStatus(promotionDto.getStatus());
         promotion.setAmount(promotionDto.getAmount());
-        promotion.setEndDate(promotionDto.getEndDate());
-        promotion.setStartDate(promotionDto.getStartDate());
+        Instant startDate = DateHelper.toDate(promotionDto.getStartDate(), "dd-MM-yyyy");
+        Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "dd-MM-yyyy");
+        promotion.setEndDate(endDate);
+        promotion.setStartDate(startDate);
         promotion.setMaxAmount(promotionDto.getMaxAmount());
         promotion.setPercent(promotionDto.getPercent());
         return ResponseEntity.status(HttpStatus.OK).body(
