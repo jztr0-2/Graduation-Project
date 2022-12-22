@@ -34,12 +34,12 @@ public class JwtProvider {
     public String generateTokenLogin(String username) {
         String token = null;
         try {
-            User user = null;
-            Optional<User> optional = userService.findByEmail(username);
-            if (optional.isEmpty()) {
-                optional = userService.findByPhone(username);
-            }
-            user = optional.get();
+            User user = userService.findByEmailOrPhone(username);
+//            if (optional.isEmpty()) {
+//                optional = userService.findByPhone(username);
+//            }
+//            user = optional.get();
+
             JWSSigner signer = new MACSigner(generateShareSecret());
             JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
             builder.claim("Username", username);
@@ -87,9 +87,7 @@ public class JwtProvider {
             if (signedJWT.verify(verifier)) {
                 claimsSet = signedJWT.getJWTClaimsSet();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
         return claimsSet;
     }
 
@@ -114,7 +112,9 @@ public class JwtProvider {
         try {
             JWTClaimsSet claimsSet = getClaimsSetFromToken(token);
             username = claimsSet.getStringClaim("Username");
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return username;
     }
 

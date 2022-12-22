@@ -32,7 +32,7 @@ public class UserDetailService implements UserDetailsService {
             UserPrinciple userPrinciple = UserPrinciple.build(null, admin, grantedAuthorities);
             return userPrinciple;
         }
-        User u = userService.findByEmail(username).get();
+        User u = userService.findByEmailOrPhone(username);
         grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
         UserPrinciple userPrinciple = UserPrinciple.build(u,null, grantedAuthorities);
         return userPrinciple;
