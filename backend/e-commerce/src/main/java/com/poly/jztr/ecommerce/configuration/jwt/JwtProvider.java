@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class JwtProvider {
@@ -33,7 +34,12 @@ public class JwtProvider {
     public String generateTokenLogin(String username) {
         String token = null;
         try {
-            User user = userService.findByEmail(username).get();
+            User user = null;
+            Optional<User> optional = userService.findByEmail(username);
+            if (optional.isEmpty()) {
+                optional = userService.findByPhone(username);
+            }
+            user = optional.get();
             JWSSigner signer = new MACSigner(generateShareSecret());
             JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
             builder.claim("Username", username);
