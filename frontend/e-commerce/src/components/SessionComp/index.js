@@ -47,6 +47,7 @@ function SessionComp({
                 cards.push(
                     <CategoryCard
                         key={item.id}
+                        id={item.id}
                         title={item.name}
                         description={item.description ? item.description : 'Default Description'}
                         postDay={item.createdAt}
