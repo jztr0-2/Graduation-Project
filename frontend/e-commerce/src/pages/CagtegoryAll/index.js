@@ -101,7 +101,10 @@ function CategoryAll() {
                         >
                             {categories.map((category) => {
                                 return (
-                                    <Link to={`/category/${category.id}?page=1&limit=6`}>
+                                    <Link
+                                        to={`/category/${category.id}?page=1&limit=6`}
+                                        key={category?.id}
+                                    >
                                         <div
                                             className={cx(
                                                 'card-item',
@@ -116,7 +119,7 @@ function CategoryAll() {
                                             )}
                                         >
                                             <Image
-                                                src={images.background}
+                                                src={images.imageDevice}
                                                 className={cx('img-item')}
                                             />
                                             <p>{category.name}</p>
