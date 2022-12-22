@@ -7,7 +7,7 @@
     border-top-left-radius: var(--radius-14);
     border-top-right-radius: var(--radius-14);
     overflow: hidden;
-    max-width: 300px;
+    min-width: 300px;
     max-height: 168.75px;
     img {
         width: 100%;

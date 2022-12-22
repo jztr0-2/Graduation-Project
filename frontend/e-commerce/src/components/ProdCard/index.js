@@ -71,7 +71,11 @@ const ProdCard = ({
                                 <FontAwesomeIcon icon={faHeart} />
                             </div>
                         </div>
-                        <p className={cx('desc')}>{description}</p>
+                        <p className={cx('desc')}>
+                            {description.length >= 80
+                                ? description.slice(0, 80) + '...'
+                                : description}
+                        </p>
                         <div className={cx('product__details')}>
                             <div className={cx('location')} onClick={handleAddCartItem}>
                                 <FontAwesomeIcon icon={faCartShopping} />
@@ -80,7 +84,11 @@ const ProdCard = ({
                             <div className={cx('price')}>
                                 <FontAwesomeIcon icon={faMoneyCheck} />
                                 <p>
-                                    {price} đ{/* <span>/ package</span> */}
+                                    {new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND',
+                                    }).format(price)}
+                                    {/* <span>/ package</span> */}
                                 </p>
                             </div>
                         </div>
