@@ -8,10 +8,7 @@ import com.poly.jztr.ecommerce.dto.OrderDto;
 import com.poly.jztr.ecommerce.expection.CommonException;
 import com.poly.jztr.ecommerce.expection.QuantityIsTooLagerException;
 import com.poly.jztr.ecommerce.model.Order;
-<<<<<<< HEAD
 import com.poly.jztr.ecommerce.model.OrderItem;
-=======
->>>>>>> 33a1b73a441befd253e15fae60fc514eae4220b3
 import com.poly.jztr.ecommerce.model.Promotion;
 import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.service.OrderService;
@@ -40,12 +37,8 @@ public class OrdersController {
     UserService userService;
 
     @Autowired
-<<<<<<< HEAD
     PromotionService promoService;
 
-=======
-    PromotionService promotionService;
->>>>>>> 33a1b73a441befd253e15fae60fc514eae4220b3
     @GetMapping
     public ResponseEntity<ResponseObject> index(@RequestHeader(value = "Authorization") String jwt,
                                                 @RequestParam(defaultValue = "1") Integer page,
