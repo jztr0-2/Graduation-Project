@@ -78,12 +78,7 @@ public class PromotionController {
     public ResponseEntity<ResponseObject> post(@RequestBody @Validated PromotionDto promotionDto) throws IllegalAccessException, InvocationTargetException{
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
-        if (Instant.now().isAfter(promotion.getEndDate())) {
-            promotion.setStatus(0);
-        } else {
-            promotion.setStatus(1);
-        }
-//        promotion.setType(1);
+        promotion.setStatus(promotionDto.getStatus());
         return ResponseEntity.status(HttpStatus.OK).body(
         new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Crated promotion successfully", service.save(promotion)));
     
@@ -98,11 +93,12 @@ public class PromotionController {
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
         promotion.setId(id);
-        if (Instant.now().isAfter(promotion.getEndDate())) {
-            promotion.setStatus(0);
-        } else {
-            promotion.setStatus(1);
-        }
+        promotion.setStatus(promotionDto.getStatus());
+        promotion.setAmount(promotionDto.getAmount());
+        promotion.setEndDate(promotionDto.getEndDate());
+        promotion.setStartDate(promotionDto.getStartDate());
+        promotion.setMaxAmount(promotionDto.getMaxAmount());
+        promotion.setPercent(promotionDto.getPercent());
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Promotion Success", service.save(promotion)));
     }
@@ -113,8 +109,9 @@ public class PromotionController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Promotion", null));
         }
-        service.deleteById(id);
+        Promotion promotion = service.findById(id).get();
+        promotion.setDeletedAt(Instant.now());
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Delete Promotion Success", null));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Delete Promotion Success", service.save(promotion)));
     }
 }

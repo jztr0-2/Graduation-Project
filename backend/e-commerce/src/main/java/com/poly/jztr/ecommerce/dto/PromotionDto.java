@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.Instant;
 
 
@@ -19,15 +22,22 @@ public class PromotionDto {
     private Long id;
 
     @NotNull
+    @Min(message = "Status is 1 or 2", value = 1)
+    @Max(message = "Status is 1 or 2", value = 2)
+    @Pattern(message = "Promotion code is 6 character only", regexp = "^[a-zA-Z0-9]{6,}$")
     private String code;
 
     @NotNull
+    @Min(message = "Min percent is 1", value = 1)
+    @Max(message = "Max percent is 100", value = 100)
     private Double percent;
 
     @NotNull
+    @Min(message = "Min amount is 1", value = 1)
     private Double amount;
 
     @NotNull
+    @Min(message = "Min max amount is 1", value = 1)
     private Double maxAmount;
 
     @NotNull
@@ -36,8 +46,7 @@ public class PromotionDto {
     @NotNull
     private Instant startDate;
 
-    private Boolean status;
-    private Long type;
+    private Integer status;
 
     public void setStartDate(String date){
         this.startDate = DateHelper.toDate(date, "dd-MM-yyyy");
