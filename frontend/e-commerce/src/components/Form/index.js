@@ -4,6 +4,8 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import styles from './Form.module.scss';
 import { LoginApi } from '~/api/EcommerceApi';
+import { UserApi } from '~/api/EcommerceApi';
+
 
 const cx = classNames.bind(styles);
 
@@ -37,7 +39,16 @@ function FormCustom({ showForm, setShowForm }) {
             .then((res) => {
                 console.log(res.data);
                 localStorage.setItem('token', 'Bearer ' + res.data);
-
+                UserApi.userInfo().then((resp)=>{
+                    console.log(resp.data)
+                    localStorage.setItem("userId",resp.data.id);
+                    localStorage.setItem("userEmail",resp.data.email);
+                    localStorage.setItem("userPhone",resp.data.phone);
+                    localStorage.setItem("userName",resp.data.firstName + resp.data.lastName);
+                    localStorage.setItem("userImage",resp.data.image);
+                }).catch((err)=>{
+                    console.log(err)
+                });
                 // setTimeout(() => window.location.reload(), 3000);
             })
             .catch((err) => {

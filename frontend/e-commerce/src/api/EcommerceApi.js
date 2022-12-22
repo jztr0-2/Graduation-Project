@@ -40,3 +40,10 @@ export const LoginApi = {
         return axiosClient.post(url, data);
     },
 };
+
+export const UserApi = {
+    userInfo: (data = {}) => {
+        const url = `user/users/`;
+        return axiosClient.get(url, data);
+    },
+};

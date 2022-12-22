@@ -5,6 +5,7 @@ const axiosClient = axios.create({
     baseURL: `${process.env.REACT_APP_PUBLIC_API}/api/v1/`,
     headers: {
         'content-type': 'application/json',
+        'Authorization': localStorage.getItem("token"),
     },
     // withCredentials: false,
     // paramsSerializer: params => queryString.stringify(params),
