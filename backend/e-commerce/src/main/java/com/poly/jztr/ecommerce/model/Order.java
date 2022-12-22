@@ -21,7 +21,7 @@ public class Order {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne()
     @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "user_id")
     private User user;

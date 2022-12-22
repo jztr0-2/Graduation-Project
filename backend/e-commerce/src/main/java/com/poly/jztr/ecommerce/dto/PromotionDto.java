@@ -22,8 +22,8 @@ public class PromotionDto {
     private Long id;
 
     @NotNull
-    @Min(message = "Status is 1 or 2", value = 1)
-    @Max(message = "Status is 1 or 2", value = 2)
+    @Min(message = "Status is 1 or 2", value = 0)
+    @Max(message = "Status is 1 or 2", value = 3)
     @Pattern(message = "Promotion code is 6 character only", regexp = "^[a-zA-Z0-9]{6,}$")
     private String code;
 

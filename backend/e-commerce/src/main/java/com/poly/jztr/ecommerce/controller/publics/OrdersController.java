@@ -27,6 +27,7 @@ public class OrdersController {
                     Constant.RESPONSE_STATUS_SUCCESS, "Create order successfully", service.save(order)
             ));
         } catch (Exception e) {
+            e.printStackTrace();
             throw new QuantityIsTooLagerException();
         }
     }
