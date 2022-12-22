@@ -6,10 +6,10 @@ import { faBars, faCartShopping, faTimes } from '@fortawesome/free-solid-svg-ico
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import FormCustom from '~/components/Form';
-import * as request from '~/utils/http';
 import { CategoryApi } from '~/api/EcommerceApi';
 import { Link } from 'react-router-dom';
 import logo from '../../../../assets/images/logo.png';
+import { UserApi } from '~/api/EcommerceApi';
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +18,7 @@ function Header() {
     const { carts, cartItem } = state;
 
     const [statusBars, setStatusBars] = useState({ clicked: false });
+    const [username, setUsername] = useState();
     const handleStatusBars = () => {
         setStatusBars((status) => ({ clicked: !status.clicked }));
     };
@@ -34,10 +35,27 @@ function Header() {
                 console.log('error', err);
             },
         );
+
+        if(isLogin()){
+            setUsername(localStorage.getItem("userName"))
+        }else{
+            setUsername("Sign In")
+        }
     }, []);
     /* handle show form */
     const [showForm, setShowForm] = useState(false);
 
+    function isLogin(){
+        if(localStorage.getItem("token")!=null){
+            return true;
+        }
+        return false;
+    }
+
+    function logout(){
+        localStorage.clear();
+        window.location.reload()
+    }
     return (
         <div className={cx('wrapper')}>
             <div className={cx('navbar')}>
@@ -98,11 +116,11 @@ function Header() {
                 <ul className={cx('profile')}>
                     <li
                         className={cx('profile-item', 'profile-button')}
-                        onClick={() => {
-                            setShowForm(!showForm);
+                        onClick={() => {if(!isLogin()) {setShowForm(!showForm)}
+                        else {logout()};
                         }}
                     >
-                        Sign in
+                        {username}
                     </li>
                     <li className={cx('profile-item', 'counter-item')}>
                         <Link to="/">
