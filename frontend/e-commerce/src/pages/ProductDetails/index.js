@@ -68,7 +68,7 @@ function ProductDetails() {
         dispatch(
             actions.addCartItem({
                 id: product?.id,
-                idVariant: productVariant?.id,
+                productVariantId: productVariant?.id,
                 name: product?.name,
                 nameVariant: productVariant?.displayName,
                 quantity: Math.min(quantityBuy, productVariant.quantity),

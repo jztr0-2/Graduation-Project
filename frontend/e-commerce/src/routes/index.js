@@ -7,15 +7,17 @@ import CategoryAll from '~/pages/CagtegoryAll';
 import About from '~/pages/About';
 import Contact from '~/pages/Contact';
 import ProductDetails from '~/pages/ProductDetails';
+import CartDetails from '~/pages/CartDetails';
 
 // Not requires login
 const publicRoutes = [
     { path: '/', component: Home },
     { path: '/categories/views', component: CategoryAll },
     { path: '/category/:categoryId', component: CategoryDetails },
+    { path: '/product/details/:productId', component: ProductDetails },
     { path: '/about', component: About },
     { path: '/contact', component: Contact },
-    { path: '/product/details/:productId', component: ProductDetails },
+    { path: '/cart', component: CartDetails },
     // { path: '/product/:productId' },
 ];
 

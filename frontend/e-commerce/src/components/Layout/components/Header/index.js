@@ -105,7 +105,7 @@ function Header() {
                         Sign in
                     </li>
                     <li className={cx('profile-item', 'counter-item')}>
-                        <Link to="/">
+                        <Link to="/cart">
                             <FontAwesomeIcon icon={faCartShopping} />
                         </Link>
                         {carts.length > 0 ? <span>{carts.length}</span> : null}

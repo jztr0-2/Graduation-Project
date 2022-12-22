@@ -33,15 +33,17 @@ const ProdCard = ({
         if (item) {
             let product = item;
             let productVariant = product?.productVariants[indexVariantSelect];
+            let datetime = new Date().toLocaleString();
+
             dispatch(
                 actions.addCartItem({
                     id: product?.id,
-                    idVariant: productVariant?.id,
+                    productVariantId: productVariant?.id,
                     name: product?.name,
                     nameVariant: productVariant?.displayName,
                     quantity: amountProductAddCart,
                     price: productVariant?.unitPrice,
-                    createdAt: productVariant?.createdAt,
+                    orderDate: datetime,
                     categoryName: product?.category?.name,
                 }),
             );
