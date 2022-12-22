@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import classNames from 'classnames/bind';
 import styles from './CartDetails.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,9 +7,11 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useStore, actions } from '~/store';
 import DataEmpty from '~/components/DataEmpty';
 import { AddressApi, OrderApi } from '~/api/EcommerceApi';
+import { useState } from 'react';
 const cx = classNames.bind(styles);
 
 function CartDetails() {
+    const [isOrder, setIsOrder] = useState(false);
     const [state, dispatch] = useStore();
     const { carts, cartItem } = state;
     const infoRef = useRef();
@@ -56,6 +59,9 @@ function CartDetails() {
                                 (res) => {
                                     if (res.data) {
                                         console.log('Order', res.data);
+                                        // Remove all items if order success
+                                        dispatch(actions.removeAllCartItems());
+                                        setIsOrder(true);
                                     }
                                 },
                                 (error) => {
@@ -158,8 +164,16 @@ function CartDetails() {
                     </div>
                 </div>
             ) : (
-                <DataEmpty message={'No products in your cart'} />
+                <>
+                    <DataEmpty message={'No products in your cart'} messageToast={'order'} />
+                    {isOrder
+                        ? toast.success(
+                              'Order products successfully, please check history your orders',
+                          )
+                        : ''}
+                </>
             )}
+            <ToastContainer />
         </div>
     );
 }

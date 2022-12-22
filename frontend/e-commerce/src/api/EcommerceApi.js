@@ -44,6 +44,10 @@ export const OrderApi = {
         const url = `/public/orders`;
         return axiosClient.post(url, params);
     },
+    findOrder: (params = {}) => {
+        const url = `/public/orders`;
+        return axiosClient.get(url, params);
+    },
 };
 
 export const LoginApi = {

@@ -91,6 +91,9 @@ function Header() {
                     <li className={cx('nav-item')}>
                         <Link to="/contact">Contact</Link>
                     </li>
+                    <li className={cx('nav-item')}>
+                        <Link to="/history/orders">Order</Link>
+                    </li>
                 </ul>
                 <div className={cx('mobile')} onClick={handleStatusBars}>
                     <FontAwesomeIcon icon={statusBars.clicked ? faTimes : faBars} />
