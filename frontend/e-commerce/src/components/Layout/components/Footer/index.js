@@ -8,6 +8,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { faAt, faHomeLg, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import logo from '../../../../assets/images/logo.png';
 
 import classNames from 'classnames/bind';
 import styles from './Footer.module.scss';
@@ -19,7 +20,7 @@ function Footer() {
         <footer className={cx('wrapper')}>
             <div className={cx('footer-information')}>
                 <a className={cx('logo')} href="/">
-                    Inlr.
+                    <img src={logo} />
                 </a>
                 <div className={cx('container')}>
                     <div className={cx('footer-list')}>
@@ -136,7 +137,7 @@ function Footer() {
                         </div>
                     </address>
 
-                    <div className={cx('footer-list')}>
+                    <div className={cx('footer-list', 'news-letter')}>
                         <p className={cx('title')}>News Letter</p>
                         <form className={cx('form-news-letter')}>
                             <div className={cx('form-group')}>
