@@ -2,8 +2,10 @@ package com.poly.jztr.ecommerce.controller.admin;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.CustomPageable;
+import com.poly.jztr.ecommerce.common.DateHelper;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.PromotionDto;
+import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
 import com.poly.jztr.ecommerce.model.Promotion;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.service.PromotionService;
@@ -57,7 +59,7 @@ public class PromotionController {
         PageableSerializer data = null;
         Pageable pageable = CustomPageable.getPage(page, perPage);
         if(status == -1) data = new PageableSerializer(service.findByCodeLContains(code, pageable));
-        else data = new PageableSerializer(service.findByStatus(status, pageable));
+        else data = new PageableSerializer(service.findByCodeContainsAndStatus(code, status,pageable));
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data status successfully",
                         data));
@@ -75,15 +77,18 @@ public class PromotionController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseObject> post(@RequestBody @Validated PromotionDto promotionDto) throws IllegalAccessException, InvocationTargetException{
+    public ResponseEntity<ResponseObject> post(@RequestBody @Validated PromotionDto promotionDto) throws IllegalAccessException, InvocationTargetException, DuplicateEntryException {
         Promotion promotion = new Promotion();
-        BeanUtils.copyProperties(promotionDto, promotion);
-        if (Instant.now().isAfter(promotion.getEndDate())) {
-            promotion.setStatus(0);
-        } else {
-            promotion.setStatus(1);
+        if(service.findByCode(promotionDto.getCode()).isPresent()){
+            throw new DuplicateEntryException("CODE", "Code is exits");
         }
-//        promotion.setType(1);
+        BeanUtils.copyProperties(promotionDto, promotion);
+        Instant startDate = DateHelper.toDate(promotionDto.getStartDate(), "dd-MM-yyyy");
+        Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "dd-MM-yyyy");
+        promotion.setStartDate(startDate);
+        promotion.setEndDate(endDate);
+        promotion.setStatus(promotionDto.getStatus());
+        promotion = service.save(promotion);
         return ResponseEntity.status(HttpStatus.OK).body(
         new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Crated promotion successfully", service.save(promotion)));
     
@@ -98,11 +103,14 @@ public class PromotionController {
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
         promotion.setId(id);
-        if (Instant.now().isAfter(promotion.getEndDate())) {
-            promotion.setStatus(0);
-        } else {
-            promotion.setStatus(1);
-        }
+        promotion.setStatus(promotionDto.getStatus());
+        promotion.setAmount(promotionDto.getAmount());
+        Instant startDate = DateHelper.toDate(promotionDto.getStartDate(), "dd-MM-yyyy");
+        Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "dd-MM-yyyy");
+        promotion.setEndDate(endDate);
+        promotion.setStartDate(startDate);
+        promotion.setMaxAmount(promotionDto.getMaxAmount());
+        promotion.setPercent(promotionDto.getPercent());
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Promotion Success", service.save(promotion)));
     }
@@ -113,8 +121,9 @@ public class PromotionController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Promotion", null));
         }
-        service.deleteById(id);
+        Promotion promotion = service.findById(id).get();
+        promotion.setDeletedAt(Instant.now());
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Delete Promotion Success", null));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Delete Promotion Success", service.save(promotion)));
     }
 }

@@ -11,4 +11,5 @@ public class ProductVariantDto {
     private String description;
     private Long productId;
     private Long imageId;
+    private Long id;
 }

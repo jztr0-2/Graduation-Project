@@ -38,4 +38,5 @@ public interface PromotionService {
     Page<Promotion> findByCodeContainsAndStatus(String code, Integer status, Pageable pageable);
 
     Optional<Promotion> findByCode(String code);
+
 }

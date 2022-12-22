@@ -28,6 +28,9 @@ public class ProductVariant {
         this.setUnitPrice(dto.getUnitPrice());
         this.setQuantity(dto.getQuantity());
         this.setDescription(dto.getDescription());
+        if(dto.getId() != null){
+            this.id = dto.getId();
+        }
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

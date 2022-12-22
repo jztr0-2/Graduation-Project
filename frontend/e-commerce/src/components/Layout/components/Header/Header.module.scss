@@ -9,10 +9,16 @@
         background-color: #1d2631;
         // box-shadow: 0 3px 15px rgba(144, 144, 144, 0.2);
         z-index: 2;
+        .logo {
+            display: block;
+            width: 80px;
+            height: 80px;
+        }
         .navbar-nav {
             display: flex;
             align-items: center;
             justify-content: center;
+
             .nav-item {
                 padding: 0 30px;
                 position: relative;
@@ -126,6 +132,20 @@
             &:hover {
                 background-color: var(--main-color);
             }
+        }
+    }
+    .counter-item {
+        position: relative;
+        span {
+            position: absolute;
+            top: -7px;
+            left: 8px;
+            width: 20px;
+            line-height: 20px;
+            border-radius: var(--radius-full);
+            text-align: center;
+            background: var(--main-color);
+            font-size: 1rem;
         }
     }
 }

@@ -80,20 +80,39 @@ public class UsersController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> login(@RequestBody LoginDto login) {
-        Optional<User> user = service.findByEmail(login.getEmail());
-        if (user.isPresent()) {
-            if (passwordEncoder.matches(login.getPassword(), user.get().getPassword()))
-                return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
-                        "login  successfully", jwtProvider.generateTokenLogin(login.getEmail())));
+        String phone = login.getEmail().trim();
+        Optional<User> user = null;
+        if(phone.startsWith("0") || phone.startsWith("+84") || phone.startsWith("84")){
+            if(phone.startsWith("0")) phone = "84" + phone.substring(1);
+            if(phone.startsWith("+84")) phone = phone.replace("+","");
+            user = service.findByPhone(phone);
+            if (user.isPresent()) {
+                if (passwordEncoder.matches(login.getPassword(), user.get().getPassword()))
+                    return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                            "login  successfully", jwtProvider.generateTokenLogin(phone)));
 
+                return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                        new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "Password is incorrect", "")
+                );
+            }
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "password is incorrect", "")
+                    new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "Phone not found", "")
+            );
+        }else{
+            user = service.findByEmail(login.getEmail());
+            if (user.isPresent()) {
+                if (passwordEncoder.matches(login.getPassword(), user.get().getPassword()))
+                    return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                            "login  successfully", jwtProvider.generateTokenLogin(login.getEmail())));
+
+                return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                        new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "Password is incorrect", "")
+                );
+            }
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "Email not found", "")
             );
         }
-
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "email not found", "")
-        );
     }
 
     @PostMapping("admin-login")
@@ -307,7 +326,7 @@ public class UsersController {
                 user.setLastName(fullname.substring(fullname.lastIndexOf(" ")).trim());
                 user.setEmail(row.getCell(1).toString().trim());
                 user.setPhone(row.getCell(2).toString().trim());
-                user.setPassword(passwordEncoder.encode("123456A@a"));
+                user.setPassword(passwordEncoder.encode("123456"));
                 user.setStatus(Constant.USER_STATUS_ACTIVATED);
                 service.save(user);
         }

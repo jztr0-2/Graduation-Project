@@ -8,9 +8,11 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { faAt, faHomeLg, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import logo from '../../../../assets/images/logo.png';
 
 import classNames from 'classnames/bind';
 import styles from './Footer.module.scss';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -18,9 +20,9 @@ function Footer() {
     return (
         <footer className={cx('wrapper')}>
             <div className={cx('footer-information')}>
-                <a className={cx('logo')} href="/">
-                    Inlr.
-                </a>
+                <Link to="/" className={cx('logo')}>
+                    <img src={logo} />
+                </Link>
                 <div className={cx('container')}>
                     <div className={cx('footer-list')}>
                         <p className={cx('title')}>About Us</p>

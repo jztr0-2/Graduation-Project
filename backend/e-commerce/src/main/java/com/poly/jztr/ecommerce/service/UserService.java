@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserService {
@@ -24,4 +25,8 @@ public interface UserService {
     Page<User> findAll(Pageable pageable);
 
     Page<User> findByProperties(Pageable pageable, String name, String email, String phone);
- }
+
+    Optional<User> findByPhone(String phone);
+
+    User findByEmailOrPhone(String usernameFromToken);
+}

@@ -1,4 +1,5 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useStore, actions } from '~/store';
+import { useEffect, useState } from 'react';
 import queryString from 'query-string';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCartShopping, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -8,10 +9,14 @@ import FormCustom from '~/components/Form';
 import * as request from '~/utils/http';
 import { CategoryApi } from '~/api/EcommerceApi';
 import { Link } from 'react-router-dom';
+import logo from '../../../../assets/images/logo.png';
 
 const cx = classNames.bind(styles);
 
 function Header() {
+    const [state, dispatch] = useStore();
+    const { carts, cartItem } = state;
+
     const [statusBars, setStatusBars] = useState({ clicked: false });
     const handleStatusBars = () => {
         setStatusBars((status) => ({ clicked: !status.clicked }));
@@ -32,11 +37,12 @@ function Header() {
     }, []);
     /* handle show form */
     const [showForm, setShowForm] = useState(false);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('navbar')}>
                 <Link to="/" className={cx('logo')}>
-                    Logo
+                    <img src={logo} />
                 </Link>
                 <ul className={cx('navbar-nav', statusBars.clicked ? 'active-nav' : null)}>
                     <li className={cx('nav-item')}>
@@ -98,10 +104,11 @@ function Header() {
                     >
                         Sign in
                     </li>
-                    <li className={cx('profile-item')}>
-                        <a href="/">
+                    <li className={cx('profile-item', 'counter-item')}>
+                        <Link to="/cart">
                             <FontAwesomeIcon icon={faCartShopping} />
-                        </a>
+                        </Link>
+                        {carts.length > 0 ? <span>{carts.length}</span> : null}
                     </li>
                 </ul>
             </div>

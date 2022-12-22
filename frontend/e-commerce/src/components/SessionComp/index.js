@@ -27,11 +27,13 @@ function SessionComp({
             for (const item of items) {
                 cards.push(
                     <ProdCard
+                        id={item?.id}
                         key={item?.id}
                         name={item?.name}
                         description={item?.description}
                         price={item?.productVariants[0]?.unitPrice}
                         urlImg={imgOnlyProduct ? item?.image : item?.imageList[0]}
+                        item={item}
                     />,
                 );
             }
@@ -45,6 +47,7 @@ function SessionComp({
                 cards.push(
                     <CategoryCard
                         key={item.id}
+                        id={item.id}
                         title={item.name}
                         description={item.description ? item.description : 'Default Description'}
                         postDay={item.createdAt}

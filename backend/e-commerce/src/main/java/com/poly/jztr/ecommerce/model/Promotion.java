@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -25,7 +26,7 @@ public class Promotion {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "promo_code")
+    @Column(name = "promo_code", unique = true)
     private String code;
 
     @Column(name = "reduction_percent")

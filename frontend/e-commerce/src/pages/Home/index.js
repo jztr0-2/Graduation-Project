@@ -1,3 +1,5 @@
+// Global state
+import { useStore, actions } from '~/store';
 // Hooks
 import { useState, useEffect } from 'react';
 // styles
@@ -23,6 +25,22 @@ import { CategoryApi, ProductApi } from '~/api/EcommerceApi';
 const cx = classNames.bind(styles);
 
 function Home() {
+    // Global state
+    const [state, dispatch] = useStore();
+    const { carts, cartItem } = state;
+    console.log('carts', carts);
+    const handleAddItemToCart = () => {
+        dispatch(
+            actions.addCartItem({
+                id: 1,
+                name: Number(10),
+                quantity: 10,
+                price: 120,
+            }),
+        );
+    };
+
+    // End global stae
     const [categories, setCategories] = useState([]);
     const [saleProducts, setSaleProducts] = useState([]);
     const [saleCategory, setSaleCategory] = useState([]);
@@ -184,14 +202,14 @@ function Home() {
                 <>
                     {!loading && saleProducts.length > 0 ? (
                         <SessionComp
-                            title={saleCategory[0].category.name}
+                            title={saleCategory[0]?.category.name}
                             subtitle="Most popular category"
                             items={saleCategory}
                             type={'product'}
                             imgOnlyProduct
                             showArrow
-                            sizePercentCard={29}
-                            linkView={`/category/${saleCategory[0].category.id}?page=1&limit=6`}
+                            sizePercentCard={30}
+                            linkView={`/category/${saleCategory[0]?.category.id}?page=1&limit=6`}
                         />
                     ) : (
                         <></>
@@ -212,7 +230,7 @@ function Home() {
                             type={'product'}
                             imgOnlyProduct
                             showArrow
-                            sizePercentCard={29}
+                            sizePercentCard={30}
                             // linkView={`/category/${saleCategory[0].category.id}?page=1&limit=6`}
                         />
                     ) : (

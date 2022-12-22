@@ -61,12 +61,14 @@ public class ProductsController {
         for (int i = 1; i < productSheet.getPhysicalNumberOfRows(); i++) {
             XSSFRow row = productSheet.getRow(i);
             String productName = row.getCell(0) + "".trim();
+            if(productName.equalsIgnoreCase("end"))break;
             if (productName != "" && productName != "null" && !productName.isEmpty() && !productName.isBlank() && productName != null) {
                 product = new Product();
                 product.setName(productName);
                 Category category = new Category(random.nextLong(1, 9));//categoryService.findByName(row.getCell(1).toString().trim()).get();
                 product.setCategory(category);
-                product.setDescription(row.getCell(2).toString().trim());
+                System.out.println("------" +i + "--------");
+                product.setDescription(row.getCell(2)+"".trim());
                 title = row.getCell(3).toString().trim();
                 product.setStatus(0);
                 product = service.save(product);
@@ -93,7 +95,9 @@ public class ProductsController {
                 saveImg(imgLink, "product_lst" + product.getId() + random.nextInt() + ".jpg", Constant.IMAGE_TYPE_PRODUCT_MULTIPLE, product.getId(),variant);
             }
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
+                Constant.RESPONSE_STATUS_SUCCESS, "import ok", ""
+        ));
     }
 
     @PostMapping

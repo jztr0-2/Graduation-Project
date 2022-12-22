@@ -2,6 +2,7 @@ package com.poly.jztr.ecommerce.serviceImpl;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.dto.OrderDto;
+import com.poly.jztr.ecommerce.expection.CommonException;
 import com.poly.jztr.ecommerce.model.*;
 import com.poly.jztr.ecommerce.repository.OrderItemRepository;
 import com.poly.jztr.ecommerce.repository.OrderRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
 import com.poly.jztr.ecommerce.service.PromotionService;
 
@@ -20,6 +22,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +44,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     ProductVariantService productVariantService;
+
+    @Autowired
+    PromotionService promotionService;
 
     @Override
     public List<Order> findByDate(Instant start, Instant end) {
@@ -106,49 +112,66 @@ public class OrderServiceImpl implements OrderService {
         Double total = 0.0;
         for (OrderItem orderItem: orderItems) {
             total = orderItem.getUnitPrice() * orderItem.getQuantity();
+            orderItemRepository.save(orderItem);
         }
 
         entity.setTotal(total);
         return repository.save(entity);
+
     }
 
     @Override
     @Transactional()
-    public <S extends Order> S save(S entity, String code) {
+    public <S extends Order> S save(S entity, String code) throws CommonException {
+        List<OrderItem> orderItems = entity.getOrderItems();
         entity = repository.save(entity);
         S finalEntity = entity;
-        List<OrderItem> orderItems = entity.getOrderItems().stream().
+        AtomicReference<Double> total = new AtomicReference<>(0.0);
+         orderItems.stream().
                 map(orderItem -> {
                     orderItem.setOrder(finalEntity);
                     productVariantService.minusQuantity(orderItem.getProductVariant().getId(),orderItem.getQuantity());
+                    total.set(orderItem.getUnitPrice() * orderItem.getQuantity());
+                    orderItemRepository.save(orderItem);
                     return orderItem;
                 }).collect(Collectors.toList());
-
-        Double total = 0.0;
-        for (OrderItem orderItem: orderItems) {
-            total = orderItem.getUnitPrice() * orderItem.getQuantity();
-        }
-
->>>>>>> 33a1b73a441befd253e15fae60fc514eae4220b3
-        Optional<Promotion> optPro = promoService.findByCode(code);
-        if(optPro.isPresent()) {
-            if(optPro.get().getStatus() == 1) {
-                if(optPro.get().getAmount() >= total) {
+        if(code != null || !((code+"").equalsIgnoreCase("null"))){
+            Optional<Promotion> optPro = promoService.findByCode(code);
+            boolean check = checkPromo(optPro);
+            if(check) {
+                if(optPro.get().getAmount() >= total.get()) {
                     entity.setTotal(0.0);
+                    entity.setPromotion(optPro.get());
                 } else {
-                    entity.setTotal(total - optPro.get().getAmount());
+                    entity.setTotal(total.get() - optPro.get().getAmount());
+                    entity.setPromotion(optPro.get());
                 }
             } else {
-                entity.setTotal(total);
+                throw new TransactionSystemException("promotionInvalid");
             }
-        } else {
-            entity.setTotal(total);
         }
         repository.save(entity);
-        orderItemRepository.saveAll(orderItems);
         return null;
+
     }
 
+    private boolean checkPromo(Optional<Promotion> optPro) {
+        if(optPro.isEmpty()) return false;
+
+        Promotion promotion = optPro.get();
+        if(promotion.getStatus() == Constant.PROMOTION_TYPE_SINGLE_USER){
+            if(promotion.getEndDate().isBefore(Instant.now())){
+                return false;
+            }
+            if(promotion.getDeletedAt() != null) return false;
+            else{
+                promotion.setDeletedAt(Instant.now());
+                promoService.save(promotion);
+                return true;
+            }
+        }
+        return true;
+    }
 
 
     @Override
@@ -222,5 +245,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<Order> findByPromotion(String code) {
         return repository.findByPromotionCodeContains(code);
+    }
+
+    @Override
+    public Order updateStatus(Order order) {
+        return repository.save(order);
+    }
+
+    @Override
+    public List<Order> findByPhone(String phone) {
+        return repository.findByAddressPhone(phone);
     }
 }

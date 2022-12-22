@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -45,8 +46,4 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Page<Order> findByUserFirstNameContainsOrUserLastNameContains(String firstName, String lastName, Pageable pageable);
 
     Optional<Order> findByPromotionCodeContains(String code);
-<<<<<<< HEAD
-
-=======
->>>>>>> 33a1b73a441befd253e15fae60fc514eae4220b3
 }
