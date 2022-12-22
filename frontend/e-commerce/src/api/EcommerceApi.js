@@ -33,6 +33,18 @@ export const ProductApi = {
         return axiosClient.get(url, {});
     },
 };
+export const AddressApi = {
+    createAddress: (params = {}) => {
+        const url = `/public/address`;
+        return axiosClient.post(url, params);
+    },
+};
+export const OrderApi = {
+    createOrder: (params = {}) => {
+        const url = `/public/orders`;
+        return axiosClient.post(url, params);
+    },
+};
 
 export const LoginApi = {
     userLogin: (data = {}) => {

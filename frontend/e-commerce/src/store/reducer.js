@@ -18,11 +18,11 @@ function reducer(state, action) {
             // Remove carts if duplicate id
             let cartsFilters = Array.from(state.carts).filter((cart) => {
                 // Keep item card to add quantity
-                if (cart.idVariant === payload.idVariant) {
+                if (cart.productVariantId === payload.productVariantId) {
                     keepCard = cart;
                     isDuplicateId = true;
                 }
-                return cart.idVariant !== payload.idVariant;
+                return cart.productVariantId !== payload.productVariantId;
             });
             if (isDuplicateId) {
                 let quantityOld = keepCard.quantity;
@@ -42,7 +42,7 @@ function reducer(state, action) {
                 ...state,
                 carts: Array.from(state.carts).filter((cart) => {
                     let isExist = false;
-                    if (cart.id === payload.id) {
+                    if (cart.productVariantId === action.payload.productVariantId) {
                         isExist = true;
                     }
                     return !isExist;

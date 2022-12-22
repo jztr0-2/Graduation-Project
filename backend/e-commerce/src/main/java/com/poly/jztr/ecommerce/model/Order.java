@@ -23,7 +23,7 @@ public class Order {
 
     @ManyToOne(optional = false)
     @Fetch(FetchMode.JOIN)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @JsonIgnore
