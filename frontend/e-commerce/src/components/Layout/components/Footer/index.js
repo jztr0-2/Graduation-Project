@@ -12,6 +12,7 @@ import logo from '../../../../assets/images/logo.png';
 
 import classNames from 'classnames/bind';
 import styles from './Footer.module.scss';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -19,9 +20,9 @@ function Footer() {
     return (
         <footer className={cx('wrapper')}>
             <div className={cx('footer-information')}>
-                <a className={cx('logo')} href="/">
+                <Link to="/" className={cx('logo')}>
                     <img src={logo} />
-                </a>
+                </Link>
                 <div className={cx('container')}>
                     <div className={cx('footer-list')}>
                         <p className={cx('title')}>About Us</p>

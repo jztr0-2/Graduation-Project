@@ -9,6 +9,7 @@ import FormCustom from '~/components/Form';
 import * as request from '~/utils/http';
 import { CategoryApi } from '~/api/EcommerceApi';
 import { Link } from 'react-router-dom';
+import logo from '../../../../assets/images/logo.png';
 
 const cx = classNames.bind(styles);
 
@@ -41,7 +42,7 @@ function Header() {
         <div className={cx('wrapper')}>
             <div className={cx('navbar')}>
                 <Link to="/" className={cx('logo')}>
-                    Logo
+                    <img src={logo} />
                 </Link>
                 <ul className={cx('navbar-nav', statusBars.clicked ? 'active-nav' : null)}>
                     <li className={cx('nav-item')}>
