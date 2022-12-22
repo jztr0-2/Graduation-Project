@@ -56,8 +56,12 @@ public class PromotionController {
                                                      @RequestParam(defaultValue = "10") Integer perPage){
         PageableSerializer data = null;
         Pageable pageable = CustomPageable.getPage(page, perPage);
-        if(status == -1) data = new PageableSerializer(service.findByCodeLContains(code, pageable));
-        else data = new PageableSerializer(service.findByStatus(status, pageable));
+        if(status == -1) {
+            data = new PageableSerializer(service.findByCodeLContains(code, pageable));
+        } else {
+            data = new PageableSerializer(service.findByStatus(status, pageable));
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data status successfully",
                         data));
