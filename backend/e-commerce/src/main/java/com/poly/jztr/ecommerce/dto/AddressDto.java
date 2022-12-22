@@ -22,4 +22,11 @@ public class AddressDto implements Serializable {
     private String appartmentNo;
     private String phone;
 
+    public String getPhone(){
+        if(phone.trim().startsWith("0")) {
+            phone = "84" + phone.trim().substring(1);
+        }
+        return phone;
+    }
+
 }

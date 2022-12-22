@@ -52,4 +52,6 @@ public interface OrderService {
     Optional<Order> findByPromotion(String code);
 
     Order updateStatus(Order order);
+
+    List<Order> findByPhone(String phone);
 }

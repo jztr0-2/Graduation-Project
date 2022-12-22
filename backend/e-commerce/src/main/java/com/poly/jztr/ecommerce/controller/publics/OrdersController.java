@@ -9,10 +9,9 @@ import com.poly.jztr.ecommerce.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController("publics/order")
 @RequestMapping("api/v1/public/orders")
@@ -30,5 +29,16 @@ public class OrdersController {
         } catch (Exception e) {
             throw new QuantityIsTooLagerException();
         }
+    }
+
+    @GetMapping("")
+    public ResponseEntity<ResponseObject> findByPhone(@RequestParam(defaultValue = "") String phone){
+        if(phone.trim().startsWith("0")) {
+            phone = "84" + phone.trim().substring(1);
+        }
+        List<Order> orders = service.findByPhone(phone);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Find order by phone",
+                        orders));
     }
 }

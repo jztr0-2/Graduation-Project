@@ -214,4 +214,9 @@ public class OrderServiceImpl implements OrderService {
     public Order updateStatus(Order order) {
         return repository.save(order);
     }
+
+    @Override
+    public List<Order> findByPhone(String phone) {
+        return repository.findByAddressPhone(phone);
+    }
 }
