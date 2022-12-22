@@ -5,17 +5,16 @@ const axiosClient = axios.create({
     baseURL: `${process.env.REACT_APP_PUBLIC_API}/api/v1/`,
     headers: {
         'content-type': 'application/json',
-        'Authorization': localStorage.getItem("token"),
     },
     // withCredentials: false,
     // paramsSerializer: params => queryString.stringify(params),
 });
 
 axiosClient.interceptors.request.use(async (config) => {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('token');
     const refeshtoken = localStorage.getItem('auth_token_refesh');
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = token;
         config.headers.refeshAuthorization = `Bearer ${refeshtoken}`;
     }
     return config;

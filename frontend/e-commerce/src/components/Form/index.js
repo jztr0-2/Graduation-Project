@@ -44,7 +44,7 @@ function FormCustom({ showForm, setShowForm }) {
                     localStorage.setItem("userId",resp.data.id);
                     localStorage.setItem("userEmail",resp.data.email);
                     localStorage.setItem("userPhone",resp.data.phone);
-                    localStorage.setItem("userName",resp.data.firstName + resp.data.lastName);
+                    localStorage.setItem("userName",resp.data.firstName +" " + resp.data.lastName);
                     localStorage.setItem("userImage",resp.data.image);
                     window.location.reload()
                 }).catch((err)=>{
