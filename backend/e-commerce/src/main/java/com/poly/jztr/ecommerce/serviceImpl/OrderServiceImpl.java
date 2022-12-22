@@ -80,6 +80,7 @@ public class OrderServiceImpl implements OrderService {
         Double total = 0.0;
         for (OrderItem orderItem: orderItems) {
             total = orderItem.getUnitPrice() * orderItem.getQuantity();
+            orderItemRepository.save(orderItem);
         }
 
         entity.setTotal(total);
