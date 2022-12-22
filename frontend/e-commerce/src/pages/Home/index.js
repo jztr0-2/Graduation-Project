@@ -208,7 +208,7 @@ function Home() {
                             type={'product'}
                             imgOnlyProduct
                             showArrow
-                            sizePercentCard={29}
+                            sizePercentCard={30}
                             linkView={`/category/${saleCategory[0]?.category.id}?page=1&limit=6`}
                         />
                     ) : (
@@ -230,7 +230,7 @@ function Home() {
                             type={'product'}
                             imgOnlyProduct
                             showArrow
-                            sizePercentCard={29}
+                            sizePercentCard={30}
                             // linkView={`/category/${saleCategory[0].category.id}?page=1&limit=6`}
                         />
                     ) : (
