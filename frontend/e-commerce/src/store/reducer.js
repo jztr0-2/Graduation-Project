@@ -1,7 +1,14 @@
-import { SET_CART_ITEM, ADD_CART_ITEM, REMOVE_CART_ITEM } from './constants';
+import {
+    SET_CART_ITEM,
+    ADD_CART_ITEM,
+    REMOVE_CART_ITEM,
+    REMOVE_ALL_CART_ITEMS,
+    SET_TOAST_MESSAGE,
+} from './constants';
 const initState = {
     carts: [],
     cartItem: {},
+    toastMessage: '',
 };
 
 function reducer(state, action) {
@@ -47,6 +54,16 @@ function reducer(state, action) {
                     }
                     return !isExist;
                 }),
+            };
+        case REMOVE_ALL_CART_ITEMS:
+            return {
+                ...state,
+                carts: [],
+            };
+        case SET_TOAST_MESSAGE:
+            return {
+                ...state,
+                toastMessage: action.payload,
             };
         default:
             throw new Error('Invalid');

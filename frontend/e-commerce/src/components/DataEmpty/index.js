@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDatabase } from '@fortawesome/free-solid-svg-icons';
 
-function DataEmpty({ error, isPadding, message, ...props }) {
+function DataEmpty({ error, isPadding, message, messageToast, ...props }) {
     return (
         <div className={isPadding ? isPadding : null}>
             <div className="flex flex-col items-center">

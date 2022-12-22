@@ -20,9 +20,6 @@ function Footer() {
     return (
         <footer className={cx('wrapper')}>
             <div className={cx('footer-information')}>
-                <Link to="/" className={cx('logo')}>
-                    <img src={logo} />
-                </Link>
                 <div className={cx('container')}>
                     <div className={cx('footer-list')}>
                         <p className={cx('title')}>About Us</p>

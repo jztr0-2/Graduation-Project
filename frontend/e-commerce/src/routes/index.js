@@ -8,6 +8,7 @@ import About from '~/pages/About';
 import Contact from '~/pages/Contact';
 import ProductDetails from '~/pages/ProductDetails';
 import CartDetails from '~/pages/CartDetails';
+import HistoryOrders from '~/pages/HistoryOrders';
 
 // Not requires login
 const publicRoutes = [
@@ -18,6 +19,7 @@ const publicRoutes = [
     { path: '/about', component: About },
     { path: '/contact', component: Contact },
     { path: '/cart', component: CartDetails },
+    { path: '/history/orders', component: HistoryOrders },
     // { path: '/product/:productId' },
 ];
 
