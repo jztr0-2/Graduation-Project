@@ -8,6 +8,8 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.List;
 
@@ -58,20 +60,24 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
-    private Image image;
+    private List<Image> image;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     @Fetch(FetchMode.JOIN)
     private Category category;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
-    @Where(clause = "deleted_at is null")
-    private List<ProductVariant> productVariants;
+    @Column(name = "unit_price")
+    @NotNull
+    @Min(1)
+    private Double unitPrice;
 
+    @Column(name = "quantity")
+    @NotNull
+    @Min(0)
+    private Integer quantity;
     public void setId(Long id) {
         this.id = id;
         this.updatedAt = Instant.now();
@@ -94,12 +100,8 @@ public class Product {
         this.updatedAt = Instant.now();
     }
 
-    public void setImage(Image image) {
-        this.image = image;
-        this.updatedAt = Instant.now();
-    }
 
     public String getImage(){
-        return image != null ? Constant.BASE_API_URL + "public/images/" + image.getTitle() : "";
+        return "";
     }
 }

@@ -4,13 +4,10 @@ import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.model.Category;
-import com.poly.jztr.ecommerce.model.Image;
 import com.poly.jztr.ecommerce.model.Product;
-import com.poly.jztr.ecommerce.serializer.ProductSerializer;
 import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.ImageService;
 import com.poly.jztr.ecommerce.service.ProductService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -93,12 +90,10 @@ public class CategoriesController {
                             new ArrayList<>()));
         }
 
-        CategoriesControllerService controllerService = new CategoriesControllerService();
-        List<ProductSerializer> productSerializers =  controllerService.toProductSerializer(products);
         // prepare response
         Map<String, Object> customResponse = new HashMap<>();
         customResponse.put("category", category);
-        customResponse.put("products", productSerializers);
+        customResponse.put("products", products);
         customResponse.put("totalPages", filterCategories.size());
         customResponse.put("totalItems", filterCategories.size());
 
@@ -108,47 +103,46 @@ public class CategoriesController {
                         "Get products by category id {" + category.getId() + "} successfully",
                         customResponse));
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseObject> getById(
-            @PathVariable Long id,
-            @RequestParam("page") Optional<Integer> page,
-            @RequestParam("limit") Optional<Integer> limit
-    ) {
-        Optional<Category> categoryOptional = service.findById(id);
-        // check category is empty
-        if (categoryOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,
-                            id + " is not exists",
-                            new ArrayList<>()));
-        }
-        // Define pagination
-        Pageable pageable = CustomPageable.getPage(page.orElse(1), limit.orElse(10));
-        // Get products from category id
-        Page<Product> productPage = productService.getProductsByCategoryId(id, pageable);
-        if (productPage.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,
-                            "Category not empty products",
-                            new ArrayList<>()));
-        }
-        // convert products to products serializer
-        CategoriesControllerService controllerService = new CategoriesControllerService();
-        List<ProductSerializer> products =  controllerService.toProductSerializer(productPage.getContent());
-
-        Map<String, Object> customResponse = new HashMap<>();
-        customResponse.put("products", products);
-        customResponse.put("totalPages", productPage.getTotalPages());
-        customResponse.put("totalItems", productPage.getTotalElements());
-        customResponse.put("nextPage", productPage.hasNext());
-        customResponse.put("prevPage", productPage.hasPrevious());
-
-        // prepare response
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
-                        "Get products by category id {" + id + "} successfully",
-                        customResponse));
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ResponseObject> getById(
+//            @PathVariable Long id,
+//            @RequestParam("page") Optional<Integer> page,
+//            @RequestParam("limit") Optional<Integer> limit
+//    ) {
+//        Optional<Category> categoryOptional = service.findById(id);
+//        // check category is empty
+//        if (categoryOptional.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+//                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,
+//                            id + " is not exists",
+//                            new ArrayList<>()));
+//        }
+//        // Define pagination
+//        Pageable pageable = CustomPageable.getPage(page.orElse(1), limit.orElse(10));
+//        // Get products from category id
+//        Page<Product> productPage = productService.getProductsByCategoryId(id, pageable);
+//        if (productPage.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+//                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,
+//                            "Category not empty products",
+//                            new ArrayList<>()));
+//        }
+//        // convert products to products serializer
+//        CategoriesControllerService controllerService = new CategoriesControllerService();
+//
+//        Map<String, Object> customResponse = new HashMap<>();
+//        customResponse.put("products", products);
+//        customResponse.put("totalPages", productPage.getTotalPages());
+//        customResponse.put("totalItems", productPage.getTotalElements());
+//        customResponse.put("nextPage", productPage.hasNext());
+//        customResponse.put("prevPage", productPage.hasPrevious());
+//
+//        // prepare response
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+//                        "Get products by category id {" + id + "} successfully",
+//                        customResponse));
+//    }
     @GetMapping("/{id}/top_sale")
     public ResponseEntity<ResponseObject> getTopSaleByCategory(@PathVariable String id){
         return  null;
@@ -156,21 +150,21 @@ public class CategoriesController {
 
 
 
-    class CategoriesControllerService {
-        public List<ProductSerializer> toProductSerializer(List<Product> products) {
-            List<ProductSerializer> productSerializers = new ArrayList<>();
-            for (Product product : products) {
-                List<Image> imageList = imageService.findByProductId(product.getId());
-                ProductSerializer productSerializer = new ProductSerializer();
-                if (imageList != null) {
-                    BeanUtils.copyProperties(product, productSerializer);
-                    List<String> imgList = imageList.stream().map(item -> Constant.BASE_API_URL + "public/images/" + item.getTitle()).collect(Collectors.toList());
-                    productSerializer.setImageList(imgList);
-                }
-                productSerializers.add(productSerializer);
-            }
-            return productSerializers;
-        }
-    }
+//    class CategoriesControllerService {
+//        public List<ProductSerializer> toProductSerializer(List<Product> products) {
+//            List<ProductSerializer> productSerializers = new ArrayList<>();
+//            for (Product product : products) {
+//                List<Image> imageList = imageService.findByProductId(product.getId());
+//                ProductSerializer productSerializer = new ProductSerializer();
+//                if (imageList != null) {
+//                    BeanUtils.copyProperties(product, productSerializer);
+//                    List<String> imgList = imageList.stream().map(item -> Constant.BASE_API_URL + "public/images/" + item.getTitle()).collect(Collectors.toList());
+//                    productSerializer.setImageList(imgList);
+//                }
+//                productSerializers.add(productSerializer);
+//            }
+//            return productSerializers;
+//        }
+//    }
 }
 

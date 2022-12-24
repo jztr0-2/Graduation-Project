@@ -8,7 +8,6 @@ import com.poly.jztr.ecommerce.repository.OrderItemRepository;
 import com.poly.jztr.ecommerce.repository.OrderRepository;
 import com.poly.jztr.ecommerce.service.OrderItemService;
 import com.poly.jztr.ecommerce.service.OrderService;
-import com.poly.jztr.ecommerce.service.ProductVariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,8 +37,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderItemService orderItemService;
 
-    @Autowired
-    ProductVariantService productVariantService;
 
     @Autowired
     PromotionService promotionService;
@@ -73,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItems = entity.getOrderItems().stream().
                 map(orderItem -> {
                     orderItem.setOrder(finalEntity);
-                    productVariantService.minusQuantity(orderItem.getProductVariant().getId(),orderItem.getQuantity());
+// minus quantity
                     return orderItem;
                 }).collect(Collectors.toList());
 
@@ -98,7 +95,6 @@ public class OrderServiceImpl implements OrderService {
          orderItems.stream().
                 map(orderItem -> {
                     orderItem.setOrder(finalEntity);
-                    productVariantService.minusQuantity(orderItem.getProductVariant().getId(),orderItem.getQuantity());
                     total.set(orderItem.getUnitPrice() * orderItem.getQuantity());
                     orderItemRepository.save(orderItem);
                     return orderItem;

@@ -104,13 +104,10 @@ public class PromotionController {
         BeanUtils.copyProperties(promotionDto, promotion);
         promotion.setId(id);
         promotion.setStatus(promotionDto.getStatus());
-        promotion.setAmount(promotionDto.getAmount());
         Instant startDate = DateHelper.toDate(promotionDto.getStartDate(), "dd-MM-yyyy");
         Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "dd-MM-yyyy");
         promotion.setEndDate(endDate);
         promotion.setStartDate(startDate);
-        promotion.setMaxAmount(promotionDto.getMaxAmount());
-        promotion.setPercent(promotionDto.getPercent());
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Promotion Success", service.save(promotion)));
     }

@@ -2,6 +2,7 @@ package com.poly.jztr.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -9,6 +10,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "order_items")
 @Getter
+@Setter
 public class OrderItem {
     @Id
     @Column(name = "id", nullable = false)
@@ -21,8 +23,8 @@ public class OrderItem {
     private Order order;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "product_variant_id", nullable = false)
-    private ProductVariant productVariant;
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
@@ -38,9 +40,6 @@ public class OrderItem {
 
     @Column(name = "deleted_at")
     private Instant deletedAt;
-    public void setProductVariant(ProductVariant productVariant) {
-        this.productVariant = productVariant;
-    }
 
     public void setId(Long id) {
         this.id = id;

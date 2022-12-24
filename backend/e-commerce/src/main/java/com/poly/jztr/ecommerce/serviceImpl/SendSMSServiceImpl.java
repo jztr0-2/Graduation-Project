@@ -25,11 +25,11 @@ public class SendSMSServiceImpl implements SendSMSService {
     UserService userService;
 
     @Override
-    public boolean send(){
+    public boolean send(String phone, String msg){
         try{
             Twilio.init(username,password);
-            Message.creator(new PhoneNumber("+84973588761"),
-                    new PhoneNumber("+1 978 748 6733"), "Your verify code is: " + generateCode()).create();
+            Message.creator(new PhoneNumber(phone),
+                    new PhoneNumber("+1 978 748 6733"), msg);
             return true;
         }catch (Exception e){
             return false;

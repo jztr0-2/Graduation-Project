@@ -423,6 +423,8 @@ function ProductDetails() {
                                                                         'descriptions',
                                                                         'flex',
                                                                     )}
+
+                                                                    style={{display:"flex", flexFlow:"wrap", gap:"10px"}}
                                                                 >
                                                                     {productVariants.map(
                                                                         (productVariant, index) => (

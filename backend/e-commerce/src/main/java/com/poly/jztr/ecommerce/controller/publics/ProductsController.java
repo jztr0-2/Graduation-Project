@@ -4,15 +4,11 @@ import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.model.Category;
-import com.poly.jztr.ecommerce.model.Image;
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
-import com.poly.jztr.ecommerce.serializer.ProductSerializer;
 import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.ImageService;
 import com.poly.jztr.ecommerce.service.ProductService;
-import com.poly.jztr.ecommerce.service.ProductVariantService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,18 +19,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-@RestControllerAdvice("public/product-variant")
+@RestControllerAdvice("public/products")
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/public/products")
-public class ProductVariantController {
+public class ProductsController {
     @Autowired
     ProductService service;
 
-    @Autowired
-    ProductVariantService productVariantService;
 
     @Autowired
     CategoryService categoryService;
@@ -73,17 +65,9 @@ public class ProductVariantController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> findById(@PathVariable Long id) {
-        Optional<Product> p = service.findById(id);
-        Product product = p.get();
-        List<Image> imageList = imageService.findByProductId(id);
-        ProductSerializer productSerializer = new ProductSerializer();
-        BeanUtils.copyProperties(product, productSerializer);
-        if (imageList != null) {
-            List<String> imgList = imageList.stream().map(item -> Constant.BASE_API_URL + "public/images/" + item.getTitle()).collect(Collectors.toList());
-            productSerializer.setImageList(imgList);
-        }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get product successfully", productSerializer)
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                        "Get product successfully", service.findById(id).get())
         );
     }
 

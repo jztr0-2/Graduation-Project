@@ -2,6 +2,7 @@ package com.poly.jztr.ecommerce.controller.admin;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.CustomPageable;
+import com.poly.jztr.ecommerce.common.DateHelper;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.OrderDto;
 import com.poly.jztr.ecommerce.model.Order;
@@ -11,6 +12,7 @@ import com.poly.jztr.ecommerce.serializer.ProductStatic;
 import com.poly.jztr.ecommerce.serializer.RecentOrderSerializer;
 import com.poly.jztr.ecommerce.service.OrderService;
 import com.poly.jztr.ecommerce.service.ProductService;
+import com.poly.jztr.ecommerce.service.SendSMSService;
 import com.poly.jztr.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,18 +40,23 @@ public class OrderController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    SendSMSService sendSMSService;
+
     @GetMapping("")
     public ResponseEntity<ResponseObject> findByStatus(@RequestParam(defaultValue = "-1") Integer status,
                                                        @RequestParam(defaultValue = "1") Integer page,
                                                        @RequestParam(defaultValue = "10") Integer perPage,
-                                                       @RequestParam(defaultValue = "1608538211") Long startDate,
-                                                       @RequestParam(defaultValue = "2555223011") Long endDate,
+                                                       @RequestParam(defaultValue = "2020-12-28") String startDate,
+                                                       @RequestParam(defaultValue = "2050-12-30") String endDate,
                                                        @RequestParam(defaultValue = "0") Double min,
                                                        @RequestParam(defaultValue = "9999999999999") Double max,
                                                        @RequestParam(defaultValue = "") String name){
         Pageable pageable = CustomPageable.getPage(page, perPage, "createdAt", Constant.SORT_DESC);
-        Instant start = Instant.EPOCH.plus(startDate, ChronoUnit.SECONDS);
-        Instant end = Instant.EPOCH.plus(endDate, ChronoUnit.SECONDS);
+//        Instant start = Instant.EPOCH.plus(startDate, ChronoUnit.SECONDS);
+//        Instant end = Instant.EPOCH.plus(endDate, ChronoUnit.SECONDS);
+        Instant start = DateHelper.toDate(startDate,"yyyy-MM-dd");
+        Instant end = DateHelper.toDate(endDate,"yyyy-MM-dd");
         System.out.println(start + " "+ end);
         if(status == -1) {
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -95,6 +103,19 @@ public class OrderController {
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Order By Id", null));
         }
         Order order = optOrder.get();
+        if(order.getStatus() != dto.getStatus()){
+            String stts = "";
+            if(dto.getStatus() == Constant.ORDER_STATUS_SUCCESS ){
+                stts = "Success";
+            }else {
+                stts = "Cancel";
+            }
+            String phone = "+" + order.getAddress().getPhone();
+            Date date = new Date(order.getCreatedAt().getEpochSecond());
+            sendSMSService.send(phone,"Your orders in: "
+                    + DateHelper.toStrings(date, "dd-MM-yyyy") + "with total: "+ order.getTotal() +
+                    "has been change status to" + "");
+        }
         order.setStatus(dto.getStatus());
         order = service.updateStatus(order);
         return ResponseEntity.status(HttpStatus.OK).body(

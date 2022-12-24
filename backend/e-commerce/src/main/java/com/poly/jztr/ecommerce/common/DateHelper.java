@@ -15,7 +15,7 @@ public class DateHelper {
             throw new RuntimeException(ex);
         }
     }
-    public static String toString(Date date, String pattern){
+    public static String toStrings(Date date, String pattern){
         formater.applyPattern(pattern);
         return formater.format(date);
     }

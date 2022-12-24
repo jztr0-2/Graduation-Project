@@ -61,8 +61,6 @@ public class UsersController {
     @Autowired
     ProductService productService;
 
-    @Autowired
-    ProductVariantService productVariantService;
 
     @Autowired
     OrderService orderService;
@@ -169,53 +167,53 @@ public class UsersController {
     @GetMapping("/init-data")
     public String initData(){
         Random random = new Random();
-        if(service.findById(1L).isPresent()){
-            return "INIT SUCCESSFULLY";
-        }
-        // Init user
-        for(int i = 0; i < 100; i ++){
-            User user = new User();
-            user.setStatus(1);
-            user.setPassword(passwordEncoder.encode("123456"));
-            user.setEmail("user_demo"+i + "@gmail.com");
-            user.setFirstName("Demo" +i);
-            user.setLastName("User");
-
-            service.save(user);
-        }
-
-
-        // Init category
-        for(int i = 1; i<11; i ++){
-            Category category = new Category();
-            category.setName("CATEGORY" + i);
-            categoryService.save(category);
-        }
-
-        // Init product, each product have 2 product variant
-
-        for(int i = 1; i < 100; i ++){
-            Product product = new Product();
-            product.setDescription("PRODUCT" + i + "description");
-            product.setStatus(1);
-            product.setName("PRODUCT NAME" + i);
-            product.setCategory(new Category(random.nextLong(7)+ 1));
-            System.out.println(product.getCategory().getId());
-            List<ProductVariant> productVariantList = new ArrayList<>();
-            String[] colors = {"xxx","YELLOW", "BLUE", "PINK", "RED"};
-            for (int j = 1; j < 3; j++){
-                ProductVariant productVariant = new ProductVariant();
-                productVariant.setProduct(product);
-                productVariant.setDescription("{\"title\": \"color\", \"color\": \""+ colors[j] +i+ "\"}");
-                productVariant.setQuantity(1000);
-                productVariant.setUnitPrice(Double.valueOf(100+ i + j));
-                productVariant.setDisplayName("PRODUCT NAME" + i);
-                productVariantList.add(productVariant);
-//                productVariantService.save(productVariant);
-            }
-            product.setProductVariants(productVariantList);
-            productService.save(product);
-        }
+//        if(service.findById(1L).isPresent()){
+//            return "INIT SUCCESSFULLY";
+//        }
+//        // Init user
+//        for(int i = 0; i < 100; i ++){
+//            User user = new User();
+//            user.setStatus(1);
+//            user.setPassword(passwordEncoder.encode("123456"));
+//            user.setEmail("user_demo"+i + "@gmail.com");
+//            user.setFirstName("Demo" +i);
+//            user.setLastName("User");
+//
+//            service.save(user);
+//        }
+//
+//
+//        // Init category
+//        for(int i = 1; i<11; i ++){
+//            Category category = new Category();
+//            category.setName("CATEGORY" + i);
+//            categoryService.save(category);
+//        }
+//
+//        // Init product, each product have 2 product variant
+//
+//        for(int i = 1; i < 100; i ++){
+//            Product product = new Product();
+//            product.setDescription("PRODUCT" + i + "description");
+//            product.setStatus(1);
+//            product.setName("PRODUCT NAME" + i);
+//            product.setCategory(new Category(random.nextLong(7)+ 1));
+//            System.out.println(product.getCategory().getId());
+//            List<ProductVariant> productVariantList = new ArrayList<>();
+//            String[] colors = {"xxx","YELLOW", "BLUE", "PINK", "RED"};
+//            for (int j = 1; j < 3; j++){
+//                ProductVariant productVariant = new ProductVariant();
+//                productVariant.setProduct(product);
+//                productVariant.setDescription("{\"title\": \"color\", \"color\": \""+ colors[j] +i+ "\"}");
+//                productVariant.setQuantity(1000);
+//                productVariant.setUnitPrice(Double.valueOf(100+ i + j));
+//                productVariant.setDisplayName("PRODUCT NAME" + i);
+//                productVariantList.add(productVariant);
+////                productVariantService.save(productVariant);
+//            }
+//            product.setProductVariants(productVariantList);
+//            productService.save(product);
+//        }
 
 
         //init comment
@@ -227,64 +225,64 @@ public class UsersController {
             cmt.setProduct(new Product(Long.valueOf(i)));
             commentService.save(cmt);
         }
-
-
-        // init promotion
-
-        for (int i = 1; i < 100; i ++){
-            Promotion promotion = new Promotion();
-            promotion.setCreatedAt(Instant.now());
-            promotion.setStatus(i%2);
-            promotion.setCode( RandomStringUtils.random(6, 'a','b','c','d','e','f','g','h','j','k','q','w','1','2','3','4','5','6','7'));
-            promotionService.save(promotion);
-        }
-
-        // init order
-
-        Address address = new Address();
-        address.setCommune("Hoa Minh");
-        address.setDistrict("Lien Chieu");
-        address.setProvince("Da Nang");
-        address.setAppartmentNo("137");
-        address.setWard("Nguyen Thi Thap");
-        address.setPhone("0973588761");
-        address = addressService.save(address);
-
-        for(int i = 0; i < 1000; i ++){
-            User user= service.findById(random.nextLong(90) + 1).get();
-            Order order = new Order();
-            order.setUser(user);
-            order.setStatus(random.nextInt(2));
-            order.setDescription("Fake order" + i);
-
-
-            String month = ((i%12) + 1) +"";
-
-            month = month.length() == 1 ? "0" + month : month;
-            String stringDate = "09:15:30 PM, "+month+"/09/2022";
-            String pattern = "hh:mm:ss a, M/d/uuuu";
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
-            LocalDateTime localDateTime = LocalDateTime.parse(stringDate, dateTimeFormatter);
-            ZoneId zoneId = ZoneId.of("America/Chicago");
-            ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
-            Instant instant = zonedDateTime.toInstant();
-
-
-            order.setCreatedAt(instant);
-            order.setCreatedAt(instant);
-            List<OrderItem> orderItemList = new ArrayList<>();
-            order.setAddress(address);
-            for(int j = 0; j < 5; j ++){
-                OrderItem orderItem = new OrderItem();
-                orderItem.setOrder(order);
-                orderItem.setQuantity(random.nextInt(10));
-                orderItem.setUnitPrice(random.nextDouble(1500));
-                orderItem.setProductVariant(new ProductVariant(random.nextLong(190) + 1));
-                orderItemList.add(orderItem);
-            }
-            order.setOrderItems(orderItemList);
-            orderService.save(order);
-        }
+//
+//
+//        // init promotion
+//
+//        for (int i = 1; i < 100; i ++){
+//            Promotion promotion = new Promotion();
+//            promotion.setCreatedAt(Instant.now());
+//            promotion.setStatus(i%2);
+//            promotion.setCode( RandomStringUtils.random(6, 'a','b','c','d','e','f','g','h','j','k','q','w','1','2','3','4','5','6','7'));
+//            promotionService.save(promotion);
+//        }
+//
+//        // init order
+//
+//        Address address = new Address();
+//        address.setCommune("Hoa Minh");
+//        address.setDistrict("Lien Chieu");
+//        address.setProvince("Da Nang");
+//        address.setAppartmentNo("137");
+//        address.setWard("Nguyen Thi Thap");
+//        address.setPhone("0973588761");
+//        address = addressService.save(address);
+//
+//        for(int i = 0; i < 1000; i ++){
+//            User user= service.findById(random.nextLong(90) + 1).get();
+//            Order order = new Order();
+//            order.setUser(user);
+//            order.setStatus(random.nextInt(2));
+//            order.setDescription("Fake order" + i);
+//
+//
+//            String month = ((i%12) + 1) +"";
+//
+//            month = month.length() == 1 ? "0" + month : month;
+//            String stringDate = "09:15:30 PM, "+month+"/09/2022";
+//            String pattern = "hh:mm:ss a, M/d/uuuu";
+//            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
+//            LocalDateTime localDateTime = LocalDateTime.parse(stringDate, dateTimeFormatter);
+//            ZoneId zoneId = ZoneId.of("America/Chicago");
+//            ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
+//            Instant instant = zonedDateTime.toInstant();
+//
+//
+//            order.setCreatedAt(instant);
+//            order.setCreatedAt(instant);
+//            List<OrderItem> orderItemList = new ArrayList<>();
+//            order.setAddress(address);
+//            for(int j = 0; j < 5; j ++){
+//                OrderItem orderItem = new OrderItem();
+//                orderItem.setOrder(order);
+//                orderItem.setQuantity(random.nextInt(10));
+//                orderItem.setUnitPrice(random.nextDouble(1500));
+//                orderItem.setProductVariant(new ProductVariant(random.nextLong(190) + 1));
+//                orderItemList.add(orderItem);
+//            }
+//            order.setOrderItems(orderItemList);
+//            orderService.save(order);
+//        }
         return "INIT SUCCESSFULLY";
     }
 
@@ -307,123 +305,123 @@ public class UsersController {
 
     @PostMapping("init-file-data")
     public String initFileData(@RequestParam MultipartFile file) throws IOException {
-        XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
-        XSSFSheet categorySheet = workbook.getSheetAt(0);
-        for(int i=1;i<categorySheet.getPhysicalNumberOfRows() ;i++) {
-            XSSFRow row = categorySheet.getRow(i);
-            Category category = new Category();
-            category.setName(row.getCell(0).toString().trim());
-            categoryService.save(category);
-        }
-
-        XSSFSheet userSheet = workbook.getSheetAt(1);
-
-        for(int i=1;i<99;i++) {
-            XSSFRow row = userSheet.getRow(i);
-            String fullname = row.getCell(0)+"";
-                User user = new User();
-                user.setFirstName(fullname.substring(0,fullname.lastIndexOf(" ")).trim());
-                user.setLastName(fullname.substring(fullname.lastIndexOf(" ")).trim());
-                user.setEmail(row.getCell(1).toString().trim());
-                user.setPhone(row.getCell(2).toString().trim());
-                user.setPassword(passwordEncoder.encode("123456"));
-                user.setStatus(Constant.USER_STATUS_ACTIVATED);
-                service.save(user);
-        }
-
-        XSSFSheet addressSheet = workbook.getSheetAt(2);
-
-        for(int i=1;i<addressSheet.getPhysicalNumberOfRows() ;i++) {
-            XSSFRow row = addressSheet.getRow(i);
-            Address address = new Address();
-            address.setProvince(row.getCell(0).toString().trim());
-            address.setDistrict(row.getCell(1).toString().trim());
-            address.setCommune(row.getCell(2).toString().trim());
-            address.setWard(row.getCell(3).toString().trim());
-            address.setAppartmentNo(row.getCell(4).toString().trim());
-            address.setPhone(row.getCell(5).toString().trim());
-            addressService.save(address);
-        }
-
-        XSSFSheet productSheet = workbook.getSheetAt(3);
-
-        String title  = "";
-        Random random = new Random();
-        Product product = new Product();
-        for(int i=1;i<productSheet.getPhysicalNumberOfRows() ;i++) {
-            XSSFRow row = productSheet.getRow(i);
-            if(i >= 212) break;
-            String productName = row.getCell(0)+"".trim();
-            if(productName != "" && productName != "null" && !productName.isEmpty() && !productName.isBlank() && productName != null){
-                product = new Product();
-                product.setName(productName);
-                Category category = new Category(random.nextLong(1,9));//categoryService.findByName(row.getCell(1).toString().trim()).get();
-                product.setCategory(category);
-                product.setDescription(row.getCell(2).toString().trim());
-                title = row.getCell(3).toString().trim();
-                product.setStatus(0);
-                product = productService.save(product);
-                String imgLink = row.getCell(8).toString().trim();
-                System.out.println(imgLink);
-                System.out.println(row.getCell(7).toString().trim());
-                Image img = saveImg(imgLink,"product_avt" + product.getId() +  random.nextInt() + ".jpg",Constant.IMAGE_TYPE_PRODUCT_AVT,0L);
-                product.setImage(img);
-                productService.save(product);
-            }else{
-                ProductVariant variant = new ProductVariant();
-                variant.setProduct(product);
-                variant.setQuantity(10000);
-                System.out.println(row.getCell(4));
-                variant.setUnitPrice(row.getCell(4).getNumericCellValue());
-                variant.setDescription("{\"title\": \""+title+"\", \""+title+"\": "+row.getCell(7)+"".trim()+"\"}");
-                String imgLink = row.getCell(8).toString().trim();
-                saveImg(imgLink,"product_lst" + product.getId() + random.nextInt() + ".jpg",Constant.IMAGE_TYPE_PRODUCT_MULTIPLE,product.getId());
-                variant.setDisplayName(product.getName());
-                productVariantService.save(variant);
-            }
-        }
+//        XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
+//        XSSFSheet categorySheet = workbook.getSheetAt(0);
+//        for(int i=1;i<categorySheet.getPhysicalNumberOfRows() ;i++) {
+//            XSSFRow row = categorySheet.getRow(i);
+//            Category category = new Category();
+//            category.setName(row.getCell(0).toString().trim());
+//            categoryService.save(category);
+//        }
+//
+//        XSSFSheet userSheet = workbook.getSheetAt(1);
+//
+//        for(int i=1;i<99;i++) {
+//            XSSFRow row = userSheet.getRow(i);
+//            String fullname = row.getCell(0)+"";
+//                User user = new User();
+//                user.setFirstName(fullname.substring(0,fullname.lastIndexOf(" ")).trim());
+//                user.setLastName(fullname.substring(fullname.lastIndexOf(" ")).trim());
+//                user.setEmail(row.getCell(1).toString().trim());
+//                user.setPhone(row.getCell(2).toString().trim());
+//                user.setPassword(passwordEncoder.encode("123456"));
+//                user.setStatus(Constant.USER_STATUS_ACTIVATED);
+//                service.save(user);
+//        }
+//
+//        XSSFSheet addressSheet = workbook.getSheetAt(2);
+//
+//        for(int i=1;i<addressSheet.getPhysicalNumberOfRows() ;i++) {
+//            XSSFRow row = addressSheet.getRow(i);
+//            Address address = new Address();
+//            address.setProvince(row.getCell(0).toString().trim());
+//            address.setDistrict(row.getCell(1).toString().trim());
+//            address.setCommune(row.getCell(2).toString().trim());
+//            address.setWard(row.getCell(3).toString().trim());
+//            address.setAppartmentNo(row.getCell(4).toString().trim());
+//            address.setPhone(row.getCell(5).toString().trim());
+//            addressService.save(address);
+//        }
+//
+//        XSSFSheet productSheet = workbook.getSheetAt(3);
+//
+//        String title  = "";
+//        Random random = new Random();
+//        Product product = new Product();
+//        for(int i=1;i<productSheet.getPhysicalNumberOfRows() ;i++) {
+//            XSSFRow row = productSheet.getRow(i);
+//            if(i >= 212) break;
+//            String productName = row.getCell(0)+"".trim();
+//            if(productName != "" && productName != "null" && !productName.isEmpty() && !productName.isBlank() && productName != null){
+//                product = new Product();
+//                product.setName(productName);
+//                Category category = new Category(random.nextLong(1,9));//categoryService.findByName(row.getCell(1).toString().trim()).get();
+//                product.setCategory(category);
+//                product.setDescription(row.getCell(2).toString().trim());
+//                title = row.getCell(3).toString().trim();
+//                product.setStatus(0);
+//                product = productService.save(product);
+//                String imgLink = row.getCell(8).toString().trim();
+//                System.out.println(imgLink);
+//                System.out.println(row.getCell(7).toString().trim());
+//                Image img = saveImg(imgLink,"product_avt" + product.getId() +  random.nextInt() + ".jpg",Constant.IMAGE_TYPE_PRODUCT_AVT,0L);
+//                product.setImage(img);
+//                productService.save(product);
+//            }else{
+//                ProductVariant variant = new ProductVariant();
+//                variant.setProduct(product);
+//                variant.setQuantity(10000);
+//                System.out.println(row.getCell(4));
+//                variant.setUnitPrice(row.getCell(4).getNumericCellValue());
+//                variant.setDescription("{\"title\": \""+title+"\", \""+title+"\": "+row.getCell(7)+"".trim()+"\"}");
+//                String imgLink = row.getCell(8).toString().trim();
+//                saveImg(imgLink,"product_lst" + product.getId() + random.nextInt() + ".jpg",Constant.IMAGE_TYPE_PRODUCT_MULTIPLE,product.getId());
+//                variant.setDisplayName(product.getName());
+//                productVariantService.save(variant);
+//            }
+//        }
 
         // init order
 
-        for(int i = 0; i < 1000; i ++){
-            Address address = new Address(random.nextLong(1,19));
-            User user= service.findById(random.nextLong(90) + 1).get();
-            Order order = new Order();
-            order.setUser(user);
-            order.setStatus(Constant.ORDER_STATUS_SUCCESS);
-            order.setDescription("Fake order" + i);
-
-
-            String month = ((i%12) + 1) +"";
-
-            month = month.length() == 1 ? "0" + month : month;
-            String stringDate = "09:15:30 PM, "+month+"/09/2022";
-            String pattern = "hh:mm:ss a, M/d/uuuu";
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
-            LocalDateTime localDateTime = LocalDateTime.parse(stringDate, dateTimeFormatter);
-            ZoneId zoneId = ZoneId.of("America/Chicago");
-            ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
-            Instant instant = zonedDateTime.toInstant();
-
-
-            order.setCreatedAt(instant);
-            order.setCreatedAt(instant);
-            List<OrderItem> orderItemList = new ArrayList<>();
-            order.setAddress(address);
-            Double total = 0D;
-            for(int j = 0; j < 5; j ++){
-                OrderItem orderItem = new OrderItem();
-                orderItem.setOrder(order);
-                orderItem.setQuantity(random.nextInt(10));
-                orderItem.setUnitPrice(random.nextDouble(1500));
-                orderItem.setProductVariant(new ProductVariant(random.nextLong(1,137)));
-                total += orderItem.getUnitPrice() * orderItem.getQuantity();
-                orderItemList.add(orderItem);
-            }
-            order.setTotal(total);
-            order.setOrderItems(orderItemList);
-            orderService.save(order);
-        }
+//        for(int i = 0; i < 1000; i ++){
+//            Address address = new Address(random.nextLong(1,19));
+//            User user= service.findById(random.nextLong(90) + 1).get();
+//            Order order = new Order();
+//            order.setUser(user);
+//            order.setStatus(Constant.ORDER_STATUS_SUCCESS);
+//            order.setDescription("Fake order" + i);
+//
+//
+//            String month = ((i%12) + 1) +"";
+//
+//            month = month.length() == 1 ? "0" + month : month;
+//            String stringDate = "09:15:30 PM, "+month+"/09/2022";
+//            String pattern = "hh:mm:ss a, M/d/uuuu";
+//            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
+//            LocalDateTime localDateTime = LocalDateTime.parse(stringDate, dateTimeFormatter);
+//            ZoneId zoneId = ZoneId.of("America/Chicago");
+//            ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
+//            Instant instant = zonedDateTime.toInstant();
+//
+//
+//            order.setCreatedAt(instant);
+//            order.setCreatedAt(instant);
+//            List<OrderItem> orderItemList = new ArrayList<>();
+//            order.setAddress(address);
+//            Double total = 0D;
+//            for(int j = 0; j < 5; j ++){
+//                OrderItem orderItem = new OrderItem();
+//                orderItem.setOrder(order);
+//                orderItem.setQuantity(random.nextInt(10));
+//                orderItem.setUnitPrice(random.nextDouble(1500));
+//                orderItem.setProductVariant(new ProductVariant(random.nextLong(1,137)));
+//                total += orderItem.getUnitPrice() * orderItem.getQuantity();
+//                orderItemList.add(orderItem);
+//            }
+//            order.setTotal(total);
+//            order.setOrderItems(orderItemList);
+//            orderService.save(order);
+//        }
         return "OK";
     }
 
@@ -438,7 +436,7 @@ public class UsersController {
         image.setTitle(fileName);
         image.setType(type);
         if (id != 0L){
-            image.setProductId(id);
+            image.setProduct(new Product(id));
         }
         return imageService.save(image);
     }
