@@ -25,18 +25,10 @@ public class PromotionDto {
     @Pattern(message = "Promotion code is 6 character only", regexp = "^[a-zA-Z0-9]{6}$")
     private String code;
 
-    @NotNull
-    @Min(message = "Min percent is 1", value = 1)
-    @Max(message = "Max percent is 100", value = 100)
-    private Double percent;
 
     @NotNull
     @Min(message = "Min amount is 1", value = 1)
     private Double amount;
-
-    @NotNull
-    @Min(message = "Min max amount is 1", value = 1)
-    private Double maxAmount;
 
     @NotNull
     private String endDate;
