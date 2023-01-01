@@ -1,30 +1,20 @@
 package com.poly.jztr.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Where;
-
 import java.time.Instant;
 import java.util.List;
 
-@NamedQueries({
-        @NamedQuery(
-                name = "Category.findPageCategory",
-                query = "SELECT c FROM Category c WHERE c.products.size > 1"
-        )
-})
-
 @Entity
-@Table(name = "categories")
-@Setter
 @Getter
-public class Category {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -40,32 +30,18 @@ public class Category {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "brand")
     @JsonIgnore
     private List<Product> products;
 
-   public Category(){
-    this.createdAt = Instant.now();
-    this.updatedAt = Instant.now();
-   }
-
-    public Category(Long id) {
-       this.id = id;
-    }
-
-    public Long getId() {
-        return id;
+    public Brand(long id) {
+        this.id = id;
     }
 
     public void setId(Long id) {
         this.id = id;
+        this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
-    }
-
-
-    public String getName() {
-        return name;
     }
 
     public void setName(String name) {
@@ -73,12 +49,17 @@ public class Category {
         this.updatedAt = Instant.now();
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
-        
+        this.updatedAt = Instant.now();
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+        this.updatedAt = Instant.now();
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

@@ -2,13 +2,11 @@ package com.poly.jztr.ecommerce.serviceImpl;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.dto.OrderDto;
-import com.poly.jztr.ecommerce.expection.CommonException;
 import com.poly.jztr.ecommerce.model.*;
 import com.poly.jztr.ecommerce.repository.OrderItemRepository;
 import com.poly.jztr.ecommerce.repository.OrderRepository;
 import com.poly.jztr.ecommerce.service.OrderItemService;
 import com.poly.jztr.ecommerce.service.OrderService;
-import com.poly.jztr.ecommerce.service.ProductVariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,8 +36,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderItemService orderItemService;
 
-    @Autowired
-    ProductVariantService productVariantService;
 
     @Autowired
     PromotionService promotionService;
@@ -73,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItems = entity.getOrderItems().stream().
                 map(orderItem -> {
                     orderItem.setOrder(finalEntity);
-                    productVariantService.minusQuantity(orderItem.getProductVariant().getId(),orderItem.getQuantity());
+// minus quantity
                     return orderItem;
                 }).collect(Collectors.toList());
 
@@ -90,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional()
-    public <S extends Order> S save(S entity, String code) throws CommonException {
+    public <S extends Order> S save(S entity, String code){
         List<OrderItem> orderItems = entity.getOrderItems();
         entity = repository.save(entity);
         S finalEntity = entity;
@@ -98,7 +94,6 @@ public class OrderServiceImpl implements OrderService {
          orderItems.stream().
                 map(orderItem -> {
                     orderItem.setOrder(finalEntity);
-                    productVariantService.minusQuantity(orderItem.getProductVariant().getId(),orderItem.getQuantity());
                     total.set(orderItem.getUnitPrice() * orderItem.getQuantity());
                     orderItemRepository.save(orderItem);
                     return orderItem;
@@ -127,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
         if(optPro.isEmpty()) return false;
 
         Promotion promotion = optPro.get();
-        if(promotion.getStatus() == Constant.PROMOTION_TYPE_SINGLE_USER){
+        if(promotion.getStatus()){
             if(promotion.getEndDate().isBefore(Instant.now())){
                 return false;
             }

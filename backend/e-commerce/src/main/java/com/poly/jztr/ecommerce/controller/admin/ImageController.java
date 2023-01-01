@@ -98,11 +98,8 @@ public class ImageController {
             fileName = "product_avatar" + id + ".jpg";
             Image img= saveImg(file,fileName,type);
             Product product = productService.findById(Long.valueOf(id)).get();
-            product.setImage(img);
             productService.save(product);
         }else{
-            fileName = "product_img_list" + id +"ran_" + random.nextInt() +Instant.now().getEpochSecond()+ ".jpg";
-            Image img= saveImg(file,fileName,type,Long.valueOf(id));
         }
     }
 
@@ -130,7 +127,7 @@ public class ImageController {
             Image image = new Image();
             image.setTitle(fileName);
             image.setType(type);
-            image.setProductId(productId);
+            image.setProduct(new Product(productId));
             return service.save(image);
         } catch (IOException e) {
             throw new RuntimeException(e);

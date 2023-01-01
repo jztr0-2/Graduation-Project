@@ -6,7 +6,6 @@ import com.poly.jztr.ecommerce.serializer.ProductStatic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,8 +15,6 @@ public interface ProductService {
     Page<Product> findByNameLike(String name, Pageable pageable);
 
     Optional<Product> findByName(String name);
-
-    Product toProduct(ProductDto dto);
 
     Page<Product> findAll(Pageable pageable);
 
@@ -38,6 +35,4 @@ public interface ProductService {
     List<Product> findTopSale();
 
     List<Product> findRelatedProduct(Long product_id);
-
-    void saveOnlyProduct(Product p);
 }

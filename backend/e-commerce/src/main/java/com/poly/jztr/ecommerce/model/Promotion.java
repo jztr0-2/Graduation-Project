@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Where;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "promotion")
 @Getter
+@Where(clause = "deleted_at is null")
 public class Promotion {
 
     public Promotion(){
@@ -29,14 +31,9 @@ public class Promotion {
     @Column(name = "promo_code", unique = true)
     private String code;
 
-    @Column(name = "reduction_percent")
-    private Double percent;
 
     @Column(name = "reduction_amount")
     private Double amount;
-
-    @Column(name = "max_reduction_amount")
-    private Double maxAmount;
 
     @Column(name = "start_date")
     private Instant startDate;
@@ -53,21 +50,18 @@ public class Promotion {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
-//    @Column(name = "type")
-//    private Integer type;
-
     @Column(name =  "status", nullable = false)
-    private Integer status;
+    private Boolean status;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "promotion")
     private List<Order> orders;
 
-    public int getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(boolean status) {
         this.status = status;
         this.updatedAt = Instant.now();
     }
@@ -82,20 +76,6 @@ public class Promotion {
         this.updatedAt = Instant.now();
     }
 
-    public void setPercent(Double percent) {
-        this.percent = percent;
-        this.updatedAt = Instant.now();
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-        this.updatedAt = Instant.now();
-    }
-
-    public void setMaxAmount(Double maxAmount) {
-        this.maxAmount = maxAmount;
-        this.updatedAt = Instant.now();
-    }
 
     public void setStartDate(Instant expire) {
         this.startDate = expire;

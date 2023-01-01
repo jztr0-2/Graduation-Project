@@ -1,14 +1,9 @@
 package com.poly.jztr.ecommerce.serviceImpl;
 
-import com.poly.jztr.ecommerce.dto.ProductDto;
-import com.poly.jztr.ecommerce.expection.CommonException;
-import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Product;
-import com.poly.jztr.ecommerce.model.ProductVariant;
 import com.poly.jztr.ecommerce.repository.ProductRepository;
 import com.poly.jztr.ecommerce.serializer.ProductStatic;
 import com.poly.jztr.ecommerce.service.ProductService;
-import com.poly.jztr.ecommerce.service.ProductVariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -26,20 +20,10 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository repository;
 
-    @Autowired
-    ProductVariantService productVariantService;
 
     @Override
     public <S extends Product> S save(S entity) {
-        List<ProductVariant> productVariants = entity.getProductVariants();
         Product p =  repository.save(entity);
-        if(productVariants != null){
-            productVariants.stream().forEach(productVariant -> {
-                productVariant.setProduct(p);
-                productVariant.setDisplayName(p.getName());
-                productVariantService.save(productVariant);
-            });
-        }
         return (S) p;
     }
 
@@ -54,29 +38,6 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-    @Override
-    public Product toProduct(ProductDto dto) {
-        Product product= new Product();
-        product.setDescription(dto.getDescription());
-        product.setName(dto.getName());
-        product.setStatus(dto.getStatus());
-        List<ProductVariant> productVariants = productVariantService.
-                toProductVariantFromDto(dto.getProductVariantList());
-        productVariants.stream().forEach((variant)->{
-            Map<String, String> des = variant.getDescription();
-            String title = des.get("title");
-            if(title == null || des.get(title) == null){
-                try {
-                    throw new CommonException("Descripton invalid", "title key is require");
-                } catch (CommonException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-        product.setProductVariants(productVariants);
-        product.setCategory(new Category(dto.getCategoryId()));
-        return product;
-    }
     @Override
     public Page<Product> findAll(Pageable pageable) {
         return repository.findAll(pageable);
@@ -138,15 +99,4 @@ public class ProductServiceImpl implements ProductService {
         return repository.getRelatedProduct(product.getCategory().getId(), limit);
     }
 
-    @Override
-    public void saveOnlyProduct(Product p) {
-        List<ProductVariant> variants = p.getProductVariants();
-        if(variants != null || !variants.isEmpty()){
-            variants.stream().forEach((item) ->{
-                item.setProduct(p);
-                productVariantService.save(item);
-            });
-        }
-        repository.save(p);
-    }
 }

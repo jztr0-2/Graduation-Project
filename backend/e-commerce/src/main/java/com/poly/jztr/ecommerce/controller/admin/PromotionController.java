@@ -83,8 +83,8 @@ public class PromotionController {
             throw new DuplicateEntryException("CODE", "Code is exits");
         }
         BeanUtils.copyProperties(promotionDto, promotion);
-        Instant startDate = DateHelper.toDate(promotionDto.getStartDate(), "dd-MM-yyyy");
-        Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "dd-MM-yyyy");
+        Instant startDate = DateHelper.toDate(promotionDto.getStartDate(), "yyyy-MM-dd");
+        Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "yyyy-MM-dd");
         promotion.setStartDate(startDate);
         promotion.setEndDate(endDate);
         promotion.setStatus(promotionDto.getStatus());
@@ -104,13 +104,10 @@ public class PromotionController {
         BeanUtils.copyProperties(promotionDto, promotion);
         promotion.setId(id);
         promotion.setStatus(promotionDto.getStatus());
-        promotion.setAmount(promotionDto.getAmount());
-        Instant startDate = DateHelper.toDate(promotionDto.getStartDate(), "dd-MM-yyyy");
-        Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "dd-MM-yyyy");
+        Instant startDate = DateHelper.toDate(promotionDto.getStartDate(), "yyyy-MM-dd");
+        Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "yyyy-MM-dd");
         promotion.setEndDate(endDate);
         promotion.setStartDate(startDate);
-        promotion.setMaxAmount(promotionDto.getMaxAmount());
-        promotion.setPercent(promotionDto.getPercent());
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Promotion Success", service.save(promotion)));
     }

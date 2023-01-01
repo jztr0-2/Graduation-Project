@@ -15,8 +15,6 @@ import java.util.Optional;
 @Repository
 public interface CategoryRespository extends JpaRepository<Category, Long>{
     Optional<Category> findByName(String name);
-    List<Category> findByDeleteAt(Instant deleted);
-    Optional<Category> findByIdAndDeleteAt(Long aLong, Instant deleted);
     @Query(value =
             "SELECT  categories.* FROM order_items join product_variant on " +
                     "product_variant.id = order_items.product_variant_id join products " +
