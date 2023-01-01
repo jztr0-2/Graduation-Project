@@ -4,6 +4,8 @@ import com.poly.jztr.ecommerce.model.Brand;
 import com.poly.jztr.ecommerce.repository.BrandRepository;
 import com.poly.jztr.ecommerce.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,5 +36,15 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public List<Brand> findByName(String name) {
         return repository.findByNameContains(name);
+    }
+
+
+    @Override
+    public Page<Brand> getAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+    @Override
+    public Page<Brand> findByName(String name, Pageable pageable) {
+        return repository.findByNameContains(name, pageable);
     }
 }
