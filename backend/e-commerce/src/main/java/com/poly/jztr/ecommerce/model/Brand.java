@@ -34,6 +34,10 @@ public class Brand {
     @JsonIgnore
     private List<Product> products;
 
+    public Brand(long id) {
+        this.id = id;
+    }
+
     public void setId(Long id) {
         this.id = id;
         this.createdAt = Instant.now();

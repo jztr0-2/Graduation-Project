@@ -77,7 +77,7 @@ public class Product {
     @Column(name = "unit_price")
     @NotNull
     @Min(1)
-    private Double unitPrice;
+    private Long unitPrice;
 
     @Column(name = "quantity")
     @NotNull
