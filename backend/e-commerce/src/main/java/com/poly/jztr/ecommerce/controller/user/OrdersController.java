@@ -5,15 +5,12 @@ import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
 import com.poly.jztr.ecommerce.dto.OrderDto;
-import com.poly.jztr.ecommerce.expection.CommonException;
 import com.poly.jztr.ecommerce.expection.QuantityIsTooLagerException;
 import com.poly.jztr.ecommerce.model.Order;
-import com.poly.jztr.ecommerce.model.Promotion;
 import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.service.OrderService;
 import com.poly.jztr.ecommerce.service.PromotionService;
 import com.poly.jztr.ecommerce.service.UserService;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -46,7 +43,7 @@ public class OrdersController {
 
     @PostMapping
     public ResponseEntity<ResponseObject> create(@RequestHeader(value = "Authorization") String jwt,
-                                                 @RequestBody OrderDto dto) throws QuantityIsTooLagerException, CommonException {
+                                                 @RequestBody OrderDto dto) throws QuantityIsTooLagerException{
         try {
             Order order = service.toOrder(dto);
             order.setUser(getUserByToken(jwt));
@@ -55,11 +52,8 @@ public class OrdersController {
 
             ));
         } catch (Exception e){
-            if(e.getMessage().equalsIgnoreCase("promotionInvalid")){
-                throw new CommonException("Order Promotion", "Promotion is invalid");
-            }else{
-                throw new QuantityIsTooLagerException();
-            }
+            e.printStackTrace();
+            throw new QuantityIsTooLagerException();
         }
     }
 

@@ -167,53 +167,47 @@ public class UsersController {
     @GetMapping("/init-data")
     public String initData(){
         Random random = new Random();
-//        if(service.findById(1L).isPresent()){
-//            return "INIT SUCCESSFULLY";
-//        }
-//        // Init user
-//        for(int i = 0; i < 100; i ++){
-//            User user = new User();
-//            user.setStatus(1);
-//            user.setPassword(passwordEncoder.encode("123456"));
-//            user.setEmail("user_demo"+i + "@gmail.com");
-//            user.setFirstName("Demo" +i);
-//            user.setLastName("User");
-//
-//            service.save(user);
-//        }
-//
-//
-//        // Init category
-//        for(int i = 1; i<11; i ++){
-//            Category category = new Category();
-//            category.setName("CATEGORY" + i);
-//            categoryService.save(category);
-//        }
-//
-//        // Init product, each product have 2 product variant
-//
-//        for(int i = 1; i < 100; i ++){
-//            Product product = new Product();
-//            product.setDescription("PRODUCT" + i + "description");
-//            product.setStatus(1);
-//            product.setName("PRODUCT NAME" + i);
-//            product.setCategory(new Category(random.nextLong(7)+ 1));
-//            System.out.println(product.getCategory().getId());
-//            List<ProductVariant> productVariantList = new ArrayList<>();
-//            String[] colors = {"xxx","YELLOW", "BLUE", "PINK", "RED"};
-//            for (int j = 1; j < 3; j++){
-//                ProductVariant productVariant = new ProductVariant();
-//                productVariant.setProduct(product);
-//                productVariant.setDescription("{\"title\": \"color\", \"color\": \""+ colors[j] +i+ "\"}");
-//                productVariant.setQuantity(1000);
-//                productVariant.setUnitPrice(Double.valueOf(100+ i + j));
-//                productVariant.setDisplayName("PRODUCT NAME" + i);
-//                productVariantList.add(productVariant);
-////                productVariantService.save(productVariant);
-//            }
-//            product.setProductVariants(productVariantList);
-//            productService.save(product);
-//        }
+        if(service.findById(1L).isPresent()){
+            return "INIT SUCCESSFULLY";
+        }
+        // Init user
+        for(int i = 0; i < 100; i ++){
+            User user = new User();
+            user.setStatus(1);
+            user.setPassword(passwordEncoder.encode("123456"));
+            user.setEmail("user_demo"+i + "@gmail.com");
+            user.setFirstName("Demo" +i);
+            user.setLastName("User");
+
+            service.save(user);
+        }
+
+
+        // Init category
+        for(int i = 1; i<11; i ++){
+            Category category = new Category();
+            category.setName("CATEGORY" + i);
+            categoryService.save(category);
+        }
+
+        for(int i = 1; i<11; i ++){
+            Brand brand = new Brand();
+            brand.setName("BRAND NAME" + i);
+
+        }
+
+
+        // Init product, each product have 2 product variant
+
+        for(int i = 1; i < 100; i ++){
+            Product product = new Product();
+            product.setDescription("PRODUCT" + i + "description");
+            product.setStatus(true);
+            product.setName("PRODUCT NAME" + i);
+            product.setCategory(new Category(random.nextLong(7)+ 1));
+            System.out.println(product.getCategory().getId());
+            productService.save(product);
+        }
 
 
         //init comment

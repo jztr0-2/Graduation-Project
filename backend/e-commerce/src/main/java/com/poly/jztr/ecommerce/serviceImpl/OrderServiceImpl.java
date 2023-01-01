@@ -2,7 +2,6 @@ package com.poly.jztr.ecommerce.serviceImpl;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.dto.OrderDto;
-import com.poly.jztr.ecommerce.expection.CommonException;
 import com.poly.jztr.ecommerce.model.*;
 import com.poly.jztr.ecommerce.repository.OrderItemRepository;
 import com.poly.jztr.ecommerce.repository.OrderRepository;
@@ -87,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional()
-    public <S extends Order> S save(S entity, String code) throws CommonException {
+    public <S extends Order> S save(S entity, String code){
         List<OrderItem> orderItems = entity.getOrderItems();
         entity = repository.save(entity);
         S finalEntity = entity;

@@ -1,7 +1,6 @@
 package com.poly.jztr.ecommerce.service;
 
 import com.poly.jztr.ecommerce.dto.OrderDto;
-import com.poly.jztr.ecommerce.expection.CommonException;
 import com.poly.jztr.ecommerce.model.Order;
 import com.poly.jztr.ecommerce.model.User;
 import org.springframework.data.domain.Page;
@@ -46,7 +45,7 @@ public interface OrderService {
             (Instant start, Instant end, Double min, Double max,String name, Pageable pageable);
 
     @Transactional()
-    <S extends Order> S save(S entity, String code) throws CommonException;
+    <S extends Order> S save(S entity, String code);
 
 
     Optional<Order> findByPromotion(String code);
