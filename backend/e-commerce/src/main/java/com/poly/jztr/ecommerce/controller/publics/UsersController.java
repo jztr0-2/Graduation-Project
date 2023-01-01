@@ -7,6 +7,7 @@ import com.poly.jztr.ecommerce.dto.LoginDto;
 import com.poly.jztr.ecommerce.dto.UserDto;
 import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
 import com.poly.jztr.ecommerce.model.*;
+import com.poly.jztr.ecommerce.repository.BrandRepository;
 import com.poly.jztr.ecommerce.service.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -164,6 +165,8 @@ public class UsersController {
                 "User name: admin, password: 123456", adminService.save(admin1)));
     }
 
+    @Autowired
+    BrandRepository brandRepository;
     @GetMapping("/init-data")
     public String initData(){
         Random random = new Random();
@@ -193,19 +196,18 @@ public class UsersController {
         for(int i = 1; i<11; i ++){
             Brand brand = new Brand();
             brand.setName("BRAND NAME" + i);
-
+            brandRepository.save(brand);
         }
 
-
-        // Init product, each product have 2 product variant
-
-        for(int i = 1; i < 100; i ++){
+        for(int i = 1; i < 1000; i ++){
             Product product = new Product();
             product.setDescription("PRODUCT" + i + "description");
             product.setStatus(true);
             product.setName("PRODUCT NAME" + i);
+            product.setQuantity(1500);
+            product.setUnitPrice(random.nextLong(100,1000));
             product.setCategory(new Category(random.nextLong(7)+ 1));
-            System.out.println(product.getCategory().getId());
+            product.setBrand(new Brand(random.nextLong(7)+ 1));
             productService.save(product);
         }
 
@@ -216,67 +218,65 @@ public class UsersController {
             Comment cmt = new Comment();
             cmt.setUser(new User(Long.valueOf(i/2 + 1)));
             cmt.setContent("Comment " + i);
-            cmt.setProduct(new Product(Long.valueOf(i)));
+            cmt.setProduct(new Product(random.nextLong(1,100)));
             commentService.save(cmt);
         }
-//
-//
-//        // init promotion
-//
-//        for (int i = 1; i < 100; i ++){
-//            Promotion promotion = new Promotion();
-//            promotion.setCreatedAt(Instant.now());
-//            promotion.setStatus(i%2);
-//            promotion.setCode( RandomStringUtils.random(6, 'a','b','c','d','e','f','g','h','j','k','q','w','1','2','3','4','5','6','7'));
-//            promotionService.save(promotion);
-//        }
-//
-//        // init order
-//
-//        Address address = new Address();
-//        address.setCommune("Hoa Minh");
-//        address.setDistrict("Lien Chieu");
-//        address.setProvince("Da Nang");
-//        address.setAppartmentNo("137");
-//        address.setWard("Nguyen Thi Thap");
-//        address.setPhone("0973588761");
-//        address = addressService.save(address);
-//
-//        for(int i = 0; i < 1000; i ++){
-//            User user= service.findById(random.nextLong(90) + 1).get();
-//            Order order = new Order();
-//            order.setUser(user);
-//            order.setStatus(random.nextInt(2));
-//            order.setDescription("Fake order" + i);
-//
-//
-//            String month = ((i%12) + 1) +"";
-//
-//            month = month.length() == 1 ? "0" + month : month;
-//            String stringDate = "09:15:30 PM, "+month+"/09/2022";
-//            String pattern = "hh:mm:ss a, M/d/uuuu";
-//            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
-//            LocalDateTime localDateTime = LocalDateTime.parse(stringDate, dateTimeFormatter);
-//            ZoneId zoneId = ZoneId.of("America/Chicago");
-//            ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
-//            Instant instant = zonedDateTime.toInstant();
-//
-//
-//            order.setCreatedAt(instant);
-//            order.setCreatedAt(instant);
-//            List<OrderItem> orderItemList = new ArrayList<>();
-//            order.setAddress(address);
-//            for(int j = 0; j < 5; j ++){
-//                OrderItem orderItem = new OrderItem();
-//                orderItem.setOrder(order);
-//                orderItem.setQuantity(random.nextInt(10));
-//                orderItem.setUnitPrice(random.nextDouble(1500));
-//                orderItem.setProductVariant(new ProductVariant(random.nextLong(190) + 1));
-//                orderItemList.add(orderItem);
-//            }
-//            order.setOrderItems(orderItemList);
-//            orderService.save(order);
-//        }
+        // init promotion
+
+        for (int i = 1; i < 100; i ++){
+            Promotion promotion = new Promotion();
+            promotion.setCreatedAt(Instant.now());
+            promotion.setStatus(true);
+            promotion.setCode( RandomStringUtils.random(6, 'a','b','c','d','e','f','g','h','j','k','q','w','1','2','3','4','5','6','7'));
+            promotionService.save(promotion);
+        }
+
+        // init order
+
+        Address address = new Address();
+        address.setCommune("Hoa Minh");
+        address.setDistrict("Lien Chieu");
+        address.setProvince("Da Nang");
+        address.setAppartmentNo("137");
+        address.setWard("Nguyen Thi Thap");
+        address.setPhone("0973588761");
+        address = addressService.save(address);
+
+        for(int i = 0; i < 1000; i ++){
+            User user= service.findById(random.nextLong(90) + 1).get();
+            Order order = new Order();
+            order.setUser(user);
+            order.setStatus(random.nextInt(2));
+            order.setDescription("Fake order" + i);
+
+
+            String month = ((i%12) + 1) +"";
+
+            month = month.length() == 1 ? "0" + month : month;
+            String stringDate = "09:15:30 PM, "+month+"/09/2023";
+            String pattern = "hh:mm:ss a, M/d/uuuu";
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
+            LocalDateTime localDateTime = LocalDateTime.parse(stringDate, dateTimeFormatter);
+            ZoneId zoneId = ZoneId.of("America/Chicago");
+            ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
+            Instant instant = zonedDateTime.toInstant();
+
+
+            order.setCreatedAt(instant);
+            order.setCreatedAt(instant);
+            List<OrderItem> orderItemList = new ArrayList<>();
+            order.setAddress(address);
+            for(int j = 0; j < 5; j ++){
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrder(order);
+                orderItem.setQuantity(random.nextInt(10));
+                orderItem.setUnitPrice(random.nextDouble(1500));
+                orderItem.setProduct(new Product(random.nextLong(190) + 1));
+                orderItemList.add(orderItem);
+            }
+            order.setOrderItems(orderItemList);
+            orderService.save(order);
+        }
         return "INIT SUCCESSFULLY";
     }
 

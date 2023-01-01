@@ -28,17 +28,15 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             (Instant start,Instant end, Double min, Double max,String name, Pageable pageable);
 
     @Query(value = "select SUM(order_items.unit_price * order_items.quantity) from orders join order_items on order_items.order_id = orders.id" +
-            " join product_variant on order_items.product_variant_id = product_variant.id " +
-            " join products on product_variant.product_id = products.id  where orders.status = 1 and orders.created_at > ?",
+            " join products on order_items.product_id = products.id where orders.status = 1 and orders.created_at > ?",
     nativeQuery = true)
     Optional<Double> totalRevenueInThisMonth(String time);
 
     @Query(value =
             "select SUM(order_items.unit_price * order_items.quantity), CONVERT(date_format(orders.created_at,\"%m-%Y\") ,char(7)) " +
                     " from orders join order_items on order_items.order_id = orders.id " +
-                    " join product_variant on order_items.product_variant_id = product_variant.id " +
-                    " join products on product_variant.product_id = products.id  where orders.status = 1 " +
-                    " and orders.created_at > date_sub(now(),interval 1 YEAR) " +
+                    " join products on order_items.product_id = products.id " +
+                    " where orders.status = 1 and orders.created_at > date_sub(now(),interval 1 YEAR) " +
                     " group by (MONTH(orders.created_at)),  YEAR(orders.created_at)",
             nativeQuery = true)
     List<Object[]> totalRevenuePerMonth();

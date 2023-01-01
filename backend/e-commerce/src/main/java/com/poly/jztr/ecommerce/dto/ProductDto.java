@@ -25,6 +25,6 @@ public class ProductDto {
     private Long categoryId;
     private Long brandId;
     private Long id;
-    private Double unitPrice;
+    private Long unitPrice;
     private Integer quantity;
 }
