@@ -23,7 +23,7 @@ public class ProductDto {
     private String description;
     @NotNull
     private Long categoryId;
-    private Long branchId;
+    private Long brandId;
     private Long id;
     private Double unitPrice;
     private Integer quantity;

@@ -123,7 +123,7 @@ public class OrderServiceImpl implements OrderService {
         if(optPro.isEmpty()) return false;
 
         Promotion promotion = optPro.get();
-        if(promotion.getStatus() == Constant.PROMOTION_TYPE_SINGLE_USER){
+        if(promotion.getStatus()){
             if(promotion.getEndDate().isBefore(Instant.now())){
                 return false;
             }
