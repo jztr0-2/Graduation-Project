@@ -52,13 +52,4 @@ public class CustomExceptionHandler {
         Map<String, String> errors = new HashMap<String, String>();
         return ResponseError.build(HttpStatus.UNPROCESSABLE_ENTITY,"Quantity is too lager", errors);
     }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public ResponseError handleCommon(Exception e){
-        Map<String, String> errors = new HashMap<String, String>();
-        errors.put(e.getLocalizedMessage(),e.getMessage());
-        return ResponseError.build(HttpStatus.UNPROCESSABLE_ENTITY,"Have an errors", errors);
-    }
-
 }
