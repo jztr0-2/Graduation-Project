@@ -87,7 +87,7 @@ public class PromotionController {
         Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "yyyy-MM-dd");
         promotion.setStartDate(startDate);
         promotion.setEndDate(endDate);
-        promotion.setStatus(promotionDto.getStatus() == 1);
+        promotion.setStatus(promotionDto.getStatus());
         promotion = service.save(promotion);
         return ResponseEntity.status(HttpStatus.OK).body(
         new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Crated promotion successfully", service.save(promotion)));
@@ -103,7 +103,7 @@ public class PromotionController {
         Promotion promotion = new Promotion();
         BeanUtils.copyProperties(promotionDto, promotion);
         promotion.setId(id);
-        promotion.setStatus(promotionDto.getStatus() == 1);
+        promotion.setStatus(promotionDto.getStatus());
         Instant startDate = DateHelper.toDate(promotionDto.getStartDate(), "yyyy-MM-dd");
         Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "yyyy-MM-dd");
         promotion.setEndDate(endDate);

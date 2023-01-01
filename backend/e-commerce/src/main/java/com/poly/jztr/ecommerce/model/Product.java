@@ -45,7 +45,7 @@ public class Product {
     private String name;
 
     @Column(name = "status", nullable = false)
-    private Integer status;
+    private Boolean status;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -69,6 +69,11 @@ public class Product {
     @Fetch(FetchMode.JOIN)
     private Category category;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "brand_id")
+    @Fetch(FetchMode.JOIN)
+    private Brand brand;
+
     @Column(name = "unit_price")
     @NotNull
     @Min(1)
@@ -90,7 +95,7 @@ public class Product {
     }
 
 
-    public void setStatus(Integer status) {
+    public void setStatus(Boolean status) {
         this.status = status;
         this.updatedAt = Instant.now();
     }

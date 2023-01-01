@@ -21,9 +21,10 @@ public class CategoryServiceImpl implements CategoryService {
     public <S extends Category> S save(S entity) {
         return respository.saveAndFlush(entity);
     }
+
     @Override
     public Optional<Category> findById(Long aLong) {
-        return respository.findByIdAndDeleteAt(aLong, null);
+        return respository.findById(aLong);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findAll() {
-        return respository.findByDeleteAt(null);
+        return respository.findAll();
     }
 
 

@@ -19,7 +19,7 @@ public class ProductDto {
     @NotBlank
     @Length(max = 255)
     private String name;
-    private Integer status;
+    private Boolean status;
     private String description;
     @NotNull
     private Long categoryId;

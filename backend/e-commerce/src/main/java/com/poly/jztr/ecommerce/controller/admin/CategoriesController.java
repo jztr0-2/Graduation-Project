@@ -93,7 +93,6 @@ public class CategoriesController {
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"", null));
         }
         Category category = cate.get();
-        category.setDeleteAt(Instant.now());
         service.save(category);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", null));

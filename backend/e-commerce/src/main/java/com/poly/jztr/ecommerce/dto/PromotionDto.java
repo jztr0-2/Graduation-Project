@@ -36,7 +36,5 @@ public class PromotionDto {
     @NotNull
     private String startDate;
 
-    @Min(message = "Status is 1 or 2", value = 1)
-    @Max(message = "Status is 1 or 2", value = 2)
-    private Integer status;
+    private Boolean status;
 }

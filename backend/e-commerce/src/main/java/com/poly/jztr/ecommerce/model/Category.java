@@ -22,7 +22,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "categories")
-@Where(clause = "delete_at is null OR updated_at > delete_at")
 @Setter
 @Getter
 public class Category {
@@ -41,8 +40,6 @@ public class Category {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    @Column(name = "delete_at")
-    private Instant deleteAt;
 
     @OneToMany(mappedBy = "category")
     @JsonIgnore

@@ -40,5 +40,7 @@ public class Constant {
 
     public static String BASE_API_URL = "http://localhost:8080/api/v1/";
 
+    public static boolean PRODUCT_STATUS_AVAILABLE = true;
 
+    public static boolean PRODUCT_STATUS_SOLD_OUT = true;
 }
