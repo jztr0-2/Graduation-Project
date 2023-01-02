@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
+import java.util.Optional;
 
 @RestControllerAdvice("admin/promotion")
 @CrossOrigin("http://localhost:3000")
@@ -52,14 +53,14 @@ public class PromotionController {
 //    }
 
     @GetMapping("")
-    public ResponseEntity<ResponseObject> findByStatus(@RequestParam(defaultValue = "-1") Integer status,
-                                                     @RequestParam(defaultValue = "") String code,
-                                                     @RequestParam(defaultValue = "1") Integer page,
-                                                     @RequestParam(defaultValue = "10") Integer perPage){
+    public ResponseEntity<ResponseObject> findByStatus(@RequestParam(defaultValue = "true") Optional<Boolean> status,
+                                                       @RequestParam(defaultValue = "") String code,
+                                                       @RequestParam(defaultValue = "1") Integer page,
+                                                       @RequestParam(defaultValue = "10") Integer perPage){
         PageableSerializer data = null;
         Pageable pageable = CustomPageable.getPage(page, perPage);
-        if(status == -1) data = new PageableSerializer(service.findByCodeLContains(code, pageable));
-        else data = new PageableSerializer(service.findByCodeContainsAndStatus(code, status,pageable));
+        if(status.isEmpty()) data = new PageableSerializer(service.findByCodeLContains(code, pageable));
+        else data = new PageableSerializer(service.findByCodeContainsAndStatus(code, status.get(),pageable));
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data status successfully",
                         data));

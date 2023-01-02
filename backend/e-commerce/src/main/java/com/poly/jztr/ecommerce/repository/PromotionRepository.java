@@ -15,7 +15,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
     Page<Promotion> findByStatus(Integer code, Pageable pageable);
 
-    Page<Promotion> findByCodeAndStatus(String code, Long type, Pageable pageable);
+    Page<Promotion> findByCodeAndStatus(String code, Boolean status, Pageable pageable);
 
     Optional<Promotion> findByCode(String code);
 }

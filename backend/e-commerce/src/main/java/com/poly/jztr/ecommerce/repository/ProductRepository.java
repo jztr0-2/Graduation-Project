@@ -17,7 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByName(String name);
 
-    Page<Product> findByNameContainsAndStatus(String name,Integer status, Pageable pageable);
+    Page<Product> findByNameContainsAndStatus(String name,Boolean status, Pageable pageable);
     @Query(value = "SELECT products.* FROM order_items join products on " +
             "            products.id = order_items.product_id " +
             "            join categories on products.category_id = categories.id " +
