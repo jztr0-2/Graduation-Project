@@ -51,8 +51,8 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public Page<Promotion> findByCodeContainsAndStatus(String code, Integer status, Pageable pageable) {
-        return respository.findByCodeAndStatus(code, Long.valueOf(status), pageable);
+    public Page<Promotion> findByCodeContainsAndStatus(String code, Boolean status, Pageable pageable) {
+        return respository.findByCodeAndStatus(code, status, pageable);
     }
 
     public Optional<Promotion> findByCode(String code) {

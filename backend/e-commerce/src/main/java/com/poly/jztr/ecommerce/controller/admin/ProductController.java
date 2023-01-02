@@ -19,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @RestControllerAdvice("admin-products-controller")
 @CrossOrigin("http://localhost:3000")
@@ -99,11 +100,11 @@ public class ProductController {
     public ResponseEntity<ResponseObject> index(@RequestParam(defaultValue = "1") Integer page,
                                                 @RequestParam(defaultValue = "10") Integer perPage,
                                                 @RequestParam(defaultValue = "") String name,
-                                                @RequestParam(defaultValue = "-1") Integer status) {
+                                                @RequestParam() Optional<Boolean> status) {
         Pageable pageable = CustomPageable.getPage(page, perPage, "updatedAt", Constant.SORT_DESC);
         PageableSerializer data = null;
-        if (status == -1) data = new PageableSerializer(service.findByNameLike(name, pageable));
-        else data = new PageableSerializer(service.findByNameContainsAndStatus(name, status, pageable));
+        if (status.isEmpty()) data = new PageableSerializer(service.findByNameLike(name, pageable));
+        else data = new PageableSerializer(service.findByNameContainsAndStatus(name, status.get(), pageable));
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
                         "Get products successfully", data));

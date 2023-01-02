@@ -82,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
         return 0L;
     }
     @Override
-    public Page<Product> findByNameContainsAndStatus(String name, Integer status, Pageable pageable) {
+    public Page<Product> findByNameContainsAndStatus(String name, Boolean status, Pageable pageable) {
         return repository.findByNameContainsAndStatus(name, status, pageable);
     }
 
