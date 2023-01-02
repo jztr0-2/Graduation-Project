@@ -33,7 +33,7 @@ public interface PromotionService {
     Page<Promotion> findByCodeLContains(String code, Pageable pageable);
 
 
-    Page<Promotion> findByStatus(Integer code, Pageable pageable);
+    Page<Promotion> findByStatus(Boolean code, Pageable pageable);
 
     Page<Promotion> findByCodeContainsAndStatus(String code, Boolean status, Pageable pageable);
 

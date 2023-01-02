@@ -53,12 +53,13 @@ public class PromotionController {
 //    }
 
     @GetMapping("")
-    public ResponseEntity<ResponseObject> findByStatus(@RequestParam(defaultValue = "true") Optional<Boolean> status,
+    public ResponseEntity<ResponseObject> findByStatus(@RequestParam Optional<Boolean> status,
                                                        @RequestParam(defaultValue = "") String code,
                                                        @RequestParam(defaultValue = "1") Integer page,
                                                        @RequestParam(defaultValue = "10") Integer perPage){
         PageableSerializer data = null;
         Pageable pageable = CustomPageable.getPage(page, perPage);
+        System.err.println(status.isEmpty());
         if(status.isEmpty()) data = new PageableSerializer(service.findByCodeLContains(code, pageable));
         else data = new PageableSerializer(service.findByCodeContainsAndStatus(code, status.get(),pageable));
         return ResponseEntity.status(HttpStatus.OK).body(

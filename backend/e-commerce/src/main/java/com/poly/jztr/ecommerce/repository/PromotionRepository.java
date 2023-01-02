@@ -13,9 +13,9 @@ import java.util.Optional;
 public interface PromotionRepository extends JpaRepository<Promotion, Long> {
     Page<Promotion> findByCodeContains(String code, Pageable pageable);
 
-    Page<Promotion> findByStatus(Integer code, Pageable pageable);
+    Page<Promotion> findByStatus(Boolean code, Pageable pageable);
 
-    Page<Promotion> findByCodeAndStatus(String code, Boolean status, Pageable pageable);
+    Page<Promotion> findByCodeContainsAndStatus(String code, Boolean status, Pageable pageable);
 
     Optional<Promotion> findByCode(String code);
 }
