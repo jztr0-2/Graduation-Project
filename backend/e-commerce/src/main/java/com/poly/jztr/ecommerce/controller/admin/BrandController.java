@@ -5,6 +5,7 @@ import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.BrandDto;
 import com.poly.jztr.ecommerce.model.Brand;
+import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.service.BrandService;
 import org.springframework.beans.BeanUtils;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,5 +76,17 @@ public class BrandController {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Update brand success", service.save(brand)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseObject> delete(@PathVariable("id") Long id, Model model){
+        Optional<Brand> brand = service.findById(id);
+        if(brand.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Brand", null));
+        }
+        service.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Delete brand success", null));
     }
 }
