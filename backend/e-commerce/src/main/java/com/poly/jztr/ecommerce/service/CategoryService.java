@@ -28,4 +28,8 @@ public interface CategoryService {
 
     Category findTopSaleCategory();
     Page<Category> findPageCategory(Pageable pageable);
+
+    Page<Category> findByNameContains(String name, Pageable pageable);
+
+    Page<Category> findAll(Pageable pageable);
 }

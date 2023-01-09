@@ -25,4 +25,6 @@ public interface CategoryRespository extends JpaRepository<Category, Long>{
     Category findTopSaleCategory();
     @Query(name = "Category.findPageCategory")
     Page<Category> findPageCategory(Pageable pageable);
+
+    Page<Category> findByNameContains(String name, Pageable pageable);
 }
