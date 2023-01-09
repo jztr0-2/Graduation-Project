@@ -1,5 +1,6 @@
 package com.poly.jztr.ecommerce.serviceImpl;
 
+import com.poly.jztr.ecommerce.model.Brand;
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.repository.ProductRepository;
 import com.poly.jztr.ecommerce.serializer.ProductStatic;
@@ -98,5 +99,11 @@ public class ProductServiceImpl implements ProductService {
         Product product = repository.findById(productId).get();
         return repository.getRelatedProduct(product.getCategory().getId(), limit);
     }
+
+    @Override
+    public List<Product> findByBrandId(Brand id) {
+        return repository.findByBrand(id);
+    }
+
 
 }
