@@ -5,6 +5,7 @@ import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Product;
+import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.ImageService;
 import com.poly.jztr.ecommerce.service.ProductService;
@@ -146,6 +147,23 @@ public class CategoriesController {
     @GetMapping("/{id}/top_sale")
     public ResponseEntity<ResponseObject> getTopSaleByCategory(@PathVariable String id){
         return  null;
+    }
+
+    @GetMapping("name")
+    public ResponseEntity<ResponseObject> findByName(@RequestParam(defaultValue = "", name = "name") String name,
+                                                     @RequestParam(defaultValue = "1", name = "page") Integer page,
+                                                     @RequestParam(defaultValue = "10", name = "perPage") Integer perPage) {
+        PageableSerializer data = null;
+        Pageable pageable = CustomPageable.getPage(page, perPage);
+        if("".equals(name)) {
+            data = new PageableSerializer(service.findAll(pageable));
+        } else {
+            data = new PageableSerializer(service.findByNameContains(name,pageable));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data status successfully",
+                        data));
+
     }
 
 

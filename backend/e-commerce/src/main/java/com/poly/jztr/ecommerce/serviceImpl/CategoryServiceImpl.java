@@ -63,4 +63,14 @@ public class CategoryServiceImpl implements CategoryService {
     public Page<Category> findPageCategory(Pageable pageable) {
         return respository.findPageCategory(pageable);
     }
+
+    @Override
+    public Page<Category> findByNameContains(String name, Pageable pageable) {
+        return respository.findByNameContains(name, pageable);
+    }
+
+    @Override
+    public Page<Category> findAll(Pageable pageable) {
+        return respository.findAll(pageable);
+    }
 }
