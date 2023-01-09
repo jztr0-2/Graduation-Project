@@ -6,8 +6,10 @@ import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.BrandDto;
 import com.poly.jztr.ecommerce.model.Brand;
 import com.poly.jztr.ecommerce.model.Category;
+import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.service.BrandService;
+import com.poly.jztr.ecommerce.service.ProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,9 @@ public class BrandController {
 
     @Autowired
     BrandService service;
+
+    @Autowired
+    ProductService servicePro;
 
     @GetMapping("")
     public ResponseEntity<ResponseObject> findByStatus(@RequestParam(defaultValue = "") String name,
@@ -49,7 +54,7 @@ public class BrandController {
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND, "Not found brand", null));
         } else  {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND, "Find  brand", optBrand.get()));
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Find  brand", optBrand.get()));
         }
     }
 
@@ -79,14 +84,23 @@ public class BrandController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseObject> delete(@PathVariable("id") Long id, Model model){
+    public ResponseEntity<ResponseObject> delete(@PathVariable("id") Long id){
         Optional<Brand> brand = service.findById(id);
         if(brand.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Not Found Brand", null));
         }
-        service.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Delete brand success", null));
+
+        List<Product> list = servicePro.findByBrandId(brand.get());
+
+        if (!list.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_FAILED,
+                            "Can not delete brand because it being used in product", service.findById(id).get()));
+        } else {
+            service.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Delete brand success", null));
+        }
     }
 }
