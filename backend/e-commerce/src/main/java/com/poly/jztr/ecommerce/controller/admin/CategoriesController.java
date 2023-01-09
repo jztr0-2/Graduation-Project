@@ -1,21 +1,16 @@
 package com.poly.jztr.ecommerce.controller.admin;
 
+import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
+import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.ResponseObject;
@@ -33,7 +28,22 @@ public class CategoriesController {
     @Autowired
     CategoryService service;
 
+    @GetMapping("")
+    public ResponseEntity<ResponseObject> findByName(@RequestParam(defaultValue = "", name = "name") String name,
+                                                     @RequestParam(defaultValue = "1", name = "page") Integer page,
+                                                     @RequestParam(defaultValue = "10", name = "perPage") Integer perPage) {
+        PageableSerializer data = null;
+        Pageable pageable = CustomPageable.getPage(page, perPage);
+        if("".equals(name)) {
+            data = new PageableSerializer(service.findAll(pageable));
+        } else {
+            data = new PageableSerializer(service.findByNameContains(name,pageable));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data status successfully",
+                        data));
 
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getOne(@PathVariable("id") Long id){
@@ -97,4 +107,5 @@ public class CategoriesController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"", null));
     }
+
 }
