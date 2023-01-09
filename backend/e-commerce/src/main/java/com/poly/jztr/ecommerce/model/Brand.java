@@ -46,6 +46,7 @@ public class Brand {
 
     public void setName(String name) {
         this.name = name;
+        this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
     }
 
