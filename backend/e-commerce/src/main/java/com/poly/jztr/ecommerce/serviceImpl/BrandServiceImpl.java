@@ -47,4 +47,9 @@ public class BrandServiceImpl implements BrandService {
     public Page<Brand> findByName(String name, Pageable pageable) {
         return repository.findByNameContains(name, pageable);
     }
+
+    @Override
+    public void deleteById(Long aLong) {
+        repository.deleteById(aLong);
+    }
 }

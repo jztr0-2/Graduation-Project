@@ -21,4 +21,6 @@ public interface BrandService {
     Page<Brand> getAll(Pageable pageable);
 
     Page<Brand> findByName(String name, Pageable pageable);
+
+    void deleteById(Long aLong);
 }
