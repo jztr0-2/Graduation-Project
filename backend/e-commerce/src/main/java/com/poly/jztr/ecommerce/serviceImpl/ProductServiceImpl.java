@@ -1,5 +1,6 @@
 package com.poly.jztr.ecommerce.serviceImpl;
 
+import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.repository.ProductRepository;
 import com.poly.jztr.ecommerce.serializer.ProductStatic;
@@ -99,4 +100,8 @@ public class ProductServiceImpl implements ProductService {
         return repository.getRelatedProduct(product.getCategory().getId(), limit);
     }
 
+    @Override
+    public Page<Product> findByCategoryAndQuantityIsGreaterThan(Category category, Integer quantity, Pageable pageable) {
+        return repository.findByCategoryAndQuantityIsGreaterThan(category, quantity, pageable);
+    }
 }

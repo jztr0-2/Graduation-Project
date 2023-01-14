@@ -27,8 +27,4 @@ public class Image {
 
     @Column(name = "created_at")
     private Instant createdAt;
-
-    @ManyToOne()
-    @JoinColumn(name = "product_id")
-    private Product product;
 }

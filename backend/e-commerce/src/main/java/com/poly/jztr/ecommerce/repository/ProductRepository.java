@@ -1,5 +1,6 @@
 package com.poly.jztr.ecommerce.repository;
 
+import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByName(String name);
 
     Page<Product> findByNameContainsAndStatus(String name,Boolean status, Pageable pageable);
+
+    Page<Product> findByCategoryAndQuantityIsGreaterThan(Category category, Integer quantity, Pageable pageable);
     @Query(value = "SELECT products.* FROM order_items join products on " +
             "            products.id = order_items.product_id " +
             "            join categories on products.category_id = categories.id " +

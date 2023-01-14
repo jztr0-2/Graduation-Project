@@ -10,7 +10,5 @@ public interface ImageService {
 
     Optional<Image> findById(Long aLong);
 
-    List<Image> findByProductId(Long productId);
-
     Optional<Image> findByTitle(String title);
 }
