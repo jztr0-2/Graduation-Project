@@ -1,10 +1,7 @@
 package com.poly.jztr.ecommerce.serviceImpl;
 
-<<<<<<< HEAD
-import com.poly.jztr.ecommerce.model.Category;
-=======
 import com.poly.jztr.ecommerce.model.Brand;
->>>>>>> develop
+import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.repository.ProductRepository;
 import com.poly.jztr.ecommerce.serializer.ProductStatic;
@@ -105,15 +102,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-<<<<<<< HEAD
-    public Page<Product> findByCategoryAndQuantityIsGreaterThan(Category category, Integer quantity, Pageable pageable) {
-        return repository.findByCategoryAndQuantityIsGreaterThan(category, quantity, pageable);
-    }
-=======
     public List<Product> findByBrandId(Brand id) {
         return repository.findByBrand(id);
     }
 
 
->>>>>>> develop
+    public Page<Product> findByCategoryAndQuantityIsGreaterThan(Category category, Integer quantity, Pageable pageable) {
+        return repository.findByCategoryAndQuantityIsGreaterThan(category, quantity, pageable);
+    }
 }

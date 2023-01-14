@@ -1,10 +1,7 @@
 package com.poly.jztr.ecommerce.repository;
 
-<<<<<<< HEAD
-import com.poly.jztr.ecommerce.model.Category;
-=======
 import com.poly.jztr.ecommerce.model.Brand;
->>>>>>> develop
+import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
