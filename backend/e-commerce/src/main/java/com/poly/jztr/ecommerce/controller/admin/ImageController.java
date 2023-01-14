@@ -127,7 +127,6 @@ public class ImageController {
             Image image = new Image();
             image.setTitle(fileName);
             image.setType(type);
-            image.setProduct(new Product(productId));
             return service.save(image);
         } catch (IOException e) {
             throw new RuntimeException(e);

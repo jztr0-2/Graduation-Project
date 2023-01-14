@@ -25,11 +25,6 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public List<Image> findByProductId(Long productId) {
-        return repository.findByProductId(productId);
-    }
-
-    @Override
     public Optional<Image> findByTitle(String title) {
         return repository.findByTitle(title);
     }

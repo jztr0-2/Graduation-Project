@@ -38,6 +38,19 @@ public class CategoriesController {
                         "Get category successfully",
                         filterCategories));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> categoryWithAvailableProduct(@PathVariable Long id,
+                                                                       @RequestParam(defaultValue = "1") Integer page,
+                                                                       @RequestParam(defaultValue = "10") Integer perPage
+    ){
+        Page<Product> products = productService.findByCategoryAndQuantityIsGreaterThan(new Category(id),0,
+                CustomPageable.getPage(page,perPage));
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
+                        "Get category successfully",
+                        new PageableSerializer(products)));
+    }
     @GetMapping("/views/page")
     public ResponseEntity<ResponseObject> getPageCategory(
             @RequestParam("page") Optional<Integer> page,

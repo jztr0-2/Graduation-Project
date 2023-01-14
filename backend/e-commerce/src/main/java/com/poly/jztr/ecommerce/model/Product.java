@@ -60,10 +60,6 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "image_id")
-    private List<Image> image;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     @Fetch(FetchMode.JOIN)

@@ -429,9 +429,6 @@ public class UsersController {
         Image image = new Image();
         image.setTitle(fileName);
         image.setType(type);
-        if (id != 0L){
-            image.setProduct(new Product(id));
-        }
         return imageService.save(image);
     }
 }
