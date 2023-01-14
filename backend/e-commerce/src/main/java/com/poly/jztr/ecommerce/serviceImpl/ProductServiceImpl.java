@@ -110,4 +110,9 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> findByCategoryAndQuantityIsGreaterThan(Category category, Integer quantity, Pageable pageable) {
         return repository.findByCategoryAndQuantityIsGreaterThan(category, quantity, pageable);
     }
+
+    @Override
+    public Page<Product> findByBrandAndQuantityIsGreaterThan(Brand brand, Integer quantity, Pageable page) {
+        return repository.findByBrandAndQuantityIsGreaterThan(brand,quantity,page);
+    }
 }

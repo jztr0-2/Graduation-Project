@@ -22,6 +22,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByNameContainsAndStatus(String name,Boolean status, Pageable pageable);
 
     Page<Product> findByCategoryAndQuantityIsGreaterThan(Category category, Integer quantity, Pageable pageable);
+    Page<Product> findByBrandAndQuantityIsGreaterThan(Brand brand, Integer quantity, Pageable pageable);
+
     @Query(value = "SELECT products.* FROM order_items join products on " +
             "            products.id = order_items.product_id " +
             "            join categories on products.category_id = categories.id " +
