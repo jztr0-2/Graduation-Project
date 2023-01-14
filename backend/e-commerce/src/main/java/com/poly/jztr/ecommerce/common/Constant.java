@@ -20,6 +20,8 @@ public class Constant {
 
     public static String RESPONSE_STATUS_SUCCESS = "OK";
 
+    public static String RESPONSE_STATUS_FAILED = "Failed";
+
     public static String RESPONSE_STATUS_NOTFOUND = "NOT_FOUND";
 
     public static String RESPONSE_STATUS_UNPROCESSABLE_ENTITY = "UNPROCESSABLE_ENTITY";

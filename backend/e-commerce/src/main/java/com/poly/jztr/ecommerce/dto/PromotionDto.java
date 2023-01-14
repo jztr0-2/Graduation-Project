@@ -17,7 +17,7 @@ import java.time.Instant;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PromotionDto {
+public class    PromotionDto {
 
     private Long id;
 
@@ -36,5 +36,5 @@ public class PromotionDto {
     @NotNull
     private String startDate;
 
-    private Boolean status;
+
 }

@@ -1,7 +1,11 @@
 package com.poly.jztr.ecommerce.service;
 
 import com.poly.jztr.ecommerce.dto.ProductDto;
+<<<<<<< HEAD
 import com.poly.jztr.ecommerce.model.Category;
+=======
+import com.poly.jztr.ecommerce.model.Brand;
+>>>>>>> develop
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.serializer.ProductStatic;
 import org.springframework.data.domain.Page;
@@ -37,5 +41,9 @@ public interface ProductService {
 
     List<Product> findRelatedProduct(Long product_id);
 
+<<<<<<< HEAD
     Page<Product> findByCategoryAndQuantityIsGreaterThan(Category category, Integer quantity, Pageable pageable);
+=======
+    List<Product> findByBrandId(Brand id);
+>>>>>>> develop
 }

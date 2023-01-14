@@ -1,6 +1,10 @@
 package com.poly.jztr.ecommerce.repository;
 
+<<<<<<< HEAD
 import com.poly.jztr.ecommerce.model.Category;
+=======
+import com.poly.jztr.ecommerce.model.Brand;
+>>>>>>> develop
 import com.poly.jztr.ecommerce.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,8 +64,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(name = "Product.getProductsByCategoryId")
     Page<Product> getProductsByCategoryId(Long categoryId, Pageable pageable);
 
-
     @Query(nativeQuery = true,
     value = "SELECT products.* FROM products join categories on products.category_id = categories.id where categories.id = ?1 ORDER BY RAND() LIMIT ?2")
     List<Product> getRelatedProduct(Long categoryId, Integer limit);
+
+    List<Product> findByBrand(Brand id);
+
 }

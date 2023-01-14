@@ -162,6 +162,23 @@ public class CategoriesController {
         return  null;
     }
 
+    @GetMapping("name")
+    public ResponseEntity<ResponseObject> findByName(@RequestParam(defaultValue = "", name = "name") String name,
+                                                     @RequestParam(defaultValue = "1", name = "page") Integer page,
+                                                     @RequestParam(defaultValue = "10", name = "perPage") Integer perPage) {
+        PageableSerializer data = null;
+        Pageable pageable = CustomPageable.getPage(page, perPage);
+        if("".equals(name)) {
+            data = new PageableSerializer(service.findAll(pageable));
+        } else {
+            data = new PageableSerializer(service.findByNameContains(name,pageable));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data status successfully",
+                        data));
+
+    }
+
 
 
 //    class CategoriesControllerService {
