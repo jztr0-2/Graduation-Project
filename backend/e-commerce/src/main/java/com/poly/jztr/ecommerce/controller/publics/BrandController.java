@@ -41,6 +41,14 @@ public class BrandController {
                         data));
     }
 
+    @GetMapping("/index")
+    public ResponseEntity<ResponseObject> findAll() {
+        List<Long> ids = service.findBrandExistProduct();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get data status successfully",
+                        service.findByIdIn(ids)));
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<ResponseObject> findById(@PathVariable Long id,
                                                    @RequestParam(defaultValue = "1") Integer page,

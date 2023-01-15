@@ -52,4 +52,16 @@ public class BrandServiceImpl implements BrandService {
     public void deleteById(Long aLong) {
         repository.deleteById(aLong);
     }
+
+    @Override
+    public List<Long> findBrandExistProduct() {
+        return repository.findBrandIds();
+    }
+
+    @Override
+    public List<Brand> findByIdIn(List<Long> ids) {
+        return repository.findByIdIn(ids);
+    }
+
+
 }

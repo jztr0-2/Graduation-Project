@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.poly.jztr.ecommerce.common.Constant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -55,6 +58,11 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     private Image image;
+
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Favorite> favorites;
 
     public User(Long userId) {
         this.id = userId;
