@@ -23,4 +23,8 @@ public interface BrandService {
     Page<Brand> findByName(String name, Pageable pageable);
 
     void deleteById(Long aLong);
+
+    List<Long> findBrandExistProduct();
+
+    List<Brand> findByIdIn(List<Long> ids);
 }

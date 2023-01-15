@@ -6,6 +6,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
@@ -22,4 +23,8 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
 
     Page<Brand> findByNameContains(String name, Pageable pageable);
 
+    @Query(value = "select distinct  products.brand_id from products", nativeQuery = true)
+    List<Long> findBrandIds();
+
+    List<Brand> findByIdIn(List<Long> ids);
 }
