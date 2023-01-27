@@ -94,9 +94,10 @@ public class PromotionController {
         } else {
             promotion.setStatus(true);
         }
-        promotion = service.save(promotion);
+        service.save(promotion);
+        promotion = service.findByCode(promotionDto.getCode()).get();
         return ResponseEntity.status(HttpStatus.OK).body(
-        new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Created promotion successfully", service.save(promotion)));
+        new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Created promotion successfully", promotion));
     
     }
 
