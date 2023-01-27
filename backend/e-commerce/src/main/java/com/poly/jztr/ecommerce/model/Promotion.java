@@ -17,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "promotion")
 @Getter
+@Setter
 @Where(clause = "deleted_at is null")
 public class Promotion {
 
