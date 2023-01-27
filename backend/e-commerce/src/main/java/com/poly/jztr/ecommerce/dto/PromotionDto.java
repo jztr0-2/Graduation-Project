@@ -37,5 +37,4 @@ public class    PromotionDto {
     private String startDate;
 
 
-    private Boolean status;
 }
