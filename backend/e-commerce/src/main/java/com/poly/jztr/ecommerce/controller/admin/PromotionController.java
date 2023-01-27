@@ -113,13 +113,16 @@ public class PromotionController {
         Instant endDate = DateHelper.toDate(promotionDto.getEndDate(), "yyyy-MM-dd");
         promotion.setEndDate(endDate);
         promotion.setStartDate(startDate);
-        if (endDate.isBefore(startDate)) {
-            promotion.setStatus(false);
-        } else {
-            promotion.setStatus(true);
-        }
+//        if (endDate.isBefore(startDate)) {
+//            promotion.setStatus(false);
+//        } else {
+//            promotion.setStatus(true);
+//        }
+        promotion.setStatus(promotionDto.getStatus());
+        service.save(promotion);
+        promotion = service.findById(id).get();
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Promotion Success", service.save(promotion)));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Update Promotion Success", promotion));
     }
 
     @DeleteMapping("/{id}")
