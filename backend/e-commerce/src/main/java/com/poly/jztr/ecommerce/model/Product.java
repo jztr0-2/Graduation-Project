@@ -109,6 +109,6 @@ public class Product {
 
 
     public String getImage(){
-        return this.img != null ? Constant.BASE_API_URL + "public/image" + this.img : "";
+        return this.img != null ? Constant.BASE_API_URL + "public/images/" + this.img : "";
     }
 }
