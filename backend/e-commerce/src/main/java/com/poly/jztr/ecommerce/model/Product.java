@@ -1,11 +1,13 @@
 package com.poly.jztr.ecommerce.model;
 
 import com.poly.jztr.ecommerce.common.Constant;
+import com.poly.jztr.ecommerce.service.ImageService;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -26,7 +28,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Product {
-
     public Product() {
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
@@ -79,6 +80,11 @@ public class Product {
     @NotNull
     @Min(0)
     private Integer quantity;
+
+    @Column(name = "image")
+    private String img;
+
+
     public void setId(Long id) {
         this.id = id;
         this.updatedAt = Instant.now();
@@ -103,6 +109,6 @@ public class Product {
 
 
     public String getImage(){
-        return "";
+        return this.img != null ? Constant.BASE_API_URL + "public/image" + this.img : "";
     }
 }

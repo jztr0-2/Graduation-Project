@@ -5,6 +5,8 @@ import com.poly.jztr.ecommerce.common.CustomPageable;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.ProductDto;
 import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
+import com.poly.jztr.ecommerce.model.Brand;
+import com.poly.jztr.ecommerce.model.Category;
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.service.CategoryService;
@@ -89,6 +91,8 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ResponseObject> create(@RequestBody @Validated ProductDto dto) throws DuplicateEntryException {
         Product p = new Product();
+        p.setBrand(new Brand(dto.getBrandId()));
+        p.setCategory(new Category(dto.getCategoryId()));
         BeanUtils.copyProperties(dto,p);
 
         return ResponseEntity.status(HttpStatus.OK).body(

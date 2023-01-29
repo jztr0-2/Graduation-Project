@@ -98,6 +98,7 @@ public class ImageController {
             fileName = "product_avatar" + id + ".jpg";
             Image img= saveImg(file,fileName,type);
             Product product = productService.findById(Long.valueOf(id)).get();
+            product.setImg(fileName);
             productService.save(product);
         }else{
         }
