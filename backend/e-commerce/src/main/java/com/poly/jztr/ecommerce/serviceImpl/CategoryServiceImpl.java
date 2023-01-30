@@ -73,4 +73,9 @@ public class CategoryServiceImpl implements CategoryService {
     public Page<Category> findAll(Pageable pageable) {
         return respository.findAll(pageable);
     }
+
+    @Override
+    public Page<Category> getSellingLimit(Pageable pageable) {
+        return respository.getSellingLimit(pageable);
+    }
 }

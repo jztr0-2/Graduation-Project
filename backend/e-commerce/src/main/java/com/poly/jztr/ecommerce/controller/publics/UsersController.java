@@ -133,7 +133,7 @@ public class UsersController {
     public ResponseEntity<ResponseObject> register(@RequestBody() @Validated UserDto dto) throws DuplicateEntryException {
         User user = new User();
         if(service.findByEmail(dto.getEmail()).isPresent()) {
-            throw new DuplicateEntryException("Email", "Email is already exits");
+            throw new DuplicateEntryException("email", dto.getEmail() + " is already exits");
         }
         BeanUtils.copyProperties(dto, user);
         user.setStatus(Constant.USER_STATUS_ACTIVATED);

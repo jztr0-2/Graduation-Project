@@ -27,4 +27,5 @@ public interface CategoryRespository extends JpaRepository<Category, Long>{
     Page<Category> findPageCategory(Pageable pageable);
 
     Page<Category> findByNameContains(String name, Pageable pageable);
+    Page<Category> getSellingLimit(Pageable pageable);
 }

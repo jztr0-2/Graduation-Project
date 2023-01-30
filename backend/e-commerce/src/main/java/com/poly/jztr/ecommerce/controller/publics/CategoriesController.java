@@ -9,6 +9,7 @@ import com.poly.jztr.ecommerce.serializer.PageableSerializer;
 import com.poly.jztr.ecommerce.service.CategoryService;
 import com.poly.jztr.ecommerce.service.ImageService;
 import com.poly.jztr.ecommerce.service.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController("public/categories")
 @RequestMapping("api/v1/public/categories")
 public class CategoriesController {
@@ -32,7 +34,14 @@ public class CategoriesController {
     public ResponseEntity<ResponseObject> getAll(){
         List<Category> categories = service.findAll();
         // filter categories is exists products
-        List<Category> filterCategories = categories.stream().filter(category -> !category.getProducts().isEmpty()).collect(Collectors.toList());
+        List<Category> filterCategories = categories.stream().filter(category ->
+        { if (category.getProducts().isEmpty()) {
+            return false;
+        } else {
+            category.setQuantityProduct(category.getProducts().size());
+            return true;
+        }}).collect(Collectors.toList());
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
                         "Get category successfully",
@@ -178,8 +187,18 @@ public class CategoriesController {
                         data));
 
     }
+    @GetMapping("/selling")
+    public ResponseEntity<ResponseObject> getSellingCategoryLimit(
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("limit") Optional<Integer> limit
+    ) {
+        Pageable pageable = CustomPageable.getPage(page.orElse(1), limit.orElse(10));
 
-
+        Page<Category> categories = service.getSellingLimit(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK", categories.getContent())
+        );
+    }
 
 //    class CategoriesControllerService {
 //        public List<ProductSerializer> toProductSerializer(List<Product> products) {

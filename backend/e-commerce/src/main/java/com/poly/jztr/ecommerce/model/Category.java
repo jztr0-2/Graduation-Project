@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
@@ -17,6 +18,10 @@ import java.util.List;
         @NamedQuery(
                 name = "Category.findPageCategory",
                 query = "SELECT c FROM Category c WHERE c.products.size > 1"
+        ),
+        @NamedQuery(
+                name = "Category.getSellingLimit",
+                query = "SELECT o.product.category FROM OrderItem o group by o.product.category ORDER BY COUNT(o.product.category) DESC"
         )
 })
 
@@ -45,6 +50,10 @@ public class Category {
     @JsonIgnore
     private List<Product> products;
 
+    // This field not column in db
+    @JsonInclude()
+    @Transient
+    private int quantityProduct;
    public Category(){
     this.createdAt = Instant.now();
     this.updatedAt = Instant.now();
@@ -79,6 +88,8 @@ public class Category {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
-        
+    }
+    public void setQuantityProduct(int quantityProduct) {
+       this.quantityProduct = quantityProduct;
     }
 }
