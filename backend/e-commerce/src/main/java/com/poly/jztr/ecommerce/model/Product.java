@@ -1,5 +1,6 @@
 package com.poly.jztr.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.service.ImageService;
 import lombok.Getter;
@@ -16,10 +17,18 @@ import java.time.Instant;
 import java.util.List;
 
 @NamedQueries({
-    @NamedQuery(
-        name = "Product.getProductsByCategoryId",
-        query = "SELECT p FROM Product p WHERE p.category.id = ?1"
-    )
+        @NamedQuery(
+            name = "Product.getProductsByCategoryId",
+            query = "SELECT p FROM Product p WHERE p.category.id = ?1"
+        ),
+        @NamedQuery(
+                name = "Product.countProducts",
+                query = "SELECT COUNT(p) FROM Product p WHERE p.quantity > 0"
+        ),
+        @NamedQuery(
+                name = "Product.searchProducts",
+                query = "SELECT p FROM Product p WHERE p.quantity > 0 and  p.name like ?1"
+        )
 })
 
 @Entity

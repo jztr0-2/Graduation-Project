@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface OrderItemService {
     List<OrderItem> toOrderItem(List<OrderItemDto> dtos);
+    Integer totalSoldProductsByProductId(Long id);
 }

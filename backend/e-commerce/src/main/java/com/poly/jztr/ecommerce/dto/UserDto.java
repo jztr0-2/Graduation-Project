@@ -36,11 +36,11 @@ public class UserDto {
 
     @NotBlank
     @Length(max = 255)
-    @Pattern(message = "Password is invalid",regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
+//    @Pattern(message = "Password is invalid",regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
     private String password;
 
     @NotBlank
-    @Pattern(message = "Password confirmation is invalid",regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
+//    @Pattern(message = "Password confirmation is invalid",regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
     @Length(max = 255)
     private String passwordConfirmation;
 }
