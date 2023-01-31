@@ -1,5 +1,6 @@
 package com.poly.jztr.ecommerce.controller.publics;
 
+import com.google.gson.*;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
@@ -9,17 +10,21 @@ import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
 import com.poly.jztr.ecommerce.model.*;
 import com.poly.jztr.ecommerce.repository.BrandRepository;
 import com.poly.jztr.ecommerce.service.*;
+import com.poly.jztr.ecommerce.serviceImpl.OrderServiceImpl;
+import lombok.Getter;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -42,6 +47,7 @@ import java.util.*;
 @RestControllerAdvice("public/user")
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/public/users")
+@EnableAsync
 public class UsersController {
 
     @Autowired
@@ -431,4 +437,48 @@ public class UsersController {
         image.setType(type);
         return imageService.save(image);
     }
+
+    @GetMapping("test_as")
+    public ResponseEntity<ResponseObject> testAsync() throws InterruptedException {
+        System.out.println("Start Reqiest");
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "OK", "OK"));
+    }
+
+    @GetMapping("test_rq")
+    public String test_rq(){
+        RestTemplate restTemplate = new RestTemplate();
+        Gson gson = new GsonBuilder().create();
+        JsonElement jsonElement = gson.toJsonTree(new Body("17336af9-1e94-48ec-9313-79a8ab453d11"));
+        JsonObject jsonObject = (JsonObject) jsonElement;
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<String>(jsonObject.toString(), headers);
+
+        String json = restTemplate.exchange("https://momosv3.apimienphi.com/api/checkTranContent", HttpMethod.POST,
+                entity,String.class).getBody();
+        System.out.println(json);
+        jsonObject = JsonParser.parseString(json).getAsJsonObject();
+        jsonObject.keySet().stream().forEach(s -> System.out.println(s));
+        Long totalStringLong = Long.valueOf(jsonObject.get("data").getAsJsonObject().get("amount").getAsString());
+        if (((totalStringLong +1) > 10000) && ((10000 + 1) > totalStringLong)){
+            return "true";
+        }
+        return "false";
+    }
+
+    private class Body{
+    private String access_token;
+    private String phone;
+    private String content;
+
+    public Body(String content){
+        this.access_token = "lKUQyUPaG5hdMcJzQvSrFfDhckl8LTVdACbVCG3e6AG3zmGI1B";
+        this.phone = "0973588761";
+        this.content = content;
+    }
+}
+
 }

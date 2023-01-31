@@ -9,14 +9,13 @@ public class Constant {
 
     public static Integer ORDER_STATUS_SUCCESS = 1;
 
+    public static  Integer ORDER_STATUS_WAITING_FOR_PAYMENT = 3;
+
     public static Integer ORDER_STATUS_CANCEL = 2;
 
+    public static Integer ORDER_PAYMENT_METHOD_COD = 0;
 
-    public static String S_ORDER_STATUS_PENDING = "Pending";
-
-    public static String S_ORDER_STATUS_SUCCESS = "Success";
-
-    public static String S_ORDER_STATUS_CANCEL = "Cancel";
+    public static Integer ORDER_PAYMENT_METHOD_MOMO = 1;
 
     public static String RESPONSE_STATUS_SUCCESS = "OK";
 
