@@ -7,6 +7,12 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.Instant;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "OrderItem.totalSoldProductsByProductId",
+                query = "SELECT sum(o.quantity) FROM OrderItem o WHERE o.product.id = ?1 And o.order.status = 1"
+        )
+})
 @Entity
 @Table(name = "order_items")
 @Getter

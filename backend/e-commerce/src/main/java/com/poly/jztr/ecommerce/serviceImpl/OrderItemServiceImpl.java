@@ -5,6 +5,8 @@ import com.poly.jztr.ecommerce.model.OrderItem;
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.service.OrderItemService;
 import com.poly.jztr.ecommerce.service.ProductService;
+import com.poly.jztr.ecommerce.repository.OrderItemRepository;
+import com.poly.jztr.ecommerce.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,10 @@ public class OrderItemServiceImpl implements OrderItemService {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
+
     @Override
     public List<OrderItem> toOrderItem(List<OrderItemDto> dtos){
        return dtos.stream().map(dto ->{
@@ -25,5 +31,10 @@ public class OrderItemServiceImpl implements OrderItemService {
            orderItem.setProduct(new Product(dto.getProductId()));
            return  orderItem;
        }) .collect(Collectors.toList());
+    }
+
+    @Override
+    public Integer totalSoldProductsByProductId(Long id) {
+        return orderItemRepository.totalSoldProductsByProductId(id);
     }
 }

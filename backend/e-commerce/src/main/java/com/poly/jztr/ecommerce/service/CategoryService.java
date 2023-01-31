@@ -32,4 +32,5 @@ public interface CategoryService {
     Page<Category> findByNameContains(String name, Pageable pageable);
 
     Page<Category> findAll(Pageable pageable);
+    Page<Category> getSellingLimit(Pageable pageable);
 }

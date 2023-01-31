@@ -42,4 +42,7 @@ public interface ProductService {
     Page<Product> findByCategoryAndQuantityIsGreaterThan(Category category, Integer quantity, Pageable pageable);
 
     Page<Product> findByBrandAndQuantityIsGreaterThan(Brand brand, Integer quantity, Pageable page);
+    int countProducts();
+    Page<Product> searchProducts(String searchName, Pageable pageable);
+    List<Product> randomProducts(Long id, int limit);
 }

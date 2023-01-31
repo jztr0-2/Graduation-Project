@@ -68,5 +68,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> getRelatedProduct(Long categoryId, Integer limit);
 
     List<Product> findByBrand(Brand id);
-
+    int countProducts();
+    Page<Product> searchProducts(String searchName, Pageable pageable);
+    @Query(
+            nativeQuery = true,
+            value = "SELECT * FROM products WHERE products.id != ?1 and products.quantity > 0 ORDER BY RAND() LIMIT ?2"
+    )
+    List<Product> randomProducts(Long id, int limit);
 }
