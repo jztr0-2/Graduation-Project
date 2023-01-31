@@ -229,13 +229,13 @@ public class OrderServiceImpl implements OrderService {
     @Async
     public void checkPayment(Long id) throws InterruptedException {
         Order order = repository.findById(id).get();
-        for (int i = 0; i < 6; i ++){
+        for (int i = 0; i < 18; i ++){
             if(checkMomo(order.getPaymentCode(), order.getTotal())){
                 order.setStatus(Constant.ORDER_STATUS_PENDING);
                 save(order);
                 return;
             }
-            if (i == 5){
+            if (i == 17){
                 order.setDeletedAt(Instant.now());
                 save(order);
                 return;
@@ -266,7 +266,7 @@ public class OrderServiceImpl implements OrderService {
                     entity,String.class).getBody();
             System.out.println(json);
             jsonObject = JsonParser.parseString(json).getAsJsonObject();
-            Long totalStringLong = Long.valueOf(jsonObject.get("originalAmount").getAsString());
+            Long totalStringLong = Long.valueOf(jsonObject.get("data").getAsJsonObject().get("amount").getAsString());
             if (((totalStringLong +1) > total) && ((total + 1) > totalStringLong)){
                 return true;
             }
@@ -288,9 +288,4 @@ public class OrderServiceImpl implements OrderService {
             this.content = content;
         }
     }
-
-    private class Response{
-
-    }
-
 }
