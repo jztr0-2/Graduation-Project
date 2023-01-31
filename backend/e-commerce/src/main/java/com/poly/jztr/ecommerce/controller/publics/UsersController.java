@@ -9,6 +9,7 @@ import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
 import com.poly.jztr.ecommerce.model.*;
 import com.poly.jztr.ecommerce.repository.BrandRepository;
 import com.poly.jztr.ecommerce.service.*;
+import lombok.Getter;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -16,6 +17,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +45,7 @@ import java.util.*;
 @RestControllerAdvice("public/user")
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/public/users")
+@EnableAsync
 public class UsersController {
 
     @Autowired
@@ -431,4 +435,12 @@ public class UsersController {
         image.setType(type);
         return imageService.save(image);
     }
+
+    @GetMapping("test_as")
+    public ResponseEntity<ResponseObject> testAsync() throws InterruptedException {
+        System.out.println("Start Reqiest");
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "OK", "OK"));
+    }
+
 }

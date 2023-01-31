@@ -50,6 +50,12 @@ public class Order {
     @Column(name = "total")
     private Double total;
 
+    @Column(name = "payment_code")
+    private String paymentCode;
+
+    @Column(name = "payment_method")
+    private Integer paymentMethod;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
     @Fetch(FetchMode.SUBSELECT)
     private List<OrderItem> orderItems;

@@ -1,5 +1,6 @@
 package com.poly.jztr.ecommerce.serviceImpl;
 
+import com.google.gson.*;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.dto.OrderDto;
 import com.poly.jztr.ecommerce.model.*;
@@ -8,12 +9,21 @@ import com.poly.jztr.ecommerce.repository.OrderRepository;
 import com.poly.jztr.ecommerce.service.OrderItemService;
 import com.poly.jztr.ecommerce.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
 import com.poly.jztr.ecommerce.service.PromotionService;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -112,10 +122,10 @@ public class OrderServiceImpl implements OrderService {
             } else {
                 throw new TransactionSystemException("promotionInvalid");
             }
+        }else{
+            entity.setTotal(total.get());
         }
-        repository.save(entity);
-        return null;
-
+        return repository.save(entity);
     }
 
     private boolean checkPromo(Optional<Promotion> optPro) {
@@ -214,4 +224,73 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> findByPhone(String phone) {
         return repository.findByAddressPhone(phone);
     }
+
+    @Override
+    @Async
+    public void checkPayment(Long id) throws InterruptedException {
+        Order order = repository.findById(id).get();
+        for (int i = 0; i < 6; i ++){
+            if(checkMomo(order.getPaymentCode(), order.getTotal())){
+                order.setStatus(Constant.ORDER_STATUS_PENDING);
+                save(order);
+                return;
+            }
+            if (i == 5){
+                order.setDeletedAt(Instant.now());
+                save(order);
+                return;
+            }
+            Thread.sleep(10000);
+        }
+    }
+
+    private boolean checkMomo(String paymentCode, double total){
+        try{
+//            String accessToken = "lKUQyUPaG5hdMcJzQvSrFfDhckl8LTVdACbVCG3e6AG3zmGI1B";
+//            WebClient client = WebClient.create("https://momosv3.apimienphi.com/api/checkTranContent");
+//            System.out.println("Send Momo");
+//            String json = client.post().body(BodyInserters.fromObject(new Body(accessToken,paymentCode))).exchange()
+//                    .block().bodyToMono(String.class).block();
+
+            RestTemplate restTemplate = new RestTemplate();
+            Gson gson = new GsonBuilder().create();
+            JsonElement jsonElement = gson.toJsonTree(new Body(paymentCode));
+            JsonObject jsonObject = (JsonObject) jsonElement;
+
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<String> entity = new HttpEntity<String>(jsonObject.toString(), headers);
+
+            String json = restTemplate.exchange("https://momosv3.apimienphi.com/api/checkTranContent", HttpMethod.POST,
+                    entity,String.class).getBody();
+            System.out.println(json);
+            jsonObject = JsonParser.parseString(json).getAsJsonObject();
+            Long totalStringLong = Long.valueOf(jsonObject.get("originalAmount").getAsString());
+            if (((totalStringLong +1) > total) && ((total + 1) > totalStringLong)){
+                return true;
+            }
+            return false;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private class Body{
+        private String access_token;
+        private String phone;
+        private String content;
+
+        public Body(String content){
+            this.access_token = "lKUQyUPaG5hdMcJzQvSrFfDhckl8LTVdACbVCG3e6AG3zmGI1B";
+            this.phone = "0973588761";
+            this.content = content;
+        }
+    }
+
+    private class Response{
+
+    }
+
 }

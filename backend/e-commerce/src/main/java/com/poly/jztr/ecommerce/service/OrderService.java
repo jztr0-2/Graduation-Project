@@ -5,6 +5,7 @@ import com.poly.jztr.ecommerce.model.Order;
 import com.poly.jztr.ecommerce.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
@@ -53,4 +54,7 @@ public interface OrderService {
     Order updateStatus(Order order);
 
     List<Order> findByPhone(String phone);
+
+    @Async
+    void checkPayment(Long id) throws InterruptedException;
 }
