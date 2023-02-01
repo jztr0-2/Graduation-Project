@@ -45,6 +45,9 @@ public class OrderController {
 
     @GetMapping("")
     public ResponseEntity<ResponseObject> findByStatus(@RequestParam(defaultValue = "-1") Integer status,
+                                                       @RequestParam(defaultValue = "") String email,
+                                                       @RequestParam(defaultValue = "") String phone,
+                                                       @RequestParam(defaultValue = "-1") Long id,
                                                        @RequestParam(defaultValue = "1") Integer page,
                                                        @RequestParam(defaultValue = "10") Integer perPage,
                                                        @RequestParam(defaultValue = "2020-12-28") String startDate,
@@ -58,18 +61,29 @@ public class OrderController {
         Instant start = DateHelper.toDate(startDate,"yyyy-MM-dd");
         Instant end = DateHelper.toDate(endDate,"yyyy-MM-dd");
         System.out.println(start + " "+ end);
+
+        if(id != -1) {
+            Optional<Order> opt = service.findById(id);
+            if (opt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                        new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Order not found", null));
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully", opt.get()));
+        }
+
         if(status == -1) {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
-                            service.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(start,end,min,max,name,pageable)));
+                            service.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContainsAndUserEmailContainsAndUserPhoneContainsAndIdContains
+                                    (start,end,min,max,name,email,phone,pageable)));
         }
-
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully",
                         new PageableSerializer(
-                                service.findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanAndTotalLessThan(status,start,end,min,
-                                        max,name, pageable))));
+                                service.findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContainsAndUserEmailContainsAndUserPhoneContainsAndIdContains
+                                        (status,start,end,min,max,name,email,phone,pageable))));
     }
 
     @GetMapping("username")

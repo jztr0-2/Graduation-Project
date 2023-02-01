@@ -24,8 +24,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContains(Integer status,
                 Instant start,Instant end, Double min, Double max, String name,Pageable pageable);
 
+    Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContainsAndUserEmailContainsAndUserPhoneContains
+            (Integer status, Instant start,Instant end, Double min, Double max, String name, String email, String phone,  Pageable pageable);
+
     Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContains
             (Instant start,Instant end, Double min, Double max,String name, Pageable pageable);
+
+    Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContainsAndUserEmailContainsAndUserPhoneContains
+            (Instant start,Instant end, Double min, Double max,String name, String email, String phone, Pageable pageable);
 
     @Query(value = "select SUM(order_items.unit_price * order_items.quantity) from orders join order_items on order_items.order_id = orders.id" +
             " join products on order_items.product_id = products.id where orders.status = 1 and orders.created_at > ?",
