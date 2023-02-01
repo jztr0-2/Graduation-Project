@@ -49,6 +49,10 @@ public interface OrderService {
     <S extends Order> S save(S entity, String code);
 
 
+    Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContainsAndUserEmailContainsAndUserPhoneContainsAndIdContains(Integer status, Instant start, Instant end, Double min, Double max, String name, String email, String phone, Pageable pageable);
+
+    Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContainsAndUserEmailContainsAndUserPhoneContainsAndIdContains(Instant start, Instant end, Double min, Double max, String name, String email, String phone, Pageable pageable);
+
     Optional<Order> findByPromotion(String code);
 
     Order updateStatus(Order order);

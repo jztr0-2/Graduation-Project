@@ -9,7 +9,6 @@ import com.poly.jztr.ecommerce.repository.OrderRepository;
 import com.poly.jztr.ecommerce.service.OrderItemService;
 import com.poly.jztr.ecommerce.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
@@ -22,8 +21,6 @@ import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
 import com.poly.jztr.ecommerce.service.PromotionService;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -208,6 +205,15 @@ public class OrderServiceImpl implements OrderService {
             (Instant start, Instant end, Double min, Double max, String name , Pageable pageable) {
         return repository.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContains
                 (start, end, min, max, name,pageable);
+    }
+
+    @Override
+    public Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContainsAndUserEmailContainsAndUserPhoneContainsAndIdContains(Integer status, Instant start, Instant end, Double min, Double max, String name, String email, String phone, Pageable pageable) {
+        return repository.findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContainsAndUserEmailContainsAndUserPhoneContains(status, start, end, min, max, name, email, phone, pageable);
+    }
+    @Override
+    public Page<Order> findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContainsAndUserEmailContainsAndUserPhoneContainsAndIdContains(Instant start, Instant end, Double min, Double max, String name, String email, String phone, Pageable pageable) {
+        return repository.findByCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContainsAndUserEmailContainsAndUserPhoneContains(start, end, min, max, name, email, phone, pageable);
     }
 
     @Override
