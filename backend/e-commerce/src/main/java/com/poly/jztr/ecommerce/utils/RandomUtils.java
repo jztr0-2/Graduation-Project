@@ -1,5 +1,6 @@
 package com.poly.jztr.ecommerce.utils;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomUtils {
@@ -23,5 +24,13 @@ public class RandomUtils {
      */
     public static Long randomLong(long min, long max) {
         return ThreadLocalRandom.current().nextLong() * (max - min) + min;
+    }
+
+    public static String generate6DigitCode(){
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+
+        // this will convert any number sequence into 6 character.
+        return String.format("%06d", number);
     }
 }
