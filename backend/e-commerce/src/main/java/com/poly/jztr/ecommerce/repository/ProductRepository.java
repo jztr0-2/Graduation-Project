@@ -75,4 +75,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             value = "SELECT * FROM products WHERE products.id != ?1 and products.quantity > 0 ORDER BY RAND() LIMIT ?2"
     )
     List<Product> randomProducts(Long id, int limit);
+    Page<Product> getNewProducts(Pageable pageable);
+    @Query(
+            nativeQuery = true,
+            value = "SELECT * FROM products WHERE products.created_at > (SELECT DATE_SUB(MAX(products.created_at), INTERVAL '7' DAY) FROM products)"
+    )
+    Page<Product> getCurrentCreatedProducts(Pageable pageable);
 }

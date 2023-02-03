@@ -11,7 +11,17 @@ import java.time.Instant;
         @NamedQuery(
                 name = "OrderItem.totalSoldProductsByProductId",
                 query = "SELECT sum(o.quantity) FROM OrderItem o WHERE o.product.id = ?1 And o.order.status = 1"
+        ),
+        @NamedQuery(
+                name = "OrderItem.getDealOfDay",
+                query = "SELECT o.product FROM OrderItem o WHERE o.updatedAt = (SELECT MAX(o.updatedAt) FROM OrderItem o) " +
+                        "GROUP BY o.product ORDER BY count(o.product) DESC "
+        ),
+        @NamedQuery(
+                name = "OrderItem.getBestSellerProducts",
+                query = "SELECT o.product FROM OrderItem o GROUP BY o.product ORDER BY COUNT (o.product) DESC"
         )
+
 })
 @Entity
 @Table(name = "order_items")

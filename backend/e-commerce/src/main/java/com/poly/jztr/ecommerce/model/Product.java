@@ -1,6 +1,7 @@
 package com.poly.jztr.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.service.ImageService;
 import lombok.Getter;
@@ -28,6 +29,10 @@ import java.util.List;
         @NamedQuery(
                 name = "Product.searchProducts",
                 query = "SELECT p FROM Product p WHERE p.quantity > 0 and  p.name like ?1"
+        ),
+        @NamedQuery(
+                name = "Product.getNewProducts",
+                query = "SELECT p FROM Product p WHERE p.quantity > 0 ORDER BY p.createdAt DESC"
         )
 })
 
@@ -93,6 +98,9 @@ public class Product {
     @Column(name = "image")
     private String img;
 
+    @JsonInclude()
+    @Transient
+    private int totalSoldProduct;
 
     public void setId(Long id) {
         this.id = id;
