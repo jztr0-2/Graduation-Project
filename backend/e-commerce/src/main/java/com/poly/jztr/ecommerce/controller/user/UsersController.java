@@ -24,6 +24,7 @@ public class UsersController {
     @GetMapping()
     public ResponseEntity<ResponseObject> info(@RequestHeader(value = "Authorization") String jwt){
         User user = getUserByToken(jwt);
+        System.out.println(jwtProvider.getUsernameFromToken(jwt));
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
                 Constant.RESPONSE_STATUS_SUCCESS, "Get user info", user));
     }
