@@ -45,4 +45,6 @@ public interface ProductService {
     int countProducts();
     Page<Product> searchProducts(String searchName, Pageable pageable);
     List<Product> randomProducts(Long id, int limit);
+    Page<Product> getNewProducts(Pageable pageable);
+    Page<Product> getCurrentCreatedProducts(Pageable pageable);
 }

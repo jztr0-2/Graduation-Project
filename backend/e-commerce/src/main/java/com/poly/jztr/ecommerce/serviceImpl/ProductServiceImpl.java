@@ -130,4 +130,14 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> randomProducts(Long id, int limit) {
         return repository.randomProducts(id, limit);
     }
+
+    @Override
+    public Page<Product> getNewProducts(Pageable pageable) {
+        return repository.getNewProducts(pageable);
+    }
+
+    @Override
+    public Page<Product> getCurrentCreatedProducts(Pageable pageable) {
+        return repository.getCurrentCreatedProducts(pageable);
+    }
 }

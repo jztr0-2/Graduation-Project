@@ -160,4 +160,77 @@ public class ProductsController {
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK", products)
         );
     }
+    @GetMapping("/new")
+    public ResponseEntity<ResponseObject> getNewProducts(
+            @RequestParam("curPage") Optional<Integer> curPage,
+            @RequestParam("limit") Optional<Integer> limit
+    ) {
+        Pageable pageable = CustomPageable.getPage(curPage.orElse(1), limit.orElse(8));
+        Page<Product> page = service.getNewProducts(pageable);
+        if (page.getContent() != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK", page.getContent())
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND, "NOT FOUND", "")
+            );
+        }
+    }
+    @GetMapping("/selling/today")
+    public ResponseEntity<ResponseObject> getDealOfDay(
+            @RequestParam("curPage") Optional<Integer> curPage,
+            @RequestParam("limit") Optional<Integer> limit
+    ) {
+        Pageable pageable = CustomPageable.getPage(curPage.orElse(1), limit.orElse(3));
+        Page<Product> page = orderItemService.getDealOfDay(pageable);
+
+        if (page != null) {
+            List<Product> products = page.getContent();
+            for (Product product : products) {
+                product.setTotalSoldProduct(orderItemService.totalSoldProductsByProductId(product.getId()));
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK", products)
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND, "NOT FOUND", "")
+            );
+        }
+    }
+    @GetMapping("/current/created")
+    public ResponseEntity<ResponseObject> getCurrentCreatedProducts(
+            @RequestParam("curPage") Optional<Integer> curPage,
+            @RequestParam("limit") Optional<Integer> limit
+    ) {
+        Pageable pageable = CustomPageable.getPage(curPage.orElse(1), limit.orElse(8));
+        Page<Product> page = service.getCurrentCreatedProducts(pageable);
+        if (!page.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK", new PageableSerializer(page))
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND, "NOT FOUND", "")
+            );
+        }
+    }
+    @GetMapping("/best/seller")
+    public ResponseEntity<ResponseObject> getBestSellerProducts(
+            @RequestParam("limit") Optional<Integer> limit,
+            @RequestParam("curPage") Optional<Integer> curPage
+    ) {
+        Pageable pageable = CustomPageable.getPage(curPage.orElse(1), limit.orElse(4));
+        Page<Product> page = orderItemService.getBestSellerProducts(pageable);
+        if (!page.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK", page.getContent())
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND, "NOT FOUND", "")
+            );
+        }
+    }
 }

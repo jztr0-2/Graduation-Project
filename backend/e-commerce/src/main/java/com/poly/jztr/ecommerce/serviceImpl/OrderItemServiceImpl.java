@@ -5,9 +5,12 @@ import com.poly.jztr.ecommerce.model.OrderItem;
 import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.service.OrderItemService;
 import com.poly.jztr.ecommerce.service.ProductService;
+import com.poly.jztr.ecommerce.model.Product;
 import com.poly.jztr.ecommerce.repository.OrderItemRepository;
 import com.poly.jztr.ecommerce.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,5 +39,15 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public Integer totalSoldProductsByProductId(Long id) {
         return orderItemRepository.totalSoldProductsByProductId(id);
+    }
+
+    @Override
+    public Page<Product> getDealOfDay(Pageable pageable) {
+        return orderItemRepository.getDealOfDay(pageable);
+    }
+
+    @Override
+    public Page<Product> getBestSellerProducts(Pageable pageable) {
+        return orderItemRepository.getBestSellerProducts(pageable);
     }
 }
