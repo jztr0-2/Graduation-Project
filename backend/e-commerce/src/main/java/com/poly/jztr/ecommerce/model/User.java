@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.poly.jztr.ecommerce.common.Constant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
@@ -16,6 +17,7 @@ import java.util.List;
 @Table(name = "users")
 @NoArgsConstructor
 @Getter
+@Setter
 @Where(clause = "deleted_at is null")
 public class User {
     @Id
@@ -59,6 +61,11 @@ public class User {
     @JoinColumn(name = "image_id")
     private Image image;
 
+    @Column(name = "reset_password_token")
+    private String resetToken;
+
+    @Column(name = "reset_sent_at")
+    private Instant resetSentAt;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @Fetch(FetchMode.SUBSELECT)
@@ -84,6 +91,15 @@ public class User {
     }
 
     public void setPhone(String phone){
+        if(phone.startsWith("+84")){
+            this.phone = phone.replace("+84","0");
+            this.updatedAt = Instant.now();
+            return;
+        }else if(phone.startsWith("84")){
+            this.phone = "0" + phone.substring(2);
+            this.updatedAt = Instant.now();
+            return;
+        }
         this.phone = phone;
         this.updatedAt = Instant.now();
     }

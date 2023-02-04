@@ -27,6 +27,7 @@ public class PageableSerializer {
         this.totalPage = page.getTotalPages();
         this.currentPage = page.getNumber() + 1;
         this.content = page.getContent();
+        this.perPage = page.getPageable().getPageSize();
     }
     private Object content;
 
@@ -35,4 +36,5 @@ public class PageableSerializer {
     private int totalPage;
     private long totalItem;
     private boolean prevPage;
+    private int perPage;
 }

@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.configuration.jwt.JwtProvider;
+import com.poly.jztr.ecommerce.dto.ChangePasswordDto;
 import com.poly.jztr.ecommerce.dto.LoginDto;
 import com.poly.jztr.ecommerce.dto.UserDto;
 import com.poly.jztr.ecommerce.expection.DuplicateEntryException;
@@ -11,6 +12,7 @@ import com.poly.jztr.ecommerce.model.*;
 import com.poly.jztr.ecommerce.repository.BrandRepository;
 import com.poly.jztr.ecommerce.service.*;
 import com.poly.jztr.ecommerce.serviceImpl.OrderServiceImpl;
+import com.poly.jztr.ecommerce.utils.RandomUtils;
 import lombok.Getter;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -41,6 +43,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
@@ -68,7 +71,6 @@ public class UsersController {
     @Autowired
     ProductService productService;
 
-
     @Autowired
     OrderService orderService;
 
@@ -83,13 +85,56 @@ public class UsersController {
 
     @Autowired PromotionService promotionService;
 
+    @PostMapping("/generate-forgot-password")
+    public  ResponseEntity<ResponseObject> changePass(@RequestParam String phone){
+        System.out.println(phone);
+        Optional<User> user = service.findByPhone(phone);
+        if(user.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Phone number is not found", "")
+            );
+        }
+        User user1 = user.get();
+        String code = RandomUtils.generate6DigitCode();
+        user1.setResetToken(passwordEncoder.encode(code));
+        user1.setResetSentAt(Instant.now());
+        service.save(user1);
+        sendSMSService.send(phone, code + " Is your reset password code");
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "OK", code)
+        );
+    }
+
+    @PostMapping("reset-password")
+    public ResponseEntity<ResponseObject> resetPassword(@RequestBody ChangePasswordDto dto){
+        User user  = service.findByPhone(dto.getPhone()).get();
+        if(!dto.getPassword().equals(dto.getPasswordConfirmation())){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY, "Password not match",""));
+        }
+        if(passwordEncoder.matches(dto.getCode(),user.getResetToken())){
+            if(user.getResetSentAt().plus(30, ChronoUnit.MINUTES).isAfter(Instant.now())){
+                user.setPassword(passwordEncoder.encode(dto.getPassword()));
+                user.setResetToken(null);
+                user.setResetSentAt(null);
+                service.save(user);
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Change password success",""));
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(Constant.RESPONSE_STATUS_UNPROCESSABLE_ENTITY,
+                            "Reset code is timeout",""));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND, "Code not found",""));
+    }
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> login(@RequestBody LoginDto login) {
         String phone = login.getEmail().trim();
         Optional<User> user = null;
         if(phone.startsWith("0") || phone.startsWith("+84") || phone.startsWith("84")){
-            if(phone.startsWith("0")) phone = "84" + phone.substring(1);
-            if(phone.startsWith("+84")) phone = phone.replace("+","");
+            if(phone.startsWith("84")) phone = "0" + phone.substring(2);
+            if(phone.startsWith("+84")) phone = phone.replace("+84","0");
             user = service.findByPhone(phone);
             if (user.isPresent()) {
                 if (passwordEncoder.matches(login.getPassword(), user.get().getPassword()))
@@ -481,5 +526,4 @@ public class UsersController {
         this.content = content;
     }
 }
-
 }
