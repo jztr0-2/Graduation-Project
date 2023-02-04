@@ -90,9 +90,8 @@ public class OrderController {
 
     @GetMapping("{id}")
     public ResponseEntity<ResponseObject> getById(@PathVariable("id") Long id){
-        Optional<Order> optOrder = service.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Find Order Success", service.findById(id)));
+                new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Find Order Success", service.findById(id).get()));
     }
     @PutMapping("{id}")
     public ResponseEntity<ResponseObject> updateOrder(@PathVariable("id") Long id,
