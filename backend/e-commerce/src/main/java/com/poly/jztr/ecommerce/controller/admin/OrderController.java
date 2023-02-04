@@ -69,7 +69,7 @@ public class OrderController {
                         new ResponseObject(Constant.RESPONSE_STATUS_NOTFOUND,"Order not found", null));
             }
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully", opt.get()));
+                    new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,"Get data successfully", new Content(opt.get())));
         }
 
         if(status == -1) {
@@ -159,4 +159,18 @@ public class OrderController {
                         new RecentOrderSerializer(orderPage.getContent())));
     }
 
+    private class Content{
+        private Object content;
+        public Content(Object obj){
+            this.content = obj;
+        }
+
+        public void setContent(Object content) {
+            this.content = content;
+        }
+
+        public Object getContent(){
+            return this.content;
+        }
+    }
 }
