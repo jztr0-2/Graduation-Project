@@ -187,6 +187,7 @@ public class UsersController {
             user.setEmail("user_demo"+i + "@gmail.com");
             user.setFirstName("Demo" +i);
             user.setLastName("User");
+            user.setPhone("038459270" + i);
 
             service.save(user);
         }
