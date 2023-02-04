@@ -237,6 +237,13 @@ public class UsersController {
             service.save(user);
         }
 
+        User user = new User();
+        user.setStatus(1);
+        user.setFirstName("Guest");
+        user.setLastName("User");
+        user.setEmail("jztr@gmail.com");
+        user.setPassword("no password");
+        service.save(user);
 
         // Init category
         for(int i = 1; i<11; i ++){
@@ -295,9 +302,9 @@ public class UsersController {
         address = addressService.save(address);
 
         for(int i = 0; i < 1000; i ++){
-            User user= service.findById(random.nextLong(90) + 1).get();
+            User user1= service.findById(random.nextLong(90) + 1).get();
             Order order = new Order();
-            order.setUser(user);
+            order.setUser(user1);
             order.setStatus(random.nextInt(2));
             order.setDescription("Fake order" + i);
 
@@ -318,6 +325,7 @@ public class UsersController {
             order.setCreatedAt(instant);
             List<OrderItem> orderItemList = new ArrayList<>();
             order.setAddress(address);
+            order.setPaymentMethod(Constant.ORDER_PAYMENT_METHOD_COD);
             for(int j = 0; j < 5; j ++){
                 OrderItem orderItem = new OrderItem();
                 orderItem.setOrder(order);

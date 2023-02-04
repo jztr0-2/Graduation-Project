@@ -5,7 +5,9 @@ import com.poly.jztr.ecommerce.common.ResponseObject;
 import com.poly.jztr.ecommerce.dto.OrderDto;
 import com.poly.jztr.ecommerce.expection.QuantityIsTooLagerException;
 import com.poly.jztr.ecommerce.model.Order;
+import com.poly.jztr.ecommerce.model.User;
 import com.poly.jztr.ecommerce.service.OrderService;
+import com.poly.jztr.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,15 @@ import java.util.List;
 public class OrdersController {
     @Autowired
     OrderService service;
+    @Autowired
+    UserService userService;
 
     @PostMapping
     public ResponseEntity<ResponseObject> create(@RequestBody OrderDto dto) throws QuantityIsTooLagerException {
+        User user = userService.findByEmail("jztr@gmail.com").get();
         try {
             Order order = service.toOrder(dto);
+            order.setUser(user);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
                     Constant.RESPONSE_STATUS_SUCCESS, "Create order successfully", service.save(order)
             ));
