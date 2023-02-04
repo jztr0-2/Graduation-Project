@@ -91,10 +91,9 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ResponseObject> create(@RequestBody @Validated ProductDto dto) throws DuplicateEntryException {
         Product p = new Product();
+        BeanUtils.copyProperties(dto,p);
         p.setBrand(new Brand(dto.getBrandId()));
         p.setCategory(new Category(dto.getCategoryId()));
-        BeanUtils.copyProperties(dto,p);
-
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS,
                         "Create product successfully", service.save(p)));
