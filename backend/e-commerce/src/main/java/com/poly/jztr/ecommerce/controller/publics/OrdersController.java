@@ -29,6 +29,7 @@ public class OrdersController {
         try {
             Order order = service.toOrder(dto);
             order.setUser(user);
+            order.setPaymentMethod(Constant.ORDER_PAYMENT_METHOD_COD);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
                     Constant.RESPONSE_STATUS_SUCCESS, "Create order successfully", service.save(order)
             ));
