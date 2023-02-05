@@ -1,7 +1,9 @@
 package com.poly.jztr.ecommerce.service;
 
 import com.poly.jztr.ecommerce.dto.OrderDto;
+import com.poly.jztr.ecommerce.dto.OrderItemDto;
 import com.poly.jztr.ecommerce.model.Order;
+import com.poly.jztr.ecommerce.model.OrderItem;
 import com.poly.jztr.ecommerce.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,4 +63,6 @@ public interface OrderService {
 
     @Async
     void checkPayment(Long id) throws InterruptedException;
+
+    void updateQuantity(List<OrderItemDto> dtos);
 }

@@ -3,11 +3,13 @@ package com.poly.jztr.ecommerce.serviceImpl;
 import com.google.gson.*;
 import com.poly.jztr.ecommerce.common.Constant;
 import com.poly.jztr.ecommerce.dto.OrderDto;
+import com.poly.jztr.ecommerce.dto.OrderItemDto;
 import com.poly.jztr.ecommerce.model.*;
 import com.poly.jztr.ecommerce.repository.OrderItemRepository;
 import com.poly.jztr.ecommerce.repository.OrderRepository;
 import com.poly.jztr.ecommerce.service.OrderItemService;
 import com.poly.jztr.ecommerce.service.OrderService;
+import com.poly.jztr.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +48,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     PromotionService promotionService;
+
+    @Autowired
+    ProductService productService;
 
     @Override
     public List<Order> findByDate(Instant start, Instant end) {
@@ -249,6 +254,15 @@ public class OrderServiceImpl implements OrderService {
             }
             Thread.sleep(10000);
         }
+    }
+
+    @Override
+    public void updateQuantity(List<OrderItemDto> dtos) {
+        dtos.stream().forEach((dto) -> {
+           Product p = productService.findById(dto.getProductId()).get();
+           p.setQuantity(p.getQuantity() - dto.getQuantity());
+           productService.save(p);
+        });
     }
 
     private boolean checkMomo(String paymentCode, double total){

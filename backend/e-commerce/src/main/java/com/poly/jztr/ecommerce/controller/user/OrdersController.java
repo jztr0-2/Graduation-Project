@@ -51,6 +51,7 @@ public class OrdersController {
             Order order = service.toOrder(dto);
             order.setUser(getUserByToken(jwt));
             order.setPaymentMethod(Constant.ORDER_PAYMENT_METHOD_COD);
+            service.updateQuantity(dto.getItems());
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
                     Constant.RESPONSE_STATUS_SUCCESS, "Create order successfully", service.save(order, dto.getPromoCode())
 
@@ -74,6 +75,7 @@ public class OrdersController {
             order = service.save(order, dto.getPromoCode());
             OrderAndPaySerializer orderAndPaySerializer = new OrderAndPaySerializer(order);
             service.checkPayment(order.getId());
+            service.updateQuantity(dto.getItems());
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
                     Constant.RESPONSE_STATUS_SUCCESS, "Create order successfully",orderAndPaySerializer ));
         } catch (Exception e){

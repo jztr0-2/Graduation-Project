@@ -30,8 +30,10 @@ public class OrdersController {
             Order order = service.toOrder(dto);
             order.setUser(user);
             order.setPaymentMethod(Constant.ORDER_PAYMENT_METHOD_COD);
+            order = service.save(order);
+            service.updateQuantity(dto.getItems());
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(
-                    Constant.RESPONSE_STATUS_SUCCESS, "Create order successfully", service.save(order)
+                    Constant.RESPONSE_STATUS_SUCCESS, "Create order successfully", order
             ));
         } catch (Exception e) {
             e.printStackTrace();
