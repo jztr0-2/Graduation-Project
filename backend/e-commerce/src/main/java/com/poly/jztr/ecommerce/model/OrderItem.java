@@ -10,12 +10,11 @@ import java.time.Instant;
 @NamedQueries({
         @NamedQuery(
                 name = "OrderItem.totalSoldProductsByProductId",
-                query = "SELECT sum(o.quantity) FROM OrderItem o WHERE o.product.id = ?1 And o.order.status = 1"
+                query = "SELECT sum(o.quantity) FROM OrderItem o WHERE o.product.id = ?1"
         ),
         @NamedQuery(
                 name = "OrderItem.getDealOfDay",
-                query = "SELECT o.product FROM OrderItem o WHERE o.updatedAt = (SELECT MAX(o.updatedAt) FROM OrderItem o) " +
-                        "GROUP BY o.product ORDER BY count(o.product) DESC "
+                query = "SELECT o.product FROM OrderItem o GROUP BY o.product ORDER BY count(o.product), o.updatedAt DESC "
         ),
         @NamedQuery(
                 name = "OrderItem.getBestSellerProducts",
