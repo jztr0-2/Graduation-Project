@@ -18,7 +18,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByCreatedAtGreaterThanEqualAndCreatedAtLessThanEqual(Instant start, Instant end);
 
     Page<Order> findByUser(User user, Pageable page);
-
+    Page<Order> findByUserAndStatus(User user, int status, Pageable pageable);
     Page<Order> findByStatusIs(Integer status, Pageable pageable);
 
     Page<Order> findByStatusAndCreatedAtAfterAndCreatedAtBeforeAndTotalGreaterThanEqualAndTotalLessThanEqualAndUserFirstNameContains(Integer status,
@@ -51,5 +51,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> findByPromotionCodeContains(String code);
 
-    List<Order> findByAddressPhone(String phone);
+    Page<Order> findByAddressPhone(String phone, Pageable pageable);
 }

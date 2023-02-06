@@ -59,10 +59,11 @@ public interface OrderService {
 
     Order updateStatus(Order order);
 
-    List<Order> findByPhone(String phone);
+    Page<Order> findByPhone(String phone, Pageable pageable);
 
     @Async
     void checkPayment(Long id) throws InterruptedException;
 
     void updateQuantity(List<OrderItemDto> dtos);
+    Page<Order> findByUserAndStatus(User user, int status, Pageable pageable);
 }

@@ -233,8 +233,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findByPhone(String phone) {
-        return repository.findByAddressPhone(phone);
+    public Page<Order> findByPhone(String phone, Pageable pageable) {
+        return repository.findByAddressPhone(phone, pageable);
     }
 
     @Override
@@ -263,6 +263,11 @@ public class OrderServiceImpl implements OrderService {
            p.setQuantity(p.getQuantity() - dto.getQuantity());
            productService.save(p);
         });
+    }
+
+    @Override
+    public Page<Order> findByUserAndStatus(User user, int status, Pageable pageable) {
+        return repository.findByUserAndStatus(user, status, pageable);
     }
 
     private boolean checkMomo(String paymentCode, double total){

@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestControllerAdvice("user/orders")
@@ -43,7 +44,18 @@ public class OrdersController {
         return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get order by user successfully",
                 service.findByUser(pageable, user)));
     }
-
+    @GetMapping("/find/status")
+    public ResponseEntity<ResponseObject> findByStatusOrder
+            (   @RequestHeader(value = "Authorization") String jwt,
+                @RequestParam("curPage") Optional<Integer> curPage,
+                @RequestParam("limit") Optional<Integer> limit,
+                @RequestParam("status") Optional<Integer> status )
+    {
+        User user = getUserByToken(jwt);
+        Pageable pageable = CustomPageable.getPage(curPage.orElse(1), limit.orElse(10), "updatedAt", Constant.SORT_DESC);
+        return ResponseEntity.ok(new ResponseObject(Constant.RESPONSE_STATUS_SUCCESS, "Get order by user successfully",
+                service.findByUserAndStatus(user, status.get(), pageable)));
+    }
     @PostMapping
     public ResponseEntity<ResponseObject> create(@RequestHeader(value = "Authorization") String jwt,
                                                  @RequestBody OrderDto dto) throws QuantityIsTooLagerException{
