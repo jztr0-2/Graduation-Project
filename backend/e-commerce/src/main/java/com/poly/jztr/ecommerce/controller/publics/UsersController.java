@@ -86,7 +86,8 @@ public class UsersController {
     @Autowired PromotionService promotionService;
 
     @PostMapping("/generate-forgot-password")
-    public  ResponseEntity<ResponseObject> changePass(@RequestParam String phone){
+    public  ResponseEntity<ResponseObject> changePass(@RequestBody ChangePasswordDto dto){
+        String phone = dto.getPhone();
         System.out.println(phone);
         Optional<User> user = service.findByPhone(phone);
         if(user.isEmpty()){
